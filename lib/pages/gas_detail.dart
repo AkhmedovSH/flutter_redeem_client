@@ -54,19 +54,11 @@ class _GasDetailState extends State<GasDetail> {
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
-            title: Text(
-              'Mustang',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: black,
-              ),
-            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+              margin: const EdgeInsets.only(bottom: 24, right: 24, left: 24, top: 50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -205,7 +197,7 @@ class _GasDetailState extends State<GasDetail> {
                     onTap: () async {
                       final Uri launchUri = Uri(
                         scheme: 'tel',
-                        path: '+998555000089',
+                        path: pos['phone'],
                       );
                       await launchUrl(launchUri);
                     },
@@ -268,6 +260,27 @@ class _GasDetailState extends State<GasDetail> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF3D708F),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              alignment: Alignment.center,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  pos['name'] ?? '',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
                 ),
               ),
             ),

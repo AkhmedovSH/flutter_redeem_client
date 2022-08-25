@@ -20,7 +20,10 @@ class GoogleMapPage extends StatefulWidget {
 class _GoogleMapPageState extends State<GoogleMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor? icon;
+
   List<Marker> markers = [];
+  List<LatLng>? polygonCoords = [];
+
   CameraPosition kGooglePlex = const CameraPosition(target: LatLng(41.311081, 69.240562), zoom: 13.0);
   dynamic filter = {
     'distance': '1',
@@ -68,12 +71,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         target: LatLng(position.latitude, position.longitude),
         zoom: 17,
       );
-      final icon = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(
-            size: Size(12, 12),
-            devicePixelRatio: 3.2,
-          ),
-          "images/user_marker.png");
       setState(() {
         filter['pointX'] = position.latitude.toString();
         filter['pointY'] = position.longitude.toString();
@@ -81,7 +78,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
           Marker(
             markerId: MarkerId(LatLng(position.latitude, position.longitude).toString()),
             position: LatLng(position.latitude, position.longitude),
-            icon: icon,
           ),
         );
       });
@@ -90,23 +86,31 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     }
   }
 
-  getPoses() async {
+  Set<Polygon> myPolygon() {
+    setState(() {
+      polygonCoords!.add(LatLng(double.parse(filter['pointX']), double.parse(filter['pointY'])));
+      polygonCoords!.add(const LatLng(37.43296265331129, -122.08832357078792));
+    });
+    Set<Polygon> polygonSet = {};
+    polygonSet.add(Polygon(polygonId: const PolygonId('test'), points: polygonCoords!, strokeColor: green));
+    return polygonSet;
+  }
+
+  getPoses({search = false}) async {
     final response = await get('/services/mobile/api/pos-search', payload: filter);
     if (response != null && response.length > 0) {
       setState(() {
         markers = [];
       });
       for (var i = 0; i < response.length; i++) {
-        // final Uint8List markerIcon = await getBytesFromCanvas(20, 20, image.bodyBytes);
+        print(response[i]);
         dynamic markerIcon;
-
         markerIcon = await BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(
               size: Size(100, 100),
               devicePixelRatio: 5,
             ),
-            "images/map_icon.png");
-
+            "images/map_icon_2.png");
         if (mounted) {
           setState(() {
             markers.add(
@@ -121,6 +125,14 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             );
           });
         }
+      }
+      if (markers.length == 1) {
+        dynamic newPosition = CameraPosition(
+          target: LatLng(response[0]['gpsPointX'], response[0]['gpsPointY']),
+          zoom: 17,
+        );
+        final GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(newPosition));
       }
     }
   }
@@ -155,6 +167,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   myLocationEnabled: true,
                   mapToolbarEnabled: false,
                   initialCameraPosition: kGooglePlex,
+                  // polygons: myPolygon(),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },
@@ -188,6 +201,20 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             margin: const EdgeInsets.only(bottom: 24),
             child: TextFormField(
               textInputAction: TextInputAction.search,
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  setState(() {
+                    filter['search'] = '';
+                  });
+                  getPoses(search: true);
+                }
+                if (value.length >= 3) {
+                  setState(() {
+                    filter['search'] = value;
+                  });
+                  getPoses(search: true);
+                }
+              },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 prefixIcon: const Icon(

@@ -55,19 +55,11 @@ class _SupportState extends State<Support> {
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
-            title: Text(
-              'Yordam',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: black,
-              ),
-            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+              margin: const EdgeInsets.only(bottom: 24, right: 24, left: 24, top: 50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,7 +76,7 @@ class _SupportState extends State<Support> {
                             Icons.search,
                             color: Color(0xFF9CA4AB),
                           ),
-                          hintText: 'Search...',
+                          hintText: 'izlash...',
                           hintStyle: const TextStyle(
                             color: Color(0xFF9CA4AB),
                           ),
@@ -205,6 +197,27 @@ class _SupportState extends State<Support> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF151517),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              alignment: Alignment.center,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  'Yordam',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
                 ),
               ),
             ),

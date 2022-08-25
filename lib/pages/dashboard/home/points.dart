@@ -24,9 +24,10 @@ class _PointsState extends State<Points> {
       ),
       child: SimpleAppBar(
         appBar: AppBar(),
-        title: 'Umumumiy ballar',
+        title: 'Xizmatlar',
         leading: true,
         bgcolor: Colors.transparent,
+        appBarColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -34,10 +35,11 @@ class _PointsState extends State<Points> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                   margin: const EdgeInsets.only(bottom: 8),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(255, 255, 255, 0.3),
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(0xFFCED4D8),
+                        color: white,
                       ),
                     ),
                   ),

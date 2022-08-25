@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../helpers/helper.dart';
 
-const defaultMargin = EdgeInsets.only(top: 40);
+const defaultMargin = EdgeInsets.only(top: 70);
 const defaultPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 16);
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -33,12 +33,12 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          'images/home_bg.png',
-          width: MediaQuery.of(context).size.width,
-          height: 200,
-          fit: BoxFit.fill,
-        ),
+        // Image.asset(
+        //   'images/home_bg.png',
+        //   width: MediaQuery.of(context).size.width,
+        //   height: 200,
+        //   fit: BoxFit.fill,
+        // ),
         Container(
           width: MediaQuery.of(context).size.width,
           height: 200,
@@ -74,16 +74,19 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Container(
             height: 40,
             alignment: Alignment.center,
-            child: Text(
-              title ?? '',
+            child: DefaultTextStyle(
               style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+              child: Text(
+                title ?? '',
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+              ),
             ),
           ),
         ),
         leading!
             ? Positioned(
                 right: 0,
-                top: MediaQuery.of(context).size.height * 0.09,
+                top: MediaQuery.of(context).size.height * 0.095,
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [

@@ -21,7 +21,6 @@ Future get(String url, {payload}) async {
   if (prefs.getString('access_token') != null) {
     dio.options.headers["authorization"] = "Bearer ${prefs.getString('access_token')}";
   }
-  print(getx.Get.locale.toString().substring(0, 2));
   dio.options.headers["Accept"] = "application/json";
   dio.options.headers["Language"] = getx.Get.locale.toString().substring(0, 2);
   dio.options.headers["Accept-Language"] = getx.Get.locale.toString().substring(0, 2);

@@ -109,12 +109,16 @@ formatDate(date) {
 }
 
 formatPhone(phone) {
-  var x = phone.substring(0, 3);
-  var y = phone.substring(3, 5);
-  var z = phone.substring(5, 8);
-  var d = phone.substring(8, 10);
-  var q = phone.substring(10, 12);
-  return '+' + x + ' ' + y + ' ' + z + ' ' + d + ' ' + q;
+  if (phone.length >= 12) {
+    var x = phone.substring(0, 3);
+    var y = phone.substring(3, 5);
+    var z = phone.substring(5, 8);
+    var d = phone.substring(8, 10);
+    var q = phone.substring(10, 12);
+    return '+' + x + ' ' + y + ' ' + z + ' ' + d + ' ' + q;
+  } else {
+    return phone;
+  }
 }
 
 getCurrentMonth() {

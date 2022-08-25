@@ -109,28 +109,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
               elevation: 0,
               systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               leading: Container(),
-              title: Text(
-                'Profile',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  color: black,
-                ),
-              ),
               centerTitle: true,
             ),
             body: SingleChildScrollView(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                margin: const EdgeInsets.only(bottom: 24, right: 24, left: 24, top: 50),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 40),
+                      margin: const EdgeInsets.only(bottom: 40, top: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          user['imageUrl'] != null
+                          user['imageUrl'] != null && user['imageUrl'] != ""
                               ? Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
@@ -326,6 +318,24 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   child: Icon(
                     Icons.arrow_back_ios,
                     color: Color(0xFF3D708F),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.095,
+            // left: 24,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
                   ),
                 ),
               ),

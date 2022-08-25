@@ -39,6 +39,7 @@ class _DashboardState extends State<Dashboard> {
 
   changeIndex(int index) {
     setState(() {
+      showQr = false;
       currentIndex = index;
     });
   }

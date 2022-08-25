@@ -48,6 +48,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
   ];
 
   updateAccount() async {
+    print(sendData);
     final response = await put('/services/mobile/api/account', sendData);
     if (response != null) {
       if (response['success']) {
@@ -59,6 +60,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
 
   getUser() async {
     final response = await get('/services/mobile/api/account');
+    print(response);
     setState(() {
       data['nameController'].text = response['name'].toString() != 'null' ? response['name'].toString() : '';
       data['carNumberController'].text = response['carNumber'].toString() != 'null' ? response['carNumber'].toString() : '';
@@ -72,6 +74,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
       sendData['imageUrl'] = response['imageUrl'] ?? '';
       sendData['phone'] = response['phone'];
       sendData['name'] = response['name'];
+      sendData['carNumber'] = response['carNumber'];
       sendData['carTypeId'] = response['carTypeId'];
       sendData['gender'] = response['gender'];
       sendData['birthDate'] = response['birthDate'];
@@ -89,9 +92,13 @@ class _ProfileSettingState extends State<ProfileSetting> {
       XFile? img = await ImagePicker().pickImage(source: source);
       if (img == null) return;
       final response = await uploadImage('/services/mobile/api/upload/image', File(img.path));
-      setState(() {
-        sendData['imageUrl'] = response['url'];
-      });
+      if (response != null) {
+        setState(() {
+          sendData['imageUrl'] = response['url'];
+        });
+      } else {
+        // showErrorToast('Xato');
+      }
     } on PlatformException catch (e) {
       print('ERROR: $e');
     }
@@ -135,19 +142,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
-            title: Text(
-              'Mening prifilim',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: black,
-              ),
-            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+              margin: const EdgeInsets.only(bottom: 24, right: 24, left: 24, top: 50),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -257,12 +256,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
                       ),
                     ),
                     Container(
-                      height: 60,
                       margin: const EdgeInsets.only(bottom: 16),
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
@@ -294,12 +292,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
                       ),
                     ),
                     Container(
-                      height: 60,
                       margin: const EdgeInsets.only(bottom: 16),
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
@@ -338,7 +335,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(bottom: 25),
-                      // height: 45,
                       child: GestureDetector(
                         onTap: () {
                           selectDate(context);
@@ -353,7 +349,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                             controller: data['birthDateController'],
                             validator: (_) {
                               if (data['birthDateController'].text == '') {
-                                return 'required_field'.tr;
+                                return 'Majburiy maydon';
                               }
                               return null;
                             },
@@ -387,7 +383,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(bottom: 25),
-                      height: 50,
                       child: GestureDetector(
                         onTap: () {
                           showSelectGenger();
@@ -396,7 +391,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           controller: data['genderController'],
                           validator: (_) {
                             if (data['genderController'].text == '') {
-                              return 'required_field'.tr;
+                              return 'Majburiy maydon';
                             }
                             return null;
                           },
@@ -423,7 +418,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 25),
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xFFECF1F6),
@@ -464,7 +458,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: const Color(0xFFECF1F6),
@@ -556,6 +549,27 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF151517),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              alignment: Alignment.center,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  'Mening prifilim',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
                 ),
               ),
             ),

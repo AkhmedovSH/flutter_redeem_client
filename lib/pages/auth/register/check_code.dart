@@ -165,7 +165,7 @@ class _CheckCodeState extends State<CheckCode> {
                             inputFormatters: [maskFormatter],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'required_field'.tr;
+                                return 'Majburiy maydon';
                               }
                               return null;
                             },

@@ -40,6 +40,10 @@ class _IndexState extends State<Index> {
     }
   }
 
+  search() async {
+    final response = await get('url');
+  }
+
   getPermission() async {
     if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
       print('has permission');
@@ -51,17 +55,19 @@ class _IndexState extends State<Index> {
     print(permission);
     if (permission != LocationPermission.deniedForever && permission != LocationPermission.denied) {
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-        filter['pointX'] = position.latitude.toString();
-        filter['pointY'] = position.longitude.toString();
-      });
+      if (mounted) {
+        setState(() {
+          filter['pointX'] = position.latitude.toString();
+          filter['pointY'] = position.longitude.toString();
+        });
+      }
       getPoses();
     }
   }
 
   getPoses() async {
+    print(filter['search']);
     final response = await get('/services/mobile/api/pos-search?&pointX&pointY&distance', payload: filter);
-
     setState(() {
       poses = response;
     });
@@ -102,7 +108,7 @@ class _IndexState extends State<Index> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(bottom: 20, top: 40),
                   child: Center(
                     child: Text(
                       '80435',
@@ -190,6 +196,20 @@ class _IndexState extends State<Index> {
                           margin: const EdgeInsets.only(bottom: 24),
                           child: TextFormField(
                             textInputAction: TextInputAction.search,
+                            onChanged: (value) {
+                              if (value.isEmpty) {
+                                setState(() {
+                                  filter['search'] = '';
+                                });
+                                getPoses();
+                              }
+                              if (value.length >= 3) {
+                                setState(() {
+                                  filter['search'] = value;
+                                });
+                                getPoses();
+                              }
+                            },
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                               prefixIcon: const Icon(
@@ -285,22 +305,25 @@ class _IndexState extends State<Index> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(bottom: 15),
-                                            child: poses[i]['favorite']
-                                                ? GestureDetector(
-                                                    onTap: () {
-                                                      inFavorite(poses[i]['id'], false);
-                                                    },
-                                                    child: SvgPicture.asset('images/icons/star_active.svg'),
-                                                  )
-                                                : GestureDetector(
-                                                    onTap: () {
-                                                      inFavorite(poses[i]['id'], true);
-                                                    },
-                                                    child: SvgPicture.asset('images/icons/star.svg'),
-                                                  ),
-                                          ),
+                                          poses[i]['favorite'] != null
+                                              ? Container(
+                                                  margin: const EdgeInsets.only(bottom: 15),
+                                                  child: poses[i]['favorite']
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            inFavorite(poses[i]['id'], false);
+                                                          },
+                                                          child: SvgPicture.asset('images/icons/star_active.svg'),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () {
+                                                            inFavorite(poses[i]['id'], true);
+                                                          },
+                                                          child: SvgPicture.asset('images/icons/star.svg'),
+                                                        ))
+                                              : Container(
+                                                  margin: const EdgeInsets.only(bottom: 15),
+                                                ),
                                           Row(
                                             children: [
                                               Container(
@@ -333,7 +356,7 @@ class _IndexState extends State<Index> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.09,
+          top: MediaQuery.of(context).size.height * 0.095,
           // left: MediaQuery.of(context).size.width * 0.35,
           width: MediaQuery.of(context).size.width,
           child: Container(
@@ -346,7 +369,7 @@ class _IndexState extends State<Index> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.09,
+          top: MediaQuery.of(context).size.height * 0.095,
           child: GestureDetector(
             onTap: () {
               widget.openDrawer();
@@ -364,7 +387,7 @@ class _IndexState extends State<Index> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.09,
+          top: MediaQuery.of(context).size.height * 0.095,
           right: 0,
           child: Container(
             height: 40,
@@ -374,7 +397,7 @@ class _IndexState extends State<Index> {
             decoration: iconBorder,
             child: GestureDetector(
               onTap: () {
-                // Get.toNamed('/notifications');
+                Get.toNamed('/notifications');
               },
               child: SvgPicture.asset(
                 'images/icons/notification.svg',

@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         )),
       ),
       initialRoute: '/splash',
-      getPages: [
+      getPages: [ 
         GetPage(name: '/splash', page: () => const Splash()),
 
         // Auth

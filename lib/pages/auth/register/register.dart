@@ -165,12 +165,11 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  height: 60,
                   margin: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
+                        return 'Majburiy maydon';
                       }
                       return null;
                     },
@@ -201,14 +200,13 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  height: 60,
                   margin: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     inputFormatters: [maskFormatter],
                     controller: data['username'],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
+                        return 'Majburiy maydon';
                       }
                       return null;
                     },
@@ -256,14 +254,13 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  height: 60,
                   margin: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     obscureText: showPassword,
                     controller: data['password'],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
+                        return 'Majburiy maydon';
                       }
                       return null;
                     },
@@ -310,13 +307,12 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  height: 60,
                   margin: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     controller: data['carNumberController'],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
+                        return 'Majburiy maydon';
                       }
                       return null;
                     },

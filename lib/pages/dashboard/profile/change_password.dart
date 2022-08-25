@@ -31,14 +31,6 @@ class _ChangePasswordState extends State<ChangePassword> {
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
-            title: Text(
-              'Xavfsizlik',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-                color: black,
-              ),
-            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -94,7 +86,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         obscureText: showPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
@@ -147,7 +139,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         obscureText: showNewPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
@@ -230,6 +222,27 @@ class _ChangePasswordState extends State<ChangePassword> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF151517),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              alignment: Alignment.center,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  'Xavfsizlik',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
                 ),
               ),
             ),

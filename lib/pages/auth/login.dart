@@ -181,14 +181,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
                     Container(
-                      height: 60,
                       margin: const EdgeInsets.only(bottom: 16),
                       child: TextFormField(
                         inputFormatters: [maskFormatter],
                         controller: data['username'],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
@@ -236,14 +235,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
                     Container(
-                      height: 60,
                       margin: const EdgeInsets.only(bottom: 16),
                       child: TextFormField(
                         obscureText: showPassword,
                         controller: data['password'],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'required_field'.tr;
+                            return 'Majburiy maydon';
                           }
                           return null;
                         },
