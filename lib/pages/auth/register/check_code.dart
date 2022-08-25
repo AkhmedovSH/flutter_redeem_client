@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import '../../location_notification_service.dart';
 
 import 'package:control_car_client/helpers/api.dart';
 import 'package:control_car_client/helpers/helper.dart';
@@ -35,7 +38,7 @@ class _CheckCodeState extends State<CheckCode> {
     });
     final response = await guestPost('/services/mobile/api/activate', sendData);
     if (response == null || !response['success']) {
-      showErrorToast('error'.tr);
+      // showErrorToast('error'.tr);
       return;
     }
     setState(() {
@@ -59,6 +62,23 @@ class _CheckCodeState extends State<CheckCode> {
         }
       }
       if (checkAccess) {
+        LocalNotificationService.initialize(context);
+        FirebaseMessaging.instance.getInitialMessage().then((message) {
+          if (message != null) {
+            Get.offAllNamed('/notifications');
+          }
+        });
+        FirebaseMessaging.onMessage.listen((message) {
+          if (message.notification != null) {
+            //Get.toNamed('/dashboard');
+          }
+          LocalNotificationService.display(message);
+        });
+        FirebaseMessaging.onMessageOpenedApp.listen((message) {
+          Get.offAllNamed('/notifications');
+        });
+        var firebaseToken = await FirebaseMessaging.instance.getToken();
+        // await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
         Get.offAllNamed('/');
       }
     }
@@ -236,18 +256,20 @@ class _CheckCodeState extends State<CheckCode> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.only(left: 32),
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        width: MediaQuery.of(context).size.width,
-        child: GestureDetector(
-          onTap: () {
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          if (_formKey.currentState!.validate()) {
             checkActivationCode();
-          },
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(left: 32),
+          decoration: BoxDecoration(
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          width: MediaQuery.of(context).size.width,
           child: Text(
             'Davom etish',
             style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),

@@ -1,5 +1,10 @@
+import 'package:control_car_client/helpers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/helper.dart';
 
@@ -15,42 +20,78 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
+  dynamic user = {};
+
+  logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('access_token');
+    prefs.remove('user');
+    Get.offAllNamed('/login');
+  }
+
+  getUser() async {
+    final response = await get('/services/mobile/api/account');
+    setState(() {
+      user = response;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
   buildCard(icon, text) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0xFFF2F2F2),
+    return GestureDetector(
+      onTap: () async {
+        if (text == 'Ulashish') {
+          Get.toNamed('/change-password');
+        }
+        if (text == 'Yordam') {
+          Get.toNamed('/support');
+        }
+        if (text == 'Sozlamalar') {
+          await Get.toNamed('/profile-setting');
+          getUser();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xFFF2F2F2),
+          ),
+          borderRadius: BorderRadius.circular(12),
         ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 20),
-                child: Icon(
-                  icon,
-                  color: black,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: Icon(
+                    icon,
+                    color: black,
+                  ),
                 ),
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                  color: black,
-                  fontSize: 16,
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: black,
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Color(0xFF8E8E93),
-          ),
-        ],
+              ],
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xFF8E8E93),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -87,18 +128,48 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset('images/profile.png'),
+                          user['imageUrl'] != null
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color(0xFF83B6D5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      mainUrl + user['imageUrl'],
+                                      fit: BoxFit.fill,
+                                      width: 72,
+                                      height: 72,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: 72,
+                                  height: 72,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 167, 167, 167),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 32,
+                                    color: lightGrey,
+                                  ),
+                                ),
                           Container(
                             margin: const EdgeInsets.only(left: 12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Tiana Saris',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Color(0xFF0E1A23)),
+                                Text(
+                                  user['name'] ?? '',
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Color(0xFF0E1A23)),
                                 ),
                                 Text(
-                                  '+998 90 123 45 67',
+                                  user['phone'] != null ? formatPhone(user['phone']) : '',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
@@ -124,30 +195,35 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     buildCard(Icons.share_outlined, 'Ulashish'),
                     buildCard(Icons.error_outline, 'Yordam'),
                     buildCard(Icons.settings_outlined, 'Sozlamalar'),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(222, 29, 29, 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Stack(
-                        children: const [
-                          Center(
-                            child: Text(
-                              'Chiqish',
-                              style: TextStyle(
-                                color: Color(0xFFDE1D1D),
-                                fontSize: 16,
+                    GestureDetector(
+                      onTap: () {
+                        logout();
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(222, 29, 29, 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Stack(
+                          children: const [
+                            Center(
+                              child: Text(
+                                'Chiqish',
+                                style: TextStyle(
+                                  color: Color(0xFFDE1D1D),
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
-                          Icon(
-                            Icons.logout_sharp,
-                            color: Color(0xFFDE1D1D),
-                            size: 20,
-                          ),
-                        ],
+                            Icon(
+                              Icons.logout_sharp,
+                              color: Color(0xFFDE1D1D),
+                              size: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -182,7 +258,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 20),
                             child: const Text(
-                              '+998 71 152 97 21',
+                              '+998 55 500-00-89',
                               style: TextStyle(
                                 color: Color(0xFF2995A3),
                                 fontWeight: FontWeight.w600,
@@ -198,7 +274,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                final Uri launchUri = Uri(
+                                  scheme: 'tel',
+                                  path: '+998555000089',
+                                );
+                                await launchUrl(launchUri);
+                              },
                               child: Center(
                                 child: Text(
                                   'BIZ BILAN BOG’LANING',

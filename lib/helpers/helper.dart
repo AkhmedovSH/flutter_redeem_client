@@ -16,6 +16,7 @@ Color pink = const Color(0xFFF03291);
 Color white = const Color(0xFFFFFFFF);
 Color red = const Color(0xFFdc3545);
 Color blue = const Color(0xFF17a2b8);
+Color green = const Color(0xFF22AE54);
 Color lightGrey = const Color(0xFFFDFDFD);
 Color borderColor = const Color(0xFFF8F8F8);
 Color linkColor = const Color(0xFF2995A3);
@@ -62,7 +63,7 @@ BoxDecoration iconBorder = BoxDecoration(
 
 // Some variable
 
-const mainUrl = 'https://cabinet.cashbek.uz';
+const mainUrl = 'https://cabinet.redeem.uz';
 
 final loadingsystemOverlayStyle = SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.light,
@@ -108,11 +109,12 @@ formatDate(date) {
 }
 
 formatPhone(phone) {
+  var x = phone.substring(0, 3);
   var y = phone.substring(3, 5);
   var z = phone.substring(5, 8);
   var d = phone.substring(8, 10);
   var q = phone.substring(10, 12);
-  return y + ' ' + z + ' ' + d + ' ' + q;
+  return '+' + x + ' ' + y + ' ' + z + ' ' + d + ' ' + q;
 }
 
 getCurrentMonth() {

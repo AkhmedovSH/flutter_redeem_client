@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 import 'helpers/helper.dart';
 
 import 'pages/splash.dart';
@@ -15,8 +17,13 @@ import 'pages/dashboard/home/points.dart';
 import 'pages/dashboard/home/notifications.dart';
 import 'pages/gas_detail.dart';
 
-void main() {
+import 'pages/dashboard/profile/profile_settings.dart';
+import 'pages/dashboard/profile/change_password.dart';
+import 'pages/dashboard/profile/support.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -73,7 +80,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => const Dashboard()),
         GetPage(name: '/points', page: () => const Points()),
         GetPage(name: '/notifications', page: () => const Notifications()),
-        GetPage(name: '/notifications', page: () => const Notifications()),
+        GetPage(name: '/gas-detail', page: () => const GasDetail()),
+
+        // Profile
+        GetPage(name: '/profile-setting', page: () => const ProfileSetting()),
+        GetPage(name: '/change-password', page: () => const ChangePassword()),
+        GetPage(name: '/support', page: () => const Support()),
       ],
     );
   }

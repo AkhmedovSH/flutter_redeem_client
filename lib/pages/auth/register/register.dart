@@ -21,17 +21,27 @@ class _RegisterState extends State<Register> {
     'phone': '',
     "name": "",
     "carNumber": "",
-    "carTypeId": 1,
+    "carTypeId": '1',
     "password": "",
     "activationCode": '',
   };
   bool showPassword = true;
-
   dynamic data = {
     'username': TextEditingController(text: ''),
     'password': TextEditingController(),
+    'carNumberController': TextEditingController(),
     'isRemember': false,
   };
+  List carTypes = [
+    {'name': '', 'id': 1}
+  ];
+
+  changeCarType(newValue) {
+    print(newValue);
+    setState(() {
+      sendData['carTypeId'] = newValue;
+    });
+  }
 
   registration() async {
     setState(() {
@@ -44,9 +54,26 @@ class _RegisterState extends State<Register> {
     }
 
     final response = await guestPost('/services/mobile/api/register', sendData);
-    if (response['success']) {
-      Get.toNamed('/check-code', arguments: sendData);
+    if (response != null) {
+      if (response['success']) {
+        Get.toNamed('/check-code', arguments: sendData);
+      }
     }
+  }
+
+  getCarTypes() async {
+    final response = await get('/services/mobile/api/car-type-helper');
+    print(response);
+    setState(() {
+      sendData['carTypeId'] = response[0]['id'].toString();
+      carTypes = response;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCarTypes();
   }
 
   @override
@@ -286,6 +313,7 @@ class _RegisterState extends State<Register> {
                   height: 60,
                   margin: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
+                    controller: data['carNumberController'],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'required_field'.tr;
@@ -293,7 +321,13 @@ class _RegisterState extends State<Register> {
                       return null;
                     },
                     onChanged: (value) {
-                      sendData['carNumber'] = value;
+                      setState(() {
+                        data['carNumberController'].text = value.toUpperCase();
+                        data['carNumberController'].selection = TextSelection.fromPosition(
+                          TextPosition(offset: data['carNumberController'].text.length),
+                        );
+                        sendData['carNumber'] = value.toUpperCase();
+                      });
                     },
                     decoration: InputDecoration(
                       enabledBorder: inputBorder,
@@ -319,51 +353,60 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  height: 60,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      sendData['carTypeId'] = value;
-                    },
-                    decoration: InputDecoration(
-                      enabledBorder: inputBorder,
-                      focusedBorder: inputBorder,
-                      focusedErrorBorder: inputBorderError,
-                      errorBorder: inputBorderError,
-                      filled: true,
-                      fillColor: white,
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: 'Mashina turini tanlang',
-                      hintStyle: TextStyle(color: grey),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color(0xFFECF1F6),
+                      width: 1,
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButton(
+                        value: sendData['carTypeId'],
+                        isExpanded: true,
+                        hint: Text('${carTypes[0]['name']}'),
+                        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                        iconSize: 24,
+                        iconEnabledColor: black,
+                        elevation: 16,
+                        style: const TextStyle(color: Color(0xFF313131)),
+                        underline: Container(),
+                        onChanged: (newValue) {
+                          changeCarType(newValue);
+                        },
+                        items: carTypes.map((item) {
+                          return DropdownMenuItem<String>(
+                            value: '${item['id']}',
+                            child: Text(item['name']),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 80,
                 )
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.only(left: 32),
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        width: MediaQuery.of(context).size.width,
-        child: GestureDetector(
-          onTap: () {
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          if (_formKey.currentState!.validate()) {
             registration();
-          },
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(left: 32),
+          decoration: BoxDecoration(
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          width: MediaQuery.of(context).size.width,
           child: Text(
             'Tizimga kirish',
             style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),

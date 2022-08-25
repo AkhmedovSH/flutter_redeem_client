@@ -7,6 +7,10 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../location_notification_service.dart';
 
 import '../../helpers/helper.dart';
 
@@ -17,9 +21,11 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   var maskFormatter = MaskTextInputFormatter(mask: '## ### ## ##', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+  AnimationController? animationController;
+
   dynamic sendData = {
     'username': '',
     'password': '',
@@ -31,8 +37,12 @@ class _LoginState extends State<Login> {
     'isRemember': false,
   };
   bool showPassword = true;
+  bool loading = false;
 
   login() async {
+    setState(() {
+      loading = true;
+    });
     final prefs = await SharedPreferences.getInstance();
     if (maskFormatter.getUnmaskedText().isNotEmpty) {
       setState(() {
@@ -51,11 +61,31 @@ class _LoginState extends State<Login> {
         }
       }
       if (checkAccess) {
+        LocalNotificationService.initialize(context);
+        FirebaseMessaging.instance.getInitialMessage().then((message) {
+          if (message != null) {
+            Get.offAllNamed('/notifications');
+          }
+        });
+        FirebaseMessaging.onMessage.listen((message) {
+          if (message.notification != null) {
+            //Get.toNamed('/dashboard');
+          }
+          LocalNotificationService.display(message);
+        });
+        FirebaseMessaging.onMessageOpenedApp.listen((message) {
+          Get.offAllNamed('/notifications');
+        });
+        var firebaseToken = await FirebaseMessaging.instance.getToken();
+        // await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
         Get.offAllNamed('/');
       } else {
         // у вас нету доступа
       }
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   checkIsRemember() async {
@@ -78,263 +108,290 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     checkIsRemember();
+    setState(() {
+      animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+    });
+  }
+
+  @override
+  dispose() {
+    animationController!.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        title: Text(
-          'Tizimga kirish',
-          style: TextStyle(
-            color: black,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark,
+            ),
+            title: Text(
+              'Tizimga kirish',
+              style: TextStyle(
+                color: black,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            centerTitle: true,
           ),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.only(right: 24, left: 24, top: 40),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Salom, Xush kelibsiz! 👋',
-                    style: TextStyle(
-                      color: black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
+          body: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.only(right: 24, left: 24, top: 40),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Salom, Xush kelibsiz! 👋',
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 50),
-                  child: Text(
-                    'Quyidagi formalarni to’ldirib Tizimga kiring',
-                    style: TextStyle(
-                      color: grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 50),
+                      child: Text(
+                        'Quyidagi formalarni to’ldirib Tizimga kiring',
+                        style: TextStyle(
+                          color: grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Telefon',
-                    style: TextStyle(
-                      color: black,
-                      fontWeight: FontWeight.w600,
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Telefon',
+                        style: TextStyle(
+                          color: black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: TextFormField(
-                    inputFormatters: [maskFormatter],
-                    controller: data['username'],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      enabledBorder: inputBorder,
-                      focusedBorder: inputBorder,
-                      focusedErrorBorder: inputBorderError,
-                      errorBorder: inputBorderError,
-                      filled: true,
-                      fillColor: white,
-                      prefixIcon: Container(
-                        margin: const EdgeInsets.only(left: 16, right: 8, top: 16, bottom: 16),
-                        padding: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              color: black,
-                              width: 1,
+                    Container(
+                      height: 60,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: TextFormField(
+                        inputFormatters: [maskFormatter],
+                        controller: data['username'],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required_field'.tr;
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          enabledBorder: inputBorder,
+                          focusedBorder: inputBorder,
+                          focusedErrorBorder: inputBorderError,
+                          errorBorder: inputBorderError,
+                          filled: true,
+                          fillColor: white,
+                          prefixIcon: Container(
+                            margin: const EdgeInsets.only(left: 16, right: 8, top: 16, bottom: 16),
+                            padding: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide(
+                                  color: black,
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              '+998',
+                              style: TextStyle(color: black, fontWeight: FontWeight.w500),
                             ),
                           ),
-                        ),
-                        child: Text(
-                          '+998',
-                          style: TextStyle(color: black, fontWeight: FontWeight.w500),
+                          contentPadding: const EdgeInsets.only(
+                            top: 16,
+                            bottom: 16,
+                          ),
+                          hintText: 'Telefon raqamingizni kiriting',
+                          hintStyle: TextStyle(color: grey),
                         ),
                       ),
-                      contentPadding: const EdgeInsets.only(
-                        top: 16,
-                        bottom: 16,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Parol',
+                        style: TextStyle(
+                          color: black,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      hintText: 'Telefon raqamingizni kiriting',
-                      hintStyle: TextStyle(color: grey),
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Parol',
-                    style: TextStyle(
-                      color: black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: TextFormField(
-                    obscureText: showPassword,
-                    controller: data['password'],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'required_field'.tr;
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      sendData['password'] = value;
-                    },
-                    decoration: InputDecoration(
-                      enabledBorder: inputBorder,
-                      focusedBorder: inputBorder,
-                      focusedErrorBorder: inputBorderError,
-                      errorBorder: inputBorderError,
-                      filled: true,
-                      fillColor: white,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            showPassword = !showPassword;
-                          });
+                    Container(
+                      height: 60,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: TextFormField(
+                        obscureText: showPassword,
+                        controller: data['password'],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required_field'.tr;
+                          }
+                          return null;
                         },
-                        icon: showPassword
-                            ? Icon(
-                                Icons.visibility_off,
-                                color: black,
-                              )
-                            : Icon(
-                                Icons.visibility,
-                                color: black,
-                              ),
+                        onChanged: (value) {
+                          sendData['password'] = value;
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: inputBorder,
+                          focusedBorder: inputBorder,
+                          focusedErrorBorder: inputBorderError,
+                          errorBorder: inputBorderError,
+                          filled: true,
+                          fillColor: white,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                showPassword = !showPassword;
+                              });
+                            },
+                            icon: showPassword
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: black,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: black,
+                                  ),
+                          ),
+                          contentPadding: const EdgeInsets.all(16),
+                          hintText: 'Parolingizni kiriting',
+                          hintStyle: TextStyle(color: grey),
+                        ),
                       ),
-                      contentPadding: const EdgeInsets.all(16),
-                      hintText: 'Parolingizni kiriting',
-                      hintStyle: TextStyle(color: grey),
                     ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sendData['isRemember'] = !sendData['isRemember'];
-                            });
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 20,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: black, width: 2),
-                              borderRadius: BorderRadius.circular(5),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  sendData['isRemember'] = !sendData['isRemember'];
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: black, width: 2),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: sendData['isRemember']
+                                    ? Icon(
+                                        Icons.check,
+                                        color: black,
+                                        size: 16,
+                                      )
+                                    : Container(),
+                              ),
                             ),
-                            child: sendData['isRemember']
-                                ? Icon(
-                                    Icons.check,
-                                    color: black,
-                                    size: 16,
-                                  )
-                                : Container(),
-                          ),
+                            const Text(
+                              'Meni eslab qol',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ],
                         ),
-                        const Text(
-                          'Meni eslab qol',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: linkColor,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            'Parolni unutdingizmi?',
+                            style: TextStyle(
+                              color: linkColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: linkColor,
-                            width: 1,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/register');
+                      },
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 80),
+                          child: Text(
+                            'Ro\'yxatdan o\'tish',
+                            style: TextStyle(
+                              color: linkColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                      ),
-                      child: Text(
-                        'Parolni unutdingizmi?',
-                        style: TextStyle(
-                          color: linkColor,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed('/register');
-                  },
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 80),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          color: linkColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            ),
+          ),
+          floatingActionButton: GestureDetector(
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                login();
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 32),
+              decoration: BoxDecoration(
+                gradient: gradient,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                'Tizimga kirish',
+                style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.only(left: 32),
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        width: MediaQuery.of(context).size.width,
-        child: GestureDetector(
-          onTap: () {
-            login();
-          },
-          child: Text(
-            'Tizimga kirish',
-            style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+        loading
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.4),
+                child: SpinKitThreeBounce(
+                  color: green,
+                  size: 35.0,
+                  controller: animationController,
+                ),
+              )
+            : Container()
+      ],
     );
   }
 }

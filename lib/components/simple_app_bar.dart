@@ -29,11 +29,12 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         Image.asset(
           'images/home_bg.png',
           width: MediaQuery.of(context).size.width,
+          height: 200,
           fit: BoxFit.fill,
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 300,
+          height: 200,
           decoration: BoxDecoration(
             gradient: gradient,
           ),

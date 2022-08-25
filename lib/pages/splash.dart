@@ -1,3 +1,4 @@
+import 'package:control_car_client/helpers/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -67,7 +68,7 @@ class _SplashState extends State<Splash> {
     // bool lightMode =
     //     MediaQuery.of(context).platformBrightness == Brightness.light;
     return Container(
-      color: const Color(0xFF22AE54),
+      color: green,
       // decoration: BoxDecoration(
       // gradient: gradient,
       // ),
@@ -127,9 +128,9 @@ class _SplashState extends State<Splash> {
                     ),
                     Text(
                       isRequired
-                          ? 'you_need_to_install_the_latest_version_to_continue_using_the_app'.tr + '"moneyBek".'
+                          ? 'you_need_to_install_the_latest_version_to_continue_using_the_app'.tr + '"redeem".'
                           : 'we_recommend_installing_the_latest_version_of_the_application'.tr +
-                              '"moneyBek".' +
+                              '"redeem".' +
                               'while_downloading_updates_you_can_still_use_it'.tr +
                               '.',
                       style: const TextStyle(color: Colors.black, height: 1.2),

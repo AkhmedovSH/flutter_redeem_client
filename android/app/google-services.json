@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "316331073755",
+    "project_id": "redeem-bebfb",
+    "storage_bucket": "redeem-bebfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316331073755:android:07772903e1e8a5dce8acfe",
+        "android_client_info": {
+          "package_name": "uz.redeem.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316331073755-1u5l2do37m1es5ma0tl892iohs4ko7ck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.redeem.client",
+            "certificate_hash": "93933f1410a1f5013cf5728362cd22c94466f9d8"
+          }
+        },
+        {
+          "client_id": "316331073755-5rhfo2fge6m7n3c10g3ef30uiuu8d69c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm9aHGEs5K3nzEfFwEHBTZv47OZO_a7wo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316331073755-5rhfo2fge6m7n3c10g3ef30uiuu8d69c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

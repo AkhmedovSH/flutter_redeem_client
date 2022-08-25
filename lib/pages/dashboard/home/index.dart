@@ -1,3 +1,4 @@
+import 'package:control_car_client/helpers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,37 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
+  dynamic poses = [];
+
+  inFavorite(status) async {
+    final response = await post('/services/mobile/api/pos-favorite', {
+      "posId": Get.arguments,
+      "status": status,
+    });
+    if (response != null) {
+      getPoses();
+    }
+  }
+
+  getPoses() async {
+    final response = await get('/services/mobile/api/pos-search?&pointX&pointY&distance', payload: {
+      'search': '',
+      'pointX': '',
+      'pointY': '',
+      'distance': '',
+    });
+
+    setState(() {
+      poses = response;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPoses();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -164,78 +196,109 @@ class _IndexState extends State<Index> {
                         ),
                         Column(
                           children: [
-                            for (var i = 0; i < 5; i++)
-                              Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                                margin: const EdgeInsets.only(bottom: 8),
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xFFCED4D8),
+                            for (var i = 0; i < poses.length; i++)
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed('/gas-detail', arguments: poses[i]['id']);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Color(0xFFCED4D8),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.only(right: 8),
-                                          child: Image.asset('images/index_1.png'),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context).size.width * 0.5,
-                                              margin: const EdgeInsets.only(bottom: 8),
-                                              child: const Text(
-                                                'Mustang gaz quyis...',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(right: 8),
+                                            child: poses[i]['logoUrl'] != null && poses[i]['logoUrl'] != ''
+                                                ? ClipRRect(
+                                                    borderRadius: BorderRadius.circular(50),
+                                                    child: Image.network(
+                                                      mainUrl + poses[i]['logoUrl'],
+                                                      fit: BoxFit.fill,
+                                                      width: 58,
+                                                      height: 58,
+                                                    ),
+                                                  )
+                                                : const SizedBox(
+                                                    width: 58,
+                                                    height: 58,
+                                                  ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context).size.width * 0.5,
+                                                margin: const EdgeInsets.only(bottom: 8),
+                                                child: Text(
+                                                  poses[i]['name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            ),
-                                            const Text(
-                                              'Ceshback: 6%',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
+                                              const Text(
+                                                'Cashback: 6%',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        // SvgPicture.asset('images/icons/star.svg'),
-                                        Container(
-                                          margin: const EdgeInsets.only(bottom: 10),
-                                          child: SvgPicture.asset('images/icons/star_active.svg'),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(right: 5),
-                                              child: SvgPicture.asset('images/icons/waves.svg'),
-                                            ),
-                                            Text(
-                                              '2km',
-                                              style: TextStyle(
-                                                color: grey,
-                                                fontWeight: FontWeight.w500,
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          // poses[i]['favorite']
+                                          //     ? GestureDetector(
+                                          //         onTap: () {
+                                          //           inFavorite(false);
+                                          //         },
+                                          //         child: SvgPicture.asset('images/icons/star_active.svg'),
+                                          //       )
+                                          //     : GestureDetector(
+                                          //         onTap: () {
+                                          //           inFavorite(true);
+                                          //         },
+                                          //         child: SvgPicture.asset('images/icons/star.svg'),
+                                          //       ),
+                                          // SvgPicture.asset('images/icons/star.svg'),
+                                          // Container(
+                                          //   margin: const EdgeInsets.only(bottom: 10),
+                                          //   child: SvgPicture.asset('images/icons/star_active.svg'),
+                                          // ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                margin: const EdgeInsets.only(right: 5),
+                                                child: SvgPicture.asset('images/icons/waves.svg'),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                              Text(
+                                                '${poses[i]['distance']} km',
+                                                style: TextStyle(
+                                                  color: grey,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                           ],
@@ -263,16 +326,16 @@ class _IndexState extends State<Index> {
         ),
         Positioned(
           top: MediaQuery.of(context).size.height * 0.09,
-          child: Container(
-            height: 40,
-            width: 40,
-            margin: const EdgeInsets.only(left: 16),
-            padding: const EdgeInsets.all(8),
-            decoration: iconBorder,
-            child: GestureDetector(
-              onTap: () {
-                widget.openDrawer();
-              },
+          child: GestureDetector(
+            onTap: () {
+              widget.openDrawer();
+            },
+            child: Container(
+              height: 40,
+              width: 40,
+              margin: const EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.all(8),
+              decoration: iconBorder,
               child: SvgPicture.asset(
                 'images/icons/burger_group.svg',
               ),

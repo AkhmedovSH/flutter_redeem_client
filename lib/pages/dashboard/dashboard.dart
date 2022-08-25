@@ -1,3 +1,4 @@
+import 'package:control_car_client/helpers/api.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:ui' as ui;
@@ -24,7 +25,17 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
   int currentIndex = 0;
+  dynamic uuid = '';
   bool showQr = false;
+
+  setShowQr() async {
+    final response = await get('/services/mobile/api/get-uuid');
+    print(response);
+    setState(() {
+      uuid = response['reason'];
+      showQr = !showQr;
+    });
+  }
 
   changeIndex(int index) {
     setState(() {
@@ -108,10 +119,14 @@ class _DashboardState extends State<Dashboard> {
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: white,
+
+
+
+                                
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: QrImage(
-                                data: 'uuid.toString()',
+                                data: uuid.toString(),
                                 version: QrVersions.auto,
                               ),
                             ),
@@ -148,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
                     label: '',
                   ),
                   BottomNavigationBarItem(
-                    icon: buildBottomBarItem('images/icons/category.svg', 'Sevimlilar', 3),
+                    icon: buildBottomBarItem('images/icons/category.svg', 'Xizmatlar', 3),
                     label: '',
                   ),
                 ],
@@ -161,9 +176,7 @@ class _DashboardState extends State<Dashboard> {
               ? Container()
               : FloatingActionButton(
                   onPressed: () {
-                    setState(() {
-                      showQr = !showQr;
-                    });
+                    setShowQr();
                   },
                   // elevation: 1,
                   backgroundColor: Colors.transparent,
