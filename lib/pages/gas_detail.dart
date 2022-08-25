@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/helper.dart';
 import '../../../helpers/api.dart';
@@ -123,7 +124,7 @@ class _GasDetailState extends State<GasDetail> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            pos['favorite']
+                            pos['favorite'] != null && pos['favorite']
                                 ? GestureDetector(
                                     onTap: () {
                                       inFavorite(false);
@@ -200,33 +201,42 @@ class _GasDetailState extends State<GasDetail> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 25),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          child: Icon(
-                            Icons.phone_outlined,
-                            color: linkColor,
-                            size: 32,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: linkColor,
-                                width: 1,
-                              ),
+                  GestureDetector(
+                    onTap: () async {
+                      final Uri launchUri = Uri(
+                        scheme: 'tel',
+                        path: '+998555000089',
+                      );
+                      await launchUrl(launchUri);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 25),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            child: Icon(
+                              Icons.phone_outlined,
+                              color: linkColor,
+                              size: 32,
                             ),
                           ),
-                          child: Text(
-                            pos['phone'] != null ? formatPhone(pos['phone']) : '',
-                            style: TextStyle(color: linkColor, fontSize: 18, fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      ],
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: linkColor,
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              pos['phone'] != null ? formatPhone(pos['phone']) : '',
+                              style: TextStyle(color: linkColor, fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

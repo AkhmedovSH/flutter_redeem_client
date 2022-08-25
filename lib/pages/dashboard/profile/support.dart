@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:animate_icons/animate_icons.dart';
 
 import 'package:control_car_client/helpers/helper.dart';
 
@@ -13,6 +14,37 @@ class Support extends StatefulWidget {
 }
 
 class _SupportState extends State<Support> {
+  dynamic support = [
+    {
+      'title': 'Lorem ipsum dolor sit amet',
+      'show': false,
+      'controller': AnimateIconController(),
+      'childText':
+          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+    },
+    {
+      'title': 'Lorem ipsum dolor sit amet',
+      'show': false,
+      'controller': AnimateIconController(),
+      'childText':
+          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+    },
+    {
+      'title': 'Lorem ipsum dolor sit amet',
+      'show': false,
+      'controller': AnimateIconController(),
+      'childText':
+          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+    },
+    {
+      'title': 'Lorem ipsum dolor sit amet',
+      'show': false,
+      'controller': AnimateIconController(),
+      'childText':
+          'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -24,7 +56,7 @@ class _SupportState extends State<Support> {
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
             title: Text(
-              'Mening prifilim',
+              'Yordam',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -40,32 +72,111 @@ class _SupportState extends State<Support> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Image.network(''),
-                        )
-                      ],
+                    child: Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      margin: const EdgeInsets.only(bottom: 24),
+                      child: TextFormField(
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Color(0xFF9CA4AB),
+                          ),
+                          hintText: 'Search...',
+                          hintStyle: const TextStyle(
+                            color: Color(0xFF9CA4AB),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE3E9ED),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(35),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE3E9ED),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(35),
+                          ),
+                        ),
+                      ),
                     ),
-                  )
+                  ),
+                  for (var i = 0; i < support.length; i++)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (support[i]['show']) {
+                                    setState(() {
+                                      support[i]['show'] = false;
+                                    });
+                                    support[i]['controller'].animateToStart();
+                                  } else {
+                                    setState(() {
+                                      support[i]['show'] = true;
+                                    });
+                                    support[i]['controller'].animateToEnd();
+                                  }
+                                },
+                                child: Text(
+                                  support[i]['title'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              AnimateIcons(
+                                startIcon: Icons.keyboard_arrow_down_rounded,
+                                endIcon: Icons.expand_less_rounded,
+                                size: 24,
+                                controller: support[i]['controller'],
+                                startTooltip: 'Icons.add_circle',
+                                endTooltip: 'Icons.add_circle_outline',
+                                onStartIconPress: () {
+                                  setState(() {
+                                    support[i]['show'] = true;
+                                  });
+                                  return true;
+                                },
+                                onEndIconPress: () {
+                                  setState(() {
+                                    support[i]['show'] = false;
+                                  });
+                                  return true;
+                                },
+                                duration: const Duration(milliseconds: 200),
+                                startIconColor: black,
+                                endIconColor: black,
+                                clockwise: false,
+                              ),
+                            ],
+                          ),
+                          AnimatedContainer(
+                            height: support[i]['show'] ? 90 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Text(
+                              support[i]['childText'],
+                              style: const TextStyle(
+                                color: Color(0xFF9CA4AB),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                 ],
-              ),
-            ),
-          ),
-          floatingActionButton: Container(
-            margin: const EdgeInsets.only(left: 32),
-            decoration: BoxDecoration(
-              gradient: gradient,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            width: MediaQuery.of(context).size.width,
-            child: GestureDetector(
-              onTap: () {},
-              child: Text(
-                'Saqlash',
-                style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
-                textAlign: TextAlign.center,
               ),
             ),
           ),

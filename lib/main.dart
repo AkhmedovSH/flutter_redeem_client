@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // translations: Messages(),
-      // locale: const Locale('uz', 'UZ'),
+      locale: const Locale('uz', 'UZ'),
       // fallbackLocale: const Locale('uz', 'UZ'),
       // supportedLocales: const [
       //   Locale('ru', 'RU'),

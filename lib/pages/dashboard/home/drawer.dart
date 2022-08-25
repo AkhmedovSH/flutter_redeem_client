@@ -31,9 +31,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
   getUser() async {
     final response = await get('/services/mobile/api/account');
-    setState(() {
-      user = response;
-    });
+    if (mounted) {
+      setState(() {
+        user = response;
+      });
+    }
   }
 
   @override

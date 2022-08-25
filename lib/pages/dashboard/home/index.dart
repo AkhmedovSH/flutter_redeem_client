@@ -1,11 +1,13 @@
-import 'package:control_car_client/helpers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../helpers/helper.dart';
+import 'package:control_car_client/helpers/api.dart';
 
 open() {}
 
@@ -21,10 +23,16 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
   dynamic poses = [];
+  dynamic filter = {
+    'search': '',
+    'pointX': '',
+    'pointY': '',
+    'distance': '',
+  };
 
-  inFavorite(status) async {
+  inFavorite(id, status) async {
     final response = await post('/services/mobile/api/pos-favorite', {
-      "posId": Get.arguments,
+      "posId": id,
       "status": status,
     });
     if (response != null) {
@@ -32,13 +40,27 @@ class _IndexState extends State<Index> {
     }
   }
 
+  getPermission() async {
+    if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
+      print('has permission');
+    } else {
+      print('else');
+    }
+    LocationPermission permission;
+    permission = await Geolocator.requestPermission();
+    print(permission);
+    if (permission != LocationPermission.deniedForever && permission != LocationPermission.denied) {
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      setState(() {
+        filter['pointX'] = position.latitude.toString();
+        filter['pointY'] = position.longitude.toString();
+      });
+      getPoses();
+    }
+  }
+
   getPoses() async {
-    final response = await get('/services/mobile/api/pos-search?&pointX&pointY&distance', payload: {
-      'search': '',
-      'pointX': '',
-      'pointY': '',
-      'distance': '',
-    });
+    final response = await get('/services/mobile/api/pos-search?&pointX&pointY&distance', payload: filter);
 
     setState(() {
       poses = response;
@@ -49,6 +71,7 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     getPoses();
+    getPermission();
   }
 
   @override
@@ -262,24 +285,22 @@ class _IndexState extends State<Index> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
-                                          // poses[i]['favorite']
-                                          //     ? GestureDetector(
-                                          //         onTap: () {
-                                          //           inFavorite(false);
-                                          //         },
-                                          //         child: SvgPicture.asset('images/icons/star_active.svg'),
-                                          //       )
-                                          //     : GestureDetector(
-                                          //         onTap: () {
-                                          //           inFavorite(true);
-                                          //         },
-                                          //         child: SvgPicture.asset('images/icons/star.svg'),
-                                          //       ),
-                                          // SvgPicture.asset('images/icons/star.svg'),
-                                          // Container(
-                                          //   margin: const EdgeInsets.only(bottom: 10),
-                                          //   child: SvgPicture.asset('images/icons/star_active.svg'),
-                                          // ),
+                                          Container(
+                                            margin: const EdgeInsets.only(bottom: 15),
+                                            child: poses[i]['favorite']
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      inFavorite(poses[i]['id'], false);
+                                                    },
+                                                    child: SvgPicture.asset('images/icons/star_active.svg'),
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      inFavorite(poses[i]['id'], true);
+                                                    },
+                                                    child: SvgPicture.asset('images/icons/star.svg'),
+                                                  ),
+                                          ),
                                           Row(
                                             children: [
                                               Container(
@@ -353,7 +374,7 @@ class _IndexState extends State<Index> {
             decoration: iconBorder,
             child: GestureDetector(
               onTap: () {
-                Get.toNamed('/notifications');
+                // Get.toNamed('/notifications');
               },
               child: SvgPicture.asset(
                 'images/icons/notification.svg',

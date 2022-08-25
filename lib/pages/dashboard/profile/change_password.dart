@@ -13,6 +13,14 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final _formKey = GlobalKey<FormState>();
+  dynamic sendData = {
+    'password': '',
+    'newPassword': '',
+  };
+  bool showPassword = true;
+  bool showNewPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -24,7 +32,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             leading: Container(),
             title: Text(
-              'Mening prifilim',
+              'Xavfsizlik',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -35,20 +43,148 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Image.network(''),
-                        )
-                      ],
+              margin: const EdgeInsets.only(right: 24, left: 24, top: 40),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          'Yangi parollingizni yarating',
+                          style: TextStyle(
+                            color: black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
-                  )
-                ],
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 35),
+                        child: Text(
+                          'Yangi parolingizni kiriting',
+                          style: TextStyle(
+                            color: grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Yangi parol',
+                        style: TextStyle(
+                          color: black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 60,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: TextFormField(
+                        obscureText: showPassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required_field'.tr;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          sendData['password'] = value;
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: inputBorder,
+                          focusedBorder: inputBorder,
+                          focusedErrorBorder: inputBorderError,
+                          errorBorder: inputBorderError,
+                          filled: true,
+                          fillColor: white,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                showPassword = !showPassword;
+                              });
+                            },
+                            icon: showPassword
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: black,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: black,
+                                  ),
+                          ),
+                          contentPadding: const EdgeInsets.all(16),
+                          hintText: 'Enter new password',
+                          hintStyle: TextStyle(color: grey),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Parolni tasdiqlash',
+                        style: TextStyle(
+                          color: black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 60,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: TextFormField(
+                        obscureText: showNewPassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'required_field'.tr;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          sendData['password'] = value;
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: inputBorder,
+                          focusedBorder: inputBorder,
+                          focusedErrorBorder: inputBorderError,
+                          errorBorder: inputBorderError,
+                          filled: true,
+                          fillColor: white,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                showNewPassword = !showNewPassword;
+                              });
+                            },
+                            icon: showNewPassword
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: black,
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: black,
+                                  ),
+                          ),
+                          contentPadding: const EdgeInsets.all(16),
+                          hintText: 'Confirm your password',
+                          hintStyle: TextStyle(color: grey),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -63,7 +199,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: GestureDetector(
               onTap: () {},
               child: Text(
-                'Saqlash',
+                'Davom etish',
                 style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),

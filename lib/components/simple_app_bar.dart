@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 
 import '../../helpers/helper.dart';
 
+const defaultMargin = EdgeInsets.only(top: 40);
+const defaultPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 16);
+
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final AppBar? appBar;
@@ -12,6 +15,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? leading;
   final Color? bgcolor;
   final Color? appBarColor;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
   const SimpleAppBar({
     Key? key,
     this.title,
@@ -20,6 +25,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.body,
     this.bgcolor = Colors.white,
     this.appBarColor = Colors.white,
+    this.margin = defaultMargin,
+    this.padding = defaultPadding,
   }) : super(key: key);
 
   @override
@@ -48,8 +55,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light),
           ),
           body: Container(
-            margin: const EdgeInsets.only(top: 40),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            margin: defaultMargin,
+            padding: padding,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: bgcolor,
@@ -68,13 +75,14 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 40,
             alignment: Alignment.center,
             child: Text(
-              title!,
+              title ?? '',
               style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
             ),
           ),
         ),
         leading!
             ? Positioned(
+                right: 0,
                 top: MediaQuery.of(context).size.height * 0.09,
                 width: MediaQuery.of(context).size.width,
                 child: Row(

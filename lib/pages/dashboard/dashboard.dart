@@ -119,10 +119,6 @@ class _DashboardState extends State<Dashboard> {
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: white,
-
-
-
-                                
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: QrImage(

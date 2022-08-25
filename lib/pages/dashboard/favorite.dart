@@ -44,6 +44,19 @@ class _FavoriteState extends State<Favorite> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              poses.length == 0
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 50),
+                      child: Text(
+                        'Sevimli joylar yo\'q',
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  : Container(),
               for (var i = 0; i < poses.length; i++)
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
