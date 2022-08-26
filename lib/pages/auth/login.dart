@@ -313,20 +313,25 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: linkColor,
-                                width: 1,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed('/change-password');
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: linkColor,
+                                  width: 1,
+                                ),
                               ),
                             ),
-                          ),
-                          child: Text(
-                            'Parolni unutdingizmi?',
-                            style: TextStyle(
-                              color: linkColor,
-                              fontWeight: FontWeight.w500,
+                            child: Text(
+                              'Parolni unutdingizmi?',
+                              style: TextStyle(
+                                color: linkColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),

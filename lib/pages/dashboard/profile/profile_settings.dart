@@ -73,11 +73,13 @@ class _ProfileSettingState extends State<ProfileSetting> {
       selectedButton = response['gender'].toString();
       sendData['imageUrl'] = response['imageUrl'] ?? '';
       sendData['phone'] = response['phone'];
-      sendData['name'] = response['name'];
-      sendData['carNumber'] = response['carNumber'];
+      sendData['name'] = response['name'].toString() != 'null' ? response['name'].toString() : '';
+      sendData['carNumber'] = response['carNumber'].toString() != 'null' ? response['carNumber'].toString() : '';
       sendData['carTypeId'] = response['carTypeId'];
       sendData['gender'] = response['gender'];
-      sendData['birthDate'] = response['birthDate'];
+      sendData['birthDate'] = response['birthDate'].toString() != 'null' ? response['birthDate'].toString() : '';
+      // sendData['regionId'] = response['regionId'].toString();
+      // sendData['cityId'] = response['regionId'].toString();
 
       // sendData.removeWhere((key, value) => key == "regionId");
       // sendData.removeWhere((key, value) => key == "cityId");
@@ -106,7 +108,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
 
   getRegions() async {
     final response = await get('/services/mobile/api/region-helper');
-    getCities(response[0]['id']);
+    await getCities(response[0]['id']);
     setState(() {
       regions = response;
       sendData['regionId'] = response[0]['id'].toString();
@@ -119,11 +121,12 @@ class _ProfileSettingState extends State<ProfileSetting> {
       cities = response;
       sendData['cityId'] = response[0]['id'].toString();
     });
+    return;
   }
 
   getData() async {
+    await getRegions();
     getUser();
-    getRegions();
   }
 
   @override
@@ -428,7 +431,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         child: ButtonTheme(
                           alignedDropdown: true,
                           child: DropdownButton(
-                            value: sendData['regionId'].isNotEmpty ? sendData['regionId'] : null,
+                            value: sendData['regionId'],
                             isExpanded: true,
                             hint: Text('${regions[0]['name']}'),
                             icon: const Icon(
@@ -468,7 +471,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         child: ButtonTheme(
                           alignedDropdown: true,
                           child: DropdownButton(
-                            value: sendData['cityId'].isNotEmpty ? sendData['cityId'] : null,
+                            value: sendData['cityId'],
                             isExpanded: true,
                             hint: Text('${cities[0]['name']}'),
                             icon: const Icon(
@@ -564,7 +567,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Mening prifilim',
+                  'Mening profilim',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

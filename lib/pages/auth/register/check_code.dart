@@ -140,7 +140,7 @@ class _CheckCodeState extends State<CheckCode> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 50),
                   child: Text(
-                    'Biz 6 raqamli sms kodni quyidagi telefon raqamiga jo’natdik +998 99 765 76 56',
+                    'Biz 6 raqamli sms kodni quyidagi telefon raqamiga jo’natdik ${formatPhone(sendData['phone'])}',
                     style: TextStyle(
                       color: grey,
                       fontSize: 16,

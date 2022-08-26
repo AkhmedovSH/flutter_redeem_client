@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../helpers/helper.dart';
 
@@ -48,7 +49,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     return GestureDetector(
       onTap: () async {
         if (text == 'Ulashish') {
-          Get.toNamed('/change-password');
+          Share.share('https://play.google.com/store/apps/details?id=uz.redeem.client', subject: 'Yangi sodiqlik ilovasi');
         }
         if (text == 'Yordam') {
           Get.toNamed('/support');

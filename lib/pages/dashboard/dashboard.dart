@@ -26,14 +26,16 @@ class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
   int currentIndex = 0;
   dynamic uuid = '';
+  dynamic phone = '';
   bool showQr = false;
 
   setShowQr() async {
     final response = await get('/services/mobile/api/get-uuid');
-    print(response);
+    final user = await get('/services/mobile/api/account');
     setState(() {
       uuid = response['reason'];
       showQr = !showQr;
+      phone = user['phone'] != null ? formatPhone(user['phone']) : '';
     });
   }
 
@@ -116,15 +118,30 @@ class _DashboardState extends State<Dashboard> {
                           child: Center(
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.7,
-                              height: 290,
+                              height: 310,
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: white,
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: QrImage(
-                                data: uuid.toString(),
-                                version: QrVersions.auto,
+                              child: Column(
+                                children: [
+                                  QrImage(
+                                    data: uuid.toString(),
+                                    version: QrVersions.auto,
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      phone,
+                                      style: TextStyle(
+                                        color: black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),

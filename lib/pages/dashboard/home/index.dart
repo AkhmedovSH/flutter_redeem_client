@@ -29,6 +29,7 @@ class _IndexState extends State<Index> {
     'pointY': '',
     'distance': '',
   };
+  dynamic user = {};
 
   inFavorite(id, status) async {
     final response = await post('/services/mobile/api/pos-favorite', {
@@ -38,10 +39,6 @@ class _IndexState extends State<Index> {
     if (response != null) {
       getPoses();
     }
-  }
-
-  search() async {
-    final response = await get('url');
   }
 
   getPermission() async {
@@ -73,11 +70,21 @@ class _IndexState extends State<Index> {
     });
   }
 
+  getUser() async {
+    final response = await get('/services/mobile/api/account');
+    if (mounted) {
+      setState(() {
+        user = response;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getPoses();
     getPermission();
+    getUser();
   }
 
   @override
@@ -111,7 +118,7 @@ class _IndexState extends State<Index> {
                   margin: const EdgeInsets.only(bottom: 20, top: 40),
                   child: Center(
                     child: Text(
-                      '80435',
+                      '${user['totalRewards'] != null ? user['totalRewards'].round() : ''}',
                       style: TextStyle(
                         color: lightGrey,
                         fontSize: 24,
@@ -136,7 +143,7 @@ class _IndexState extends State<Index> {
                             ),
                           ),
                           Text(
-                            '68',
+                            '${user['monthlyRewards'] != null ? user['monthlyRewards'].round() : ''}',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
@@ -266,14 +273,23 @@ class _IndexState extends State<Index> {
                                                     borderRadius: BorderRadius.circular(50),
                                                     child: Image.network(
                                                       mainUrl + poses[i]['logoUrl'],
-                                                      fit: BoxFit.fill,
+                                                      fit: BoxFit.contain,
                                                       width: 58,
                                                       height: 58,
                                                     ),
                                                   )
-                                                : const SizedBox(
+                                                : SizedBox(
                                                     width: 58,
                                                     height: 58,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(50),
+                                                      child: Image.asset(
+                                                        'images/logo.png',
+                                                        fit: BoxFit.contain,
+                                                        width: 58,
+                                                        height: 58,
+                                                      ),
+                                                    ),
                                                   ),
                                           ),
                                           Column(
@@ -320,7 +336,8 @@ class _IndexState extends State<Index> {
                                                             inFavorite(poses[i]['id'], true);
                                                           },
                                                           child: SvgPicture.asset('images/icons/star.svg'),
-                                                        ))
+                                                        ),
+                                                )
                                               : Container(
                                                   margin: const EdgeInsets.only(bottom: 15),
                                                 ),
