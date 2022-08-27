@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../location_notification_service.dart';
 
@@ -20,9 +21,11 @@ class CheckCode extends StatefulWidget {
   State<CheckCode> createState() => _CheckCodeState();
 }
 
-class _CheckCodeState extends State<CheckCode> {
+class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   var maskFormatter = MaskTextInputFormatter(mask: '# # # # # #', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+  AnimationController? animationController;
+
   dynamic sendData = {
     'phone': '',
     "name": "",
@@ -31,10 +34,12 @@ class _CheckCodeState extends State<CheckCode> {
     "password": "",
     "activationCode": '',
   };
+  bool loading = false;
 
   checkActivationCode() async {
     setState(() {
       sendData['activationCode'] = maskFormatter.getUnmaskedText();
+      loading = true;
     });
     final response = await guestPost('/services/mobile/api/activate', sendData);
     if (response == null || !response['success']) {
@@ -86,6 +91,9 @@ class _CheckCodeState extends State<CheckCode> {
     if (response['success']) {
       Get.offAllNamed('/confirm-finger-print');
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -94,123 +102,62 @@ class _CheckCodeState extends State<CheckCode> {
     setState(() {
       sendData = Get.arguments;
       sendData['activationCode'] = '';
+      animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
     });
   }
 
   @override
+  dispose() {
+    animationController!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
-          statusBarColor: white,
-        ),
-        backgroundColor: white,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: black,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark,
+              statusBarColor: white,
+            ),
+            backgroundColor: white,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: black,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'SMS kodni kiriting',
-                    style: TextStyle(
-                      color: black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 50),
-                  child: Text(
-                    'Biz 6 raqamli sms kodni quyidagi telefon raqamiga jo’natdik ${formatPhone(sendData['phone'])}',
-                    style: TextStyle(
-                      color: grey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: ThemeData().colorScheme.copyWith(
-                                  primary: purple,
-                                ),
-                          ),
-                          child: TextFormField(
-                            inputFormatters: [maskFormatter],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Majburiy maydon';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                if (value.length < 7) {
-                                  sendData['activationCode'] = value;
-                                }
-                              });
-                            },
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              enabledBorder: inputBorder,
-                              focusedBorder: inputBorder,
-                              focusedErrorBorder: inputBorderError,
-                              errorBorder: inputBorderError,
-                              filled: true,
-                              fillColor: white,
-                              contentPadding: const EdgeInsets.all(16),
-                              hintText: 'To’liq ismingizni yozing',
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 14,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            style: TextStyle(
-                              color: black,
-                              fontSize: 28,
-                              letterSpacing: 10,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          body: SafeArea(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 50, bottom: 16),
+                      margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'Iltimos 2 daqiqa kuting:  ',
+                        'SMS kodni kiriting',
+                        style: TextStyle(
+                          color: black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 50),
+                      child: Text(
+                        'Biz 6 raqamli sms kodni quyidagi telefon raqamiga jo’natdik ${formatPhone(sendData['phone'])}',
                         style: TextStyle(
                           color: grey,
                           fontSize: 16,
@@ -219,64 +166,148 @@ class _CheckCodeState extends State<CheckCode> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 50, bottom: 16),
-                      child: Text(
-                        '1:32',
-                        style: TextStyle(
-                          color: black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.center,
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 20),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ThemeData().colorScheme.copyWith(
+                                      primary: purple,
+                                    ),
+                              ),
+                              child: TextFormField(
+                                inputFormatters: [maskFormatter],
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Majburiy maydon';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value.length < 7) {
+                                      sendData['activationCode'] = value;
+                                    }
+                                  });
+                                },
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  enabledBorder: inputBorder,
+                                  focusedBorder: inputBorder,
+                                  focusedErrorBorder: inputBorderError,
+                                  errorBorder: inputBorderError,
+                                  filled: true,
+                                  fillColor: white,
+                                  contentPadding: const EdgeInsets.all(16),
+                                  hintText: 'To’liq ismingizni yozing',
+                                  hintStyle: TextStyle(
+                                    color: grey,
+                                    fontSize: 14,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                                style: TextStyle(
+                                  color: black,
+                                  fontSize: 28,
+                                  letterSpacing: 10,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     Container(
+                    //       margin: const EdgeInsets.only(top: 50, bottom: 16),
+                    //       child: Text(
+                    //         'Iltimos 2 daqiqa kuting:  ',
+                    //         style: TextStyle(
+                    //           color: grey,
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.w400,
+                    //         ),
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: const EdgeInsets.only(top: 50, bottom: 16),
+                    //       child: Text(
+                    //         '1:32',
+                    //         style: TextStyle(
+                    //           color: black,
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.w400,
+                    //         ),
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // Container(
+                    //   decoration: const BoxDecoration(
+                    //     border: Border(
+                    //       bottom: BorderSide(
+                    //         color: Color(0xFF2995A3),
+                    //         width: 1,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   child: Text(
+                    //     'Qayta yuborish',
+                    //     style: TextStyle(
+                    //       color: linkColor,
+                    //       fontWeight: FontWeight.w500,
+                    //       fontSize: 16,
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xFF2995A3),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Qayta yuborish',
-                    style: TextStyle(
-                      color: linkColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                )
-              ],
+              ),
+            ),
+          ),
+          floatingActionButton: GestureDetector(
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                checkActivationCode();
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 32),
+              decoration: BoxDecoration(
+                gradient: gradient,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                'Davom etish',
+                style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          if (_formKey.currentState!.validate()) {
-            checkActivationCode();
-          }
-        },
-        child: Container(
-          margin: const EdgeInsets.only(left: 32),
-          decoration: BoxDecoration(
-            gradient: gradient,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          width: MediaQuery.of(context).size.width,
-          child: Text(
-            'Davom etish',
-            style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+        loading
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.4),
+                child: SpinKitThreeBounce(
+                  color: green,
+                  size: 35.0,
+                  controller: animationController,
+                ),
+              )
+            : Container()
+      ],
     );
   }
 }

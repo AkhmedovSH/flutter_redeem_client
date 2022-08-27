@@ -11,6 +11,8 @@ import 'pages/splash.dart';
 import 'pages/auth/login.dart';
 import 'pages/auth/register/register.dart';
 import 'pages/auth/register/check_code.dart';
+import 'pages/auth/reset_password/reset_password_finish.dart';
+import 'pages/auth/reset_password/reset_password_init.dart';
 
 import 'pages/dashboard/dashboard.dart';
 import 'pages/dashboard/home/points.dart';
@@ -67,7 +69,7 @@ class MyApp extends StatelessWidget {
         )),
       ),
       initialRoute: '/splash',
-      getPages: [ 
+      getPages: [
         GetPage(name: '/splash', page: () => const Splash()),
 
         // Auth
@@ -84,7 +86,8 @@ class MyApp extends StatelessWidget {
 
         // Profile
         GetPage(name: '/profile-setting', page: () => const ProfileSetting()),
-        GetPage(name: '/change-password', page: () => const ChangePassword()),
+        GetPage(name: '/reset-password-init', page: () => const ResetPasswordInit()),
+        GetPage(name: '/reset-password-finish', page: () => const ResetPasswordFinish()),
         GetPage(name: '/support', page: () => const Support()),
       ],
     );

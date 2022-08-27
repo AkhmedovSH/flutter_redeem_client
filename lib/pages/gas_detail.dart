@@ -82,9 +82,18 @@ class _GasDetailState extends State<GasDetail> {
                                         height: 58,
                                       ),
                                     )
-                                  : const SizedBox(
+                                  : SizedBox(
                                       width: 58,
                                       height: 58,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.asset(
+                                          'images/logo.png',
+                                          fit: BoxFit.contain,
+                                          width: 58,
+                                          height: 58,
+                                        ),
+                                      ),
                                     ),
                             ),
                             Column(
@@ -102,9 +111,9 @@ class _GasDetailState extends State<GasDetail> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                const Text(
-                                  'Ceshback: 6%',
-                                  style: TextStyle(
+                                Text(
+                                  'Ceshback: ${pos['maxReward'] ?? ''} %',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),

@@ -92,14 +92,16 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') != null) {
       final user = jsonDecode(prefs.getString('user')!);
-      if (user['isRemember']) {
-        setState(() {
-          sendData['isRemember'] = user['isRemember'];
-          sendData['username'] = user['username'];
-          sendData['password'] = user['password'];
-          data['username'].text = maskFormatter.maskText(user['username'].substring(3, user['username'].length));
-          data['password'].text = user['password'];
-        });
+      if (user['isRemember'] != null) {
+        if (user['isRemember']) {
+          setState(() {
+            sendData['isRemember'] = user['isRemember'];
+            sendData['username'] = user['username'];
+            sendData['password'] = user['password'];
+            data['username'].text = maskFormatter.maskText(user['username'].substring(3, user['username'].length));
+            data['password'].text = user['password'];
+          });
+        }
       }
     }
   }
@@ -315,7 +317,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.toNamed('/change-password');
+                            Get.toNamed('/reset-password-init');
                           },
                           child: Container(
                             decoration: BoxDecoration(

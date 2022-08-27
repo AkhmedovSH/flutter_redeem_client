@@ -63,11 +63,12 @@ class _IndexState extends State<Index> {
   }
 
   getPoses() async {
-    print(filter['search']);
-    final response = await get('/services/mobile/api/pos-search?&pointX&pointY&distance', payload: filter);
-    setState(() {
-      poses = response;
-    });
+    final response = await get('/services/mobile/api/pos-search', payload: filter);
+    if (mounted) {
+      setState(() {
+        poses = response;
+      });
+    }
   }
 
   getUser() async {
@@ -115,7 +116,7 @@ class _IndexState extends State<Index> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(bottom: 20, top: 40),
+                  margin: const EdgeInsets.only(bottom: 20, top: 50),
                   child: Center(
                     child: Text(
                       '${user['totalRewards'] != null ? user['totalRewards'].round() : ''}',
@@ -307,9 +308,9 @@ class _IndexState extends State<Index> {
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              const Text(
-                                                'Cashback: 6%',
-                                                style: TextStyle(
+                                              Text(
+                                                'Cashback: ${poses[i]['maxReward']} %',
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -380,7 +381,7 @@ class _IndexState extends State<Index> {
             height: 40,
             alignment: Alignment.center,
             child: Text(
-              'Umumumiy ballar',
+              'Umumiy ballar',
               style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 18),
             ),
           ),

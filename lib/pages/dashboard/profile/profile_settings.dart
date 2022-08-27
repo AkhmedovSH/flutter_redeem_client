@@ -26,8 +26,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
     "carNumber": "",
     "carTypeId": 1,
     "gender": 1,
-    "regionId": '1',
-    "cityId": '1',
+    "regionId": '0',
+    "cityId": '0',
     "imageUrl": "",
     "birthDate": "",
   };
@@ -40,11 +40,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
   };
 
   List regions = [
-    {'name': '', 'id': '1'}
+    {'name': '', 'id': '0'}
   ];
 
   List cities = [
-    {'name': '', 'id': '1'}
+    {'name': '', 'id': '0'}
   ];
 
   updateAccount() async {
@@ -60,7 +60,14 @@ class _ProfileSettingState extends State<ProfileSetting> {
 
   getUser() async {
     final response = await get('/services/mobile/api/account');
-    print(response);
+    if (response['regionId'] != null && response['regionId'] != '0' && response['regionId'] != 0) {
+      getRegions(id: response['regionId']);
+    } else {
+      getRegions();
+    }
+    if (response['cityId'] != null && response['cityId'] != '0' && response['cityId'] != 0) {
+      getCities(response['regionId'], cityid: response['cityId']);
+    }
     setState(() {
       data['nameController'].text = response['name'].toString() != 'null' ? response['name'].toString() : '';
       data['carNumberController'].text = response['carNumber'].toString() != 'null' ? response['carNumber'].toString() : '';
@@ -78,8 +85,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
       sendData['carTypeId'] = response['carTypeId'];
       sendData['gender'] = response['gender'];
       sendData['birthDate'] = response['birthDate'].toString() != 'null' ? response['birthDate'].toString() : '';
-      // sendData['regionId'] = response['regionId'].toString();
-      // sendData['cityId'] = response['regionId'].toString();
 
       // sendData.removeWhere((key, value) => key == "regionId");
       // sendData.removeWhere((key, value) => key == "cityId");
@@ -106,26 +111,36 @@ class _ProfileSettingState extends State<ProfileSetting> {
     }
   }
 
-  getRegions() async {
+  getRegions({id}) async {
     final response = await get('/services/mobile/api/region-helper');
-    await getCities(response[0]['id']);
+    if (id == null || id == 'null' || id == '0' || id == 0) {
+      await getCities(response[0]['id']);
+    }
     setState(() {
       regions = response;
-      sendData['regionId'] = response[0]['id'].toString();
+      if (id != null) {
+        sendData['regionId'] = id.toString();
+      } else {
+        sendData['regionId'] = response[0]['id'].toString();
+      }
     });
   }
 
-  getCities(id) async {
+  getCities(id, {cityid}) async {
     final response = await get('/services/mobile/api/city-helper/$id');
     setState(() {
+      if (cityid != null) {
+        sendData['cityId'] = cityid.toString();
+      } else {
+        sendData['cityId'] = response[0]['id'].toString();
+      }
       cities = response;
-      sendData['cityId'] = response[0]['id'].toString();
     });
     return;
   }
 
   getData() async {
-    await getRegions();
+    // await getRegions();
     getUser();
   }
 
@@ -418,86 +433,90 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 25),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xFFECF1F6),
-                          width: 1,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton(
-                            value: sendData['regionId'],
-                            isExpanded: true,
-                            hint: Text('${regions[0]['name']}'),
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              size: 28,
+                    regions.isNotEmpty
+                        ? Container(
+                            margin: const EdgeInsets.only(bottom: 25),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color(0xFFECF1F6),
+                                width: 1,
+                              ),
                             ),
-                            iconSize: 24,
-                            iconEnabledColor: grey,
-                            elevation: 16,
-                            style: const TextStyle(color: Color(0xFF313131)),
-                            underline: Container(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                sendData['regionId'] = newValue;
-                              });
-                              getCities(newValue);
-                            },
-                            items: regions.map((item) {
-                              return DropdownMenuItem<String>(
-                                value: '${item['id']}',
-                                child: Text(item['name']),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xFFECF1F6),
-                          width: 1,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: ButtonTheme(
-                          alignedDropdown: true,
-                          child: DropdownButton(
-                            value: sendData['cityId'],
-                            isExpanded: true,
-                            hint: Text('${cities[0]['name']}'),
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              size: 28,
+                            child: DropdownButtonHideUnderline(
+                              child: ButtonTheme(
+                                alignedDropdown: true,
+                                child: DropdownButton(
+                                  value: sendData['regionId'],
+                                  isExpanded: true,
+                                  hint: Text('${regions[0]['name']}'),
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    size: 28,
+                                  ),
+                                  iconSize: 24,
+                                  iconEnabledColor: grey,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Color(0xFF313131)),
+                                  underline: Container(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      sendData['regionId'] = newValue;
+                                    });
+                                    getCities(newValue);
+                                  },
+                                  items: regions.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: '${item['id']}',
+                                      child: Text(item['name']),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                             ),
-                            iconSize: 24,
-                            iconEnabledColor: grey,
-                            elevation: 16,
-                            style: const TextStyle(color: Color(0xFF313131)),
-                            underline: Container(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                sendData['cityId'] = newValue;
-                              });
-                            },
-                            items: cities.map((item) {
-                              return DropdownMenuItem<String>(
-                                value: '${item['id']}',
-                                child: Text(item['name']),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
+                          )
+                        : Container(),
+                    cities.isNotEmpty && sendData['cityId'] != '0'
+                        ? Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color(0xFFECF1F6),
+                                width: 1,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: ButtonTheme(
+                                alignedDropdown: true,
+                                child: DropdownButton(
+                                  value: sendData['cityId'],
+                                  isExpanded: true,
+                                  hint: Text('${cities[0]['name']}'),
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    size: 28,
+                                  ),
+                                  iconSize: 24,
+                                  iconEnabledColor: grey,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Color(0xFF313131)),
+                                  underline: Container(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      sendData['cityId'] = newValue;
+                                    });
+                                  },
+                                  items: cities.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: '${item['id']}',
+                                      child: Text(item['name']),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
                     const SizedBox(
                       height: 70,
                     )

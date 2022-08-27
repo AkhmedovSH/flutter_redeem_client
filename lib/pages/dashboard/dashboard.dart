@@ -31,11 +31,14 @@ class _DashboardState extends State<Dashboard> {
 
   setShowQr() async {
     final response = await get('/services/mobile/api/get-uuid');
-    final user = await get('/services/mobile/api/account');
+    print(response);
+    if (response['reason'] == 'error.user.not.found') {
+      showErrorToast('Xato');
+      return;
+    }
     setState(() {
       uuid = response['reason'];
       showQr = !showQr;
-      phone = user['phone'] != null ? formatPhone(user['phone']) : '';
     });
   }
 
@@ -133,7 +136,7 @@ class _DashboardState extends State<Dashboard> {
                                   Container(
                                     margin: const EdgeInsets.only(top: 10),
                                     child: Text(
-                                      phone,
+                                      uuid.toString(),
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 18,
