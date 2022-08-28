@@ -249,14 +249,14 @@ class _NotificationsState extends State<Notifications> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.08,
+          top: MediaQuery.of(context).size.height * 0.095,
           // left: 24,
           child: Container(
             height: 48,
             width: MediaQuery.of(context).size.width,
             color: white,
             child: Align(
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(

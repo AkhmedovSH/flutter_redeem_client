@@ -320,7 +320,7 @@ class _IndexState extends State<Index> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  width: MediaQuery.of(context).size.width * 0.5,
+                                                  width: MediaQuery.of(context).size.width * 0.4,
                                                   margin: const EdgeInsets.only(bottom: 8),
                                                   child: Text(
                                                     poses[i]['name'],

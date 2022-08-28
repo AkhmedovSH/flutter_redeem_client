@@ -518,7 +518,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           )
                         : Container(),
                     const SizedBox(
-                      height: 70,
+                      height: 500,
                     )
                   ],
                 ),
@@ -548,6 +548,29 @@ class _ProfileSettingState extends State<ProfileSetting> {
           ),
         ),
         Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: Container(
+            height: 48,
+            color: white,
+            width: MediaQuery.of(context).size.width,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  'Mening profilim',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
           top: MediaQuery.of(context).size.height * 0.08,
           left: 24,
           child: GestureDetector(
@@ -571,27 +594,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF151517),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.095,
-          // left: 24,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Align(
-              alignment: Alignment.center,
-              child: DefaultTextStyle(
-                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
-                child: Text(
-                  'Mening profilim',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    color: black,
-                  ),
                 ),
               ),
             ),

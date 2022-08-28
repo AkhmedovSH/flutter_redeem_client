@@ -540,6 +540,29 @@ class _GasDetailState extends State<GasDetail> {
               : Container(),
         ),
         Positioned(
+          top: MediaQuery.of(context).size.height * 0.095,
+          // left: 24,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: white,
+            height: 48,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: DefaultTextStyle(
+                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                child: Text(
+                  pos['name'] ?? '',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: black,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
           top: MediaQuery.of(context).size.height * 0.08,
           left: 24,
           child: GestureDetector(
@@ -563,28 +586,6 @@ class _GasDetailState extends State<GasDetail> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF3D708F),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.095,
-          // left: 24,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 48,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: DefaultTextStyle(
-                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
-                child: Text(
-                  pos['name'] ?? '',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    color: black,
-                  ),
                 ),
               ),
             ),
