@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:control_car_client/helpers/translations.dart';
 
 import 'helpers/helper.dart';
 
@@ -17,10 +18,10 @@ import 'pages/auth/reset_password/reset_password_init.dart';
 import 'pages/dashboard/dashboard.dart';
 import 'pages/dashboard/home/points.dart';
 import 'pages/dashboard/home/notifications.dart';
+import 'pages/dashboard/home/notification_detail.dart';
 import 'pages/gas_detail.dart';
 
 import 'pages/dashboard/profile/profile_settings.dart';
-import 'pages/dashboard/profile/change_password.dart';
 import 'pages/dashboard/profile/support.dart';
 
 void main() async {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      // translations: Messages(),
+      translations: Messages(),
       locale: const Locale('uz', 'UZ'),
       // fallbackLocale: const Locale('uz', 'UZ'),
       // supportedLocales: const [
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => const Dashboard()),
         GetPage(name: '/points', page: () => const Points()),
         GetPage(name: '/notifications', page: () => const Notifications()),
+        GetPage(name: '/notification-detail', page: () => const NotificationDetail()),
         GetPage(name: '/gas-detail', page: () => const GasDetail()),
 
         // Profile

@@ -24,19 +24,20 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    // checkVersion();
-    startTimer();
+    checkVersion();
+    // startTimer();
   }
 
   void checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String localVersion = packageInfo.version;
-    var playMarketVersion = await guestGet('/services/gocashmobile/api/get-version?name=uz.cashbek.cabinet');
-
+    var playMarketVersion = await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
+    print(playMarketVersion);
     if (playMarketVersion == null) {
       startTimer();
       return;
     }
+
     if (playMarketVersion['version'] != localVersion) {
       if (playMarketVersion['required']) {
         setState(() {
@@ -113,9 +114,9 @@ class _SplashState extends State<Splash> {
             return AlertDialog(
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               insetPadding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
-              title: Text(
-                'update_app'.tr + ' "moneyBek"',
-                style: const TextStyle(color: Colors.black),
+              title: const Text(
+                'Ilovani yangilash' ' "redeem"',
+                style: TextStyle(color: Colors.black),
                 // textAlign: TextAlign.center,
               ),
               scrollable: true,
@@ -128,10 +129,10 @@ class _SplashState extends State<Splash> {
                     ),
                     Text(
                       isRequired
-                          ? 'you_need_to_install_the_latest_version_to_continue_using_the_app'.tr + '"redeem".'
-                          : 'we_recommend_installing_the_latest_version_of_the_application'.tr +
-                              '"redeem".' +
-                              'while_downloading_updates_you_can_still_use_it'.tr +
+                          ? 'Ilovadan foydalanishni davom ettirish uchun eng so\'nggi versiyani o\'rnatishingiz kerak' '"redeem".'
+                          : 'Ilovaning so\'nggi versiyasini o\'rnatishni tavsiya qilamiz'
+                              '"redeem".'
+                              'Yangilanishlarni yuklab olayotganda siz undan foydalanishingiz mumkin'
                               '.',
                       style: const TextStyle(color: Colors.black, height: 1.2),
                     ),
@@ -157,9 +158,9 @@ class _SplashState extends State<Splash> {
                                       Get.back();
                                     },
                                     style: TextButton.styleFrom(primary: const Color(0xFF00865F)),
-                                    child: Text(
-                                      'no_thanks'.tr,
-                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    child: const Text(
+                                      'YO\'Q, RAHMAT',
+                                      style: TextStyle(fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
@@ -175,7 +176,7 @@ class _SplashState extends State<Splash> {
                               ),
                               elevation: 0,
                             ),
-                            child: Text('update'.tr),
+                            child: const Text('YANGILANISH'),
                           )
                         ],
                       ),

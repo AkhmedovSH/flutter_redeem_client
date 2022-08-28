@@ -188,7 +188,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       ),
                     ),
                     buildCard(Icons.share_outlined, 'Ulashish'),
-                    buildCard(Icons.error_outline, 'Yordam'),
+                    // buildCard(Icons.error_outline, 'Yordam'),
                     buildCard(Icons.settings_outlined, 'Sozlamalar'),
                     GestureDetector(
                       onTap: () {
@@ -242,7 +242,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             child: Text(
-                              'Agarda qandaydir savolingiz bo’lsa? marhamat!',
+                              'Savollar uchun',
                               style: TextStyle(
                                 color: black,
                                 fontWeight: FontWeight.w500,
@@ -332,7 +332,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Profile',
+                  'Ma\'lumot',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

@@ -154,7 +154,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'Akkount yarating',
+                        'Profil',
                         style: TextStyle(
                           color: black,
                           fontSize: 24,
@@ -165,7 +165,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                     Container(
                       margin: const EdgeInsets.only(bottom: 50),
                       child: Text(
-                        'Quyidagi formalarni to’ldirib Akkount yarating',
+                        'Quyidagi formalarni to’ldiring',
                         style: TextStyle(
                           color: grey,
                           fontSize: 14,
@@ -257,7 +257,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             top: 16,
                             bottom: 16,
                           ),
-                          hintText: 'Telefon raqamingizni kiriting',
+                          hintText: 'Telefon raqamingizni yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -310,7 +310,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                   ),
                           ),
                           contentPadding: const EdgeInsets.all(16),
-                          hintText: 'Parolingizni kiriting',
+                          hintText: 'Parolingizni yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -318,7 +318,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'Mashina davlat raqami',
+                        'Avto raqami',
                         style: TextStyle(
                           color: black,
                           fontWeight: FontWeight.w600,
@@ -352,7 +352,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                           filled: true,
                           fillColor: white,
                           contentPadding: const EdgeInsets.all(16),
-                          hintText: 'Davlat raqamini kiriting',
+                          hintText: 'Avto raqami yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -360,7 +360,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'Mashina turini tanlang',
+                        'Avto turini tanlang',
                         style: TextStyle(
                           color: black,
                           fontWeight: FontWeight.w600,
@@ -423,7 +423,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(vertical: 16),
               width: MediaQuery.of(context).size.width,
               child: Text(
-                'Tizimga kirish',
+                'Keyingisi',
                 style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),

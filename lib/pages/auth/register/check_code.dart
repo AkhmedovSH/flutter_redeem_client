@@ -146,7 +146,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'SMS kodni kiriting',
+                        'SMS kodni yozing',
                         style: TextStyle(
                           color: black,
                           fontSize: 24,
@@ -175,7 +175,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
                             child: Theme(
                               data: Theme.of(context).copyWith(
                                 colorScheme: ThemeData().colorScheme.copyWith(
-                                      primary: purple,
+                                      primary: green,
                                     ),
                               ),
                               child: TextFormField(
@@ -202,7 +202,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
                                   filled: true,
                                   fillColor: white,
                                   contentPadding: const EdgeInsets.all(16),
-                                  hintText: 'To’liq ismingizni yozing',
+                                  hintText: 'Sms kod',
                                   hintStyle: TextStyle(
                                     color: grey,
                                     fontSize: 14,
@@ -288,7 +288,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(vertical: 16),
               width: MediaQuery.of(context).size.width,
               child: Text(
-                'Davom etish',
+                'Ro\'yxatdan o\'tish',
                 style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),

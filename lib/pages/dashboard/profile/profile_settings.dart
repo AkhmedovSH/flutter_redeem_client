@@ -302,7 +302,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Text(
-                        'Mashina davlat raqami',
+                        'Avto raqami',
                         style: TextStyle(
                           color: black,
                           fontWeight: FontWeight.w600,
@@ -336,7 +336,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           filled: true,
                           fillColor: white,
                           contentPadding: const EdgeInsets.all(16),
-                          hintText: 'Davlat raqamini kiriting',
+                          hintText: 'Avto raqamini yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -360,7 +360,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         child: Theme(
                           data: Theme.of(context).copyWith(
                             colorScheme: ThemeData().colorScheme.copyWith(
-                                  primary: red,
+                                  primary: green,
                                 ),
                           ),
                           child: TextFormField(

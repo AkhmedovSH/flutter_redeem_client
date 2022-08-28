@@ -30,7 +30,7 @@ class _ServicesState extends State<Services> {
       'active': false,
     },
     {
-      'name': 'Tanirovka',
+      'name': 'Tonirovka',
       'icon': 'images/icons/tanirovka.svg',
       'active': false,
     },

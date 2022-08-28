@@ -22,24 +22,38 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> key = GlobalKey();
+  AnimationController? animationController;
+
   int currentIndex = 0;
   dynamic uuid = '';
+  dynamic levelClock = 300;
   dynamic phone = '';
   bool showQr = false;
 
-  setShowQr() async {
+  setShowQr({change = true}) async {
+    animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
     final response = await get('/services/mobile/api/get-uuid');
     print(response);
     if (response['reason'] == 'error.user.not.found') {
       showErrorToast('Xato');
       return;
     }
-    setState(() {
-      uuid = response['reason'];
-      showQr = !showQr;
-    });
+    if (change) {
+      setState(() {
+        uuid = response['reason'];
+        levelClock = response['seconds'];
+        showQr = !showQr;
+      });
+    } else {
+      setState(() {
+        uuid = response['reason'];
+        levelClock = response['seconds'];
+      });
+    }
+    animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
+    animationController!.forward();
   }
 
   changeIndex(int index) {
@@ -100,58 +114,80 @@ class _DashboardState extends State<Dashboard> {
                   currentIndex == 3 ? const Services() : Container(),
                 ],
               ),
-              showQr
-                  ? BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                        sigmaX: 10.0,
-                        sigmaY: 10.0,
+              if (showQr)
+                BackdropFilter(
+                  filter: ui.ImageFilter.blur(
+                    sigmaX: 10.0,
+                    sigmaY: 10.0,
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      gradient: gradient,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          gradient: gradient,
-                        ),
+                      child: Center(
                         child: Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 380,
+                          padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            color: Colors.transparent,
+                            color: white,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: 310,
-                              padding: const EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: white,
-                                borderRadius: BorderRadius.circular(20),
+                          child: Column(
+                            children: [
+                              QrImage(
+                                data: uuid.toString(),
+                                version: QrVersions.auto,
                               ),
-                              child: Column(
-                                children: [
-                                  QrImage(
-                                    data: uuid.toString(),
-                                    version: QrVersions.auto,
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  uuid.toString(),
+                                  style: TextStyle(
+                                    color: black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      uuid.toString(),
-                                      style: TextStyle(
-                                        color: black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Countdown(
+                                  animation: StepTween(
+                                    begin: levelClock,
+                                    end: 0,
+                                  ).animate(animationController!),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setShowQr(change: false);
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: Icon(
+                                    Icons.refresh,
+                                    color: green,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    )
-                  : Container()
+                    ),
+                  ),
+                )
+              else
+                Container()
             ],
           ),
           bottomNavigationBar: SizedBox(
@@ -172,7 +208,7 @@ class _DashboardState extends State<Dashboard> {
                     label: '',
                   ),
                   BottomNavigationBarItem(
-                    icon: buildBottomBarItem('images/icons/map.svg', 'Joylashuv', 1),
+                    icon: buildBottomBarItem('images/icons/map.svg', 'Xarita', 1),
                     label: '',
                   ),
                   BottomNavigationBarItem(
@@ -225,6 +261,23 @@ class _DashboardState extends State<Dashboard> {
           // ),
         ),
       ],
+    );
+  }
+}
+
+class Countdown extends AnimatedWidget {
+  Countdown({Key? key, this.animation}) : super(key: key, listenable: animation!);
+  final Animation<int>? animation;
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation!.value);
+
+    String timerText = '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    return Text(
+      timerText,
+      style: TextStyle(color: green, fontSize: 18, fontWeight: FontWeight.w600),
     );
   }
 }

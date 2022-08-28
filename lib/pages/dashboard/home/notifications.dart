@@ -1,3 +1,4 @@
+import 'package:control_car_client/helpers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,56 +15,27 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  dynamic notifications = [
-    {
-      'date': '23.02.2022',
-      'children': [
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-      ]
-    },
-    {
-      'date': '23.02.2022',
-      'children': [
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-        {
-          'icon': 'images/icons/sugutra.svg',
-          'title': 'Sug’urta',
-          'text': 'Sizning sug’urtangizni amal qilish muddati tugaganligini estaib o’tamiz',
-          'time': '16:44',
-        },
-      ]
-    },
-  ];
+  dynamic notifications = [];
+  bool loading = false;
 
-  buildCard(icon, item, {color}) {
+  getNotifications() async {
+    setState(() {
+      loading = true;
+    });
+    final response = await get('/services/mobile/api/get-notification');
+    setState(() {
+      notifications = response;
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getNotifications();
+  }
+
+  buildCard(imageUrl, item, {color}) {
     return Stack(
       children: [
         Container(
@@ -77,16 +49,35 @@ class _NotificationsState extends State<Notifications> {
                 padding: const EdgeInsets.all(12),
                 width: 48,
                 height: 48,
-                decoration: BoxDecoration(
-                  color: const Color(0XFFE1ECFB),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: SvgPicture.asset(
-                  icon,
-                  height: 20,
-                  width: 20,
-                  fit: BoxFit.scaleDown,
-                ),
+                // decoration: BoxDecoration(
+                //   color: const Color(0XFFE1ECFB),
+                //   borderRadius: BorderRadius.circular(50),
+                // ),
+                child: imageUrl != null && imageUrl != ''
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.network(
+                          mainUrl + imageUrl,
+                          fit: BoxFit.contain,
+                        ),
+                      )
+                    : SizedBox(
+                        width: 58,
+                        height: 58,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'images/logo.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                // child: SvgPicture.asset(
+                //   icon,
+                //   height: 20,
+                //   width: 20,
+                //   fit: BoxFit.scaleDown,
+                // ),
               ),
               SizedBox(
                 // width: MediaQuery.of(context).size.width * 0.6,
@@ -142,7 +133,7 @@ class _NotificationsState extends State<Notifications> {
           right: 16,
           bottom: 16,
           child: Text(
-            item['time'],
+            item['time'] != null ? formatDateHour(item['time']) : '',
             style: const TextStyle(
               color: Color(0xFF666666),
               fontSize: 12,
@@ -172,11 +163,21 @@ class _NotificationsState extends State<Notifications> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildCard('images/icons/moy_almashtirish.svg', {
-                    'title': 'Moy almashtirish',
-                    'text': 'Ertaga moy almashtirishingiz kerakligini eslatib o’tamiz',
-                    'time': '16:44',
-                  }),
+                  notifications.length > 0 && loading
+                      ? Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 50),
+                            child: Text(
+                              'Eslatmalar yo\'q',
+                              style: TextStyle(
+                                color: black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
                   for (var i = 0; i < notifications.length; i++)
                     SizedBox(
                       child: Column(
@@ -202,7 +203,7 @@ class _NotificationsState extends State<Notifications> {
                               ),
                               SizedBox(
                                 child: Text(
-                                  notifications[i]['date'],
+                                  notifications[i]['createdDate'] != null ? formatDateMonth(notifications[i]['createdDate']) : '',
                                   style: const TextStyle(
                                     color: Color(0xFF414141),
                                     fontWeight: FontWeight.w500,
@@ -227,14 +228,18 @@ class _NotificationsState extends State<Notifications> {
                               ),
                             ],
                           ),
-                          for (var j = 0; j < notifications[i]['children'].length; j++)
-                            Container(
-                              child: buildCard(notifications[i]['children'][j]['icon'], {
-                                'title': notifications[i]['children'][j]['title'],
-                                'text': notifications[i]['children'][j]['text'],
-                                'time': notifications[i]['children'][j]['time'],
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed('/notification-detail', arguments: notifications[i]['id']);
+                            },
+                            child: Container(
+                              child: buildCard(notifications[i]['imageUrl'], {
+                                'title': notifications[i]['title'],
+                                'text': notifications[i]['message'],
+                                'time': notifications[i]['createdDate'],
                               }),
-                            )
+                            ),
+                          )
                         ],
                       ),
                     )

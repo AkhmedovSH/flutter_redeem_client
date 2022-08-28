@@ -77,7 +77,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           Get.offAllNamed('/notifications');
         });
         var firebaseToken = await FirebaseMessaging.instance.getToken();
-        // await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
+        await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
         Get.offAllNamed('/');
       } else {
         // у вас нету доступа
@@ -151,24 +151,13 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 50),
                       child: Text(
                         'Salom, Xush kelibsiz! 👋',
                         style: TextStyle(
                           color: black,
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 50),
-                      child: Text(
-                        'Quyidagi formalarni to’ldirib Tizimga kiring',
-                        style: TextStyle(
-                          color: grey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -221,7 +210,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             top: 16,
                             bottom: 16,
                           ),
-                          hintText: 'Telefon raqamingizni kiriting',
+                          hintText: 'Telefon raqamingizni yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -274,7 +263,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   ),
                           ),
                           contentPadding: const EdgeInsets.all(16),
-                          hintText: 'Parolingizni kiriting',
+                          hintText: 'Parolingizni yozing',
                           hintStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -310,7 +299,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               ),
                             ),
                             const Text(
-                              'Meni eslab qol',
+                              'Eslab qolish',
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                           ],

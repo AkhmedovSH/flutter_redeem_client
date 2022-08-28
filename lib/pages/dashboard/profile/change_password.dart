@@ -59,7 +59,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 35),
                         child: Text(
-                          'Yangi parolingizni kiriting',
+                          'Yangi parolingizni yozing',
                           style: TextStyle(
                             color: grey,
                             fontSize: 14,

@@ -38,7 +38,7 @@ Gradient gradient = const LinearGradient(
 
 OutlineInputBorder inputBorder = OutlineInputBorder(
   borderSide: const BorderSide(
-    color: Color(0xFFECF1F6),
+    color: Color.fromARGB(255, 216, 216, 216),
     width: 1,
   ),
   borderRadius: BorderRadius.circular(5),
@@ -106,6 +106,16 @@ formatMoney(amount) {
 formatDate(date) {
   Moment rawDate = Moment.parse(date);
   return rawDate.format("dd-MM-yyyy HH:mm");
+}
+
+formatDateMonth(date) {
+  Moment rawDate = Moment.parse(date);
+  return rawDate.format("dd.MM.yyyy");
+}
+
+formatDateHour(date) {
+  Moment rawDate = Moment.parse(date);
+  return rawDate.format("HH:mm");
 }
 
 formatPhone(phone) {

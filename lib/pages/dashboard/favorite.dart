@@ -17,6 +17,7 @@ class Favorite extends StatefulWidget {
 
 class _FavoriteState extends State<Favorite> {
   dynamic poses = [];
+  bool loading = false;
 
   inFavorite(id, status) async {
     final response = await post('/services/mobile/api/pos-favorite', {
@@ -29,6 +30,9 @@ class _FavoriteState extends State<Favorite> {
   }
 
   getFavorite() async {
+    setState(() {
+      loading = true;
+    });
     final response = await get('/services/mobile/api/pos-by-favorite-pageList', payload: {
       'search': '',
       'pointX': '',
@@ -36,6 +40,7 @@ class _FavoriteState extends State<Favorite> {
     });
     setState(() {
       poses = response;
+      loading = false;
     });
   }
 
@@ -49,13 +54,13 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     return SimpleAppBar(
       appBar: AppBar(),
-      title: 'Saqlanganlar',
+      title: 'Sevimlilar',
       body: Container(
         padding: poses.length == 0 ? const EdgeInsets.only(bottom: 50) : EdgeInsets.zero,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              poses.length == 0
+              poses.length == 0 && !loading
                   ? Container(
                       margin: const EdgeInsets.only(top: 50),
                       child: Text(
@@ -120,9 +125,9 @@ class _FavoriteState extends State<Favorite> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                const Text(
-                                  'Ceshback: 6%',
-                                  style: TextStyle(
+                                Text(
+                                  'Cashback: ${(poses[i]['maxReward'] * 100).round() / 100} %',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -159,7 +164,7 @@ class _FavoriteState extends State<Favorite> {
                                   child: SvgPicture.asset('images/icons/waves.svg'),
                                 ),
                                 Text(
-                                  '${poses[i]['distance'] ?? ''}km',
+                                  '${poses[i]['distance'] ?? ''} km',
                                   style: TextStyle(
                                     color: grey,
                                     fontWeight: FontWeight.w500,

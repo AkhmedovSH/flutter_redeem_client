@@ -20,15 +20,16 @@ class GoogleMapPage extends StatefulWidget {
 class _GoogleMapPageState extends State<GoogleMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
   BitmapDescriptor? icon;
+  dynamic token = '';
 
   List<Marker> markers = [];
   List<LatLng>? polygonCoords = [];
 
   CameraPosition kGooglePlex = const CameraPosition(target: LatLng(41.311081, 69.240562), zoom: 13.0);
   dynamic filter = {
-    'distance': '1',
-    'pointX': '41.311081',
-    'pointY': '69.240562',
+    'distance': '20',
+    'pointX': '',
+    'pointY': '',
     'search': '',
   };
   dynamic animate = true;
@@ -74,12 +75,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       setState(() {
         filter['pointX'] = position.latitude.toString();
         filter['pointY'] = position.longitude.toString();
-        markers.add(
-          Marker(
-            markerId: MarkerId(LatLng(position.latitude, position.longitude).toString()),
-            position: LatLng(position.latitude, position.longitude),
-          ),
-        );
       });
       getPoses();
       controller.animateCamera(CameraUpdate.newCameraPosition(newPosition));
@@ -103,21 +98,12 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         markers = [];
       });
       for (var i = 0; i < response.length; i++) {
-        print(response[i]);
-        dynamic markerIcon;
-        markerIcon = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(
-              size: Size(100, 100),
-              devicePixelRatio: 5,
-            ),
-            "images/map_icon_2.png");
         if (mounted) {
           setState(() {
             markers.add(
               Marker(
                 markerId: MarkerId(LatLng(response[i]['gpsPointX'], response[i]['gpsPointY']).toString()),
                 position: LatLng(response[i]['gpsPointX'], response[i]['gpsPointY']),
-                icon: response[i]['logoUrl'] != null ? markerIcon : markerIcon,
                 infoWindow: InfoWindow(
                   title: response[i]['name'],
                 ),
