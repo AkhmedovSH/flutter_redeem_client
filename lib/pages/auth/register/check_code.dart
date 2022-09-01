@@ -44,6 +44,9 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
     final response = await guestPost('/services/mobile/api/activate', sendData);
     if (response == null || !response['success']) {
       // showErrorToast('error'.tr);
+      setState(() {
+        loading = false;
+      });
       return;
     }
     setState(() {
@@ -55,6 +58,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
       'isRemember': false,
     };
     final login = await guestPost('/auth/login', loginData);
+
     if (login != null) {
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('access_token', login['access_token'].toString());
@@ -86,10 +90,6 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
         // await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
         Get.offAllNamed('/');
       }
-    }
-
-    if (response['success']) {
-      Get.offAllNamed('/confirm-finger-print');
     }
     setState(() {
       loading = false;
