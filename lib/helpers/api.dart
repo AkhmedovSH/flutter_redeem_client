@@ -59,8 +59,10 @@ Future guestGet(String url, {payload}) async {
     final response = await dio.get(
       hostUrl + url,
       queryParameters: payload,
-      options:
-          Options(headers: {"Language": getx.Get.locale.toString().substring(0, 2), "Accept-Language": getx.Get.locale.toString().substring(0, 2)}),
+      options: Options(headers: {
+        "Language": getx.Get.locale.toString().substring(0, 2),
+        "Accept-Language": getx.Get.locale.toString().substring(0, 2),
+      }),
     );
     return response.data;
   } on DioError catch (e) {

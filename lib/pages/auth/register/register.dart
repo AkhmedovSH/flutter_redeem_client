@@ -70,12 +70,14 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
   }
 
   getCarTypes() async {
-    final response = await get('/services/mobile/api/car-type-helper');
+    final response = await guestGet('/services/mobile/api/car-type-helper');
     print(response);
-    setState(() {
-      sendData['carTypeId'] = response[0]['id'].toString();
-      carTypes = response;
-    });
+    if (response != null) {
+      setState(() {
+        sendData['carTypeId'] = response[0]['id'].toString();
+        carTypes = response;
+      });
+    }
   }
 
   @override

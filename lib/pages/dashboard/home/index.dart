@@ -402,7 +402,7 @@ class _IndexState extends State<Index> {
           Positioned(
             top: MediaQuery.of(context).size.height * 0.095,
             // left: MediaQuery.of(context).size.width * 0.35,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width, 
             child: Container(
               height: 40,
               alignment: Alignment.center,
@@ -450,7 +450,7 @@ class _IndexState extends State<Index> {
                     ),
                   ),
                 ),
-                unreadNotifications != null && unreadNotifications != ''
+                unreadNotifications != null && unreadNotifications != '' && unreadNotifications > 0
                     ? Positioned(
                         right: 5,
                         top: 0,

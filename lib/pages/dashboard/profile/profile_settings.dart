@@ -518,7 +518,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                           )
                         : Container(),
                     const SizedBox(
-                      height: 500,
+                      height: 70,
                     )
                   ],
                 ),
@@ -531,7 +531,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 updateAccount();
               }
             },
-            child: Container(
+            child: Container(   
               margin: const EdgeInsets.only(left: 32),
               decoration: BoxDecoration(
                 gradient: gradient,
