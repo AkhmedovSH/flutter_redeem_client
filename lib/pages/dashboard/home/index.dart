@@ -149,6 +149,7 @@ class _IndexState extends State<Index> {
           Image.asset(
             'images/home_bg.png',
             width: MediaQuery.of(context).size.width,
+            height: 300,
             fit: BoxFit.fill,
           ),
           Container(

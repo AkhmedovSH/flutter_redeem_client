@@ -135,7 +135,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       child: Center(
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.7,
-                          height: 380,
+                          height: 390,
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             color: white,
