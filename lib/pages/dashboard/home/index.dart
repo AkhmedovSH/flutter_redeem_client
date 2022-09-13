@@ -23,15 +23,23 @@ class Index extends StatefulWidget {
 
 class _IndexState extends State<Index> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  ScrollController scrollController = ScrollController();
   dynamic poses = [];
   dynamic filter = {
     'search': '',
     'pointX': '',
     'pointY': '',
     'distance': '',
+    'page': '0',
+    // 'size': '20',
   };
   dynamic user = {};
   dynamic unreadNotifications = 0;
+
+  dynamic pageNumber = 1;
+  dynamic total = 0;
+  dynamic currentPage = 1;
+  bool loading = false;
 
   inFavorite(id, status) async {
     final response = await post('/services/mobile/api/pos-favorite', {
@@ -51,7 +59,6 @@ class _IndexState extends State<Index> {
     // }
     LocationPermission permission;
     permission = await Geolocator.requestPermission();
-    print(permission);
     if (permission != LocationPermission.deniedForever && permission != LocationPermission.denied) {
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       if (mounted) {
@@ -67,8 +74,21 @@ class _IndexState extends State<Index> {
   getPoses() async {
     final response = await get('/services/mobile/api/pos-search', payload: filter);
     if (mounted) {
+      // if (currentPage > 1) {
+      //   if (poses.length == 0) {
+      //     return;
+      //   }
+      // }
       setState(() {
         poses = response;
+        // if (currentPage == 1) {
+        //   poses = response;
+        // }
+        // if (currentPage > 1) {
+        //   if (response.length > 0) {
+        //     poses.add(response);
+        //   }
+        // }
       });
     }
   }
@@ -103,6 +123,17 @@ class _IndexState extends State<Index> {
     getPermission();
     getUser();
     getUnreadNotification();
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        // if (currentPage != total) {
+        //   setState(() {
+        //     currentPage += 1;
+        //     filter['page'] = currentPage.toString();
+        //   });
+        //   await getPoses();
+        // }
+      }
+    });
   }
 
   @override
@@ -136,6 +167,7 @@ class _IndexState extends State<Index> {
               leading: Container(),
             ),
             body: SingleChildScrollView(
+              controller: scrollController,
               child: Column(
                 children: [
                   Container(
@@ -389,6 +421,16 @@ class _IndexState extends State<Index> {
                                     ),
                                   ),
                                 ),
+                              // loading
+                              //     ? Container(
+                              //         margin: const EdgeInsets.symmetric(
+                              //           vertical: 20,
+                              //         ),
+                              //         child: CircularProgressIndicator(
+                              //           color: green,
+                              //         ),
+                              //       )
+                              //     : Container(),
                             ],
                           )
                         ],
@@ -401,9 +443,14 @@ class _IndexState extends State<Index> {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.095,
+            height: 50,
             // left: MediaQuery.of(context).size.width * 0.35,
-            width: MediaQuery.of(context).size.width, 
+            width: MediaQuery.of(context).size.width,
             child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                gradient: gradient,
+              ),
               height: 40,
               alignment: Alignment.center,
               child: Text(
@@ -432,6 +479,7 @@ class _IndexState extends State<Index> {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.095,
+            height: 50,
             right: 0,
             child: Stack(
               children: [

@@ -1,12 +1,13 @@
-import 'package:control_car_client/helpers/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import '../helpers/api.dart';
+import 'package:control_car_client/helpers/helper.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   dynamic systemOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light);
   dynamic vesrion = '';
-  dynamic url = 'https://play.google.com/store/apps/details?id=uz.cashbek.cabinet';
+  dynamic url = 'https://play.google.com/store/apps/details?id=uz.redeem.client';
   bool isRequired = false;
 
   @override
@@ -166,7 +167,10 @@ class _SplashState extends State<Splash> {
                                 ),
                           ElevatedButton(
                             onPressed: () {
-                              launchUrl(url);
+                              StoreRedirect.redirect(androidAppId: "uz.redeem.client", iOSAppId: "585027354");
+                              // final uri = Uri.parse('https://play.google.com/store/apps/details?id=uz.redeem.client');
+                              // launchUrl(uri);
+                              // launchUrl(url);
                             },
                             style: ElevatedButton.styleFrom(
                               primary: const Color(0xFF00865F),
