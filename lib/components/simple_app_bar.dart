@@ -41,7 +41,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         // ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 200,
+          height: 300,
           decoration: BoxDecoration(
             gradient: gradient,
           ),
@@ -52,7 +52,10 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: Container(),
-            systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light),
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.light,
+            ),
           ),
           body: Container(
             margin: defaultMargin,

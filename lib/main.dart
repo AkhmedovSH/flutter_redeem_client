@@ -21,6 +21,11 @@ import 'pages/dashboard/home/notifications.dart';
 import 'pages/dashboard/home/notification_detail.dart';
 import 'pages/gas_detail.dart';
 import 'pages/dashboard/car/oil.dart';
+import 'pages/dashboard/car/methane.dart';
+import 'pages/dashboard/car/inspection.dart';
+import 'pages/dashboard/car/insurance.dart';
+import 'pages/dashboard/car/license.dart';
+import 'pages/dashboard/car/toning.dart';
 
 import 'pages/dashboard/profile/profile_settings.dart';
 import 'pages/dashboard/profile/support.dart';
@@ -86,7 +91,15 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifications', page: () => const Notifications()),
         GetPage(name: '/notification-detail', page: () => const NotificationDetail()),
         GetPage(name: '/gas-detail', page: () => const GasDetail()),
+        
+        // Car
+        
         GetPage(name: '/oil', page: () => const Oil()),
+        GetPage(name: '/methane', page: () => const Methane()),
+        GetPage(name: '/inspection', page: () => const Inspection()),
+        GetPage(name: '/insurance', page: () => const Insurance()),
+        GetPage(name: '/license', page: () => const License()),
+        GetPage(name: '/toning', page: () => const Toning()),
 
         // Profile
         GetPage(name: '/profile-setting', page: () => const ProfileSetting()),

@@ -7,6 +7,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:control_car_client/helpers/helper.dart';
 import 'package:control_car_client/helpers/api.dart';
 
+import 'package:control_car_client/components/simple_app_bar.dart';
+
 class Services extends StatefulWidget {
   const Services({Key? key}) : super(key: key);
 
@@ -23,549 +25,750 @@ class _ServicesState extends State<Services> {
     {'name': 'Gaz balon', 'icon': 'images/icons/gas_balon.svg', 'active': false}
   ];
   dynamic oil = {};
+  dynamic methane = {};
+  dynamic insurance = {};
+  dynamic license = {};
+  dynamic inspection = {};
+  dynamic toning = {};
+
+  getPercent(date) {
+    dynamic currentDay = DateTime.now();
+    final beginDate = DateTime(
+      int.parse(date['beginDate'].substring(0, 4)),
+      int.parse(date['beginDate'].substring(5, 7)),
+      int.parse(date['beginDate'].substring(8, 10)),
+    );
+    final endDate = DateTime(
+      int.parse(date['endDate'].substring(0, 4)),
+      int.parse(date['endDate'].substring(5, 7)),
+      int.parse(date['endDate'].substring(8, 10)),
+    );
+    if (currentDay.difference(beginDate).inDays < 0 || currentDay.difference(beginDate).inDays == 0) {
+      return 0.0;
+    }
+    if (currentDay.difference(beginDate).inDays > 0) {
+      dynamic hundred = endDate.difference(beginDate).inDays;
+      dynamic percent = currentDay.difference(beginDate).inDays;
+      return (double.parse(((percent * 100.0) / hundred).toStringAsFixed(1)) / 100.0);
+    }
+    // print(date);
+    // print(endDate.difference(beginDate).inDays);
+    // print(currentDay.difference(beginDate).inDays);
+    return 0.0;
+  }
 
   getOil() async {
     final response = await get('/services/mobile/api/oil');
-    print(response);
-    setState(() {
-      oil = response;
-    });
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        oil = response;
+      });
+    }
+  }
+
+  getMethane() async {
+    final response = await get('/services/mobile/api/methane');
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        methane = response;
+      });
+    }
+  }
+
+  getInsurance() async {
+    final response = await get('/services/mobile/api/insurance');
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        insurance = response;
+      });
+    }
+  }
+
+  getLicense() async {
+    final response = await get('/services/mobile/api/license');
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        license = response;
+      });
+    }
+  }
+
+  getInspection() async {
+    final response = await get('/services/mobile/api/inspection');
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        inspection = response;
+      });
+    }
+  }
+
+  getToning() async {
+    final response = await get('/services/mobile/api/toning');
+    if (response != null) {
+      if (response['beginDate'] != null) {
+        response['percent'] = getPercent(response);
+      }
+      setState(() {
+        toning = response;
+      });
+    }
+  }
+
+  getData() async {
+    getOil();
+    getMethane();
+    getInsurance();
+    getLicense();
+    getInspection();
+    getToning();
   }
 
   @override
   void initState() {
-    getOil();
+    getData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'My auto',
-          style: TextStyle(
-            color: black,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: const Color(0xFFEEEEEE),
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-      ),
-      body: Container(
-        color: const Color(0xFFEEEEEE),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
-            child: Column(
+    return SimpleAppBar(
+      appBar: AppBar(),
+      title: 'My auto',
+      leading: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Container(
+            //   width: MediaQuery.of(context).size.width,
+            //   margin: const EdgeInsets.only(top: 20),
+            //   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+            //   decoration: BoxDecoration(
+            //     color: white,
+            //     borderRadius: BorderRadius.circular(16),
+            //   ),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Container(
+            //         width: 38,
+            //         height: 38,
+            //         padding: const EdgeInsets.all(4),
+            //         margin: const EdgeInsets.only(bottom: 10),
+            //         decoration: BoxDecoration(
+            //           color: const Color(0xFFE8E8E8),
+            //           borderRadius: BorderRadius.circular(50),
+            //         ),
+            //         child: const Icon(
+            //           Icons.videocam_rounded,
+            //           size: 20,
+            //           color: Color(0xFF939393),
+            //         ),
+            //       ),
+            //       Container(
+            //         margin: const EdgeInsets.only(bottom: 5),
+            //         child: const Text(
+            //           'Штрафы',
+            //           style: TextStyle(
+            //             color: Color(0xFF747474),
+            //             fontSize: 18,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //       ),
+            //       Container(
+            //         margin: const EdgeInsets.only(bottom: 10),
+            //         child: const Text(
+            //           'Все хорошо',
+            //           style: TextStyle(
+            //             color: Color(0xFFA9A9A9),
+            //             fontSize: 22,
+            //           ),
+            //         ),
+            //       ),
+            //       Container(
+            //         margin: const EdgeInsets.only(bottom: 10),
+            //         child: const Text(
+            //           'нет штрафов',
+            //           style: TextStyle(
+            //             color: Color(0xFFB6B6B6),
+            //             fontSize: 16,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            Row(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(top: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(16),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (oil['id'] == null) {
+                        result = await Get.toNamed('/oil');
+                      } else {
+                        result = await Get.toNamed('/oil', arguments: {
+                          'id': oil['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getOil();
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, right: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      height: 170,
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.oil_barrel,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Масло',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${oil['expDay'] ?? "0"} дней',
+                              style: const TextStyle(
+                                color: Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: oil['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: green,
+                            ),
+                          ),
+                          Text(
+                            '${oil['endDate'] ?? ''}',
+                            style: const TextStyle(
+                              color: Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        padding: const EdgeInsets.all(4),
-                        margin: const EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE8E8E8),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: const Icon(
-                          Icons.videocam_rounded,
-                          size: 20,
-                          color: Color(0xFF939393),
-                        ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (methane['id'] == null) {
+                        result = await Get.toNamed('/methane');
+                      } else {
+                        result = await Get.toNamed('/methane', arguments: {
+                          'id': methane['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getMethane();
+                      }
+                    },
+                    child: Container(
+                      height: 170,
+                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5),
-                        child: const Text(
-                          'Штрафы',
-                          style: TextStyle(
-                            color: Color(0xFF747474),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.tire_repair,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: const Text(
-                          'Все хорошо',
-                          style: TextStyle(
-                            color: Color(0xFFA9A9A9),
-                            fontSize: 22,
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Газ',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: const Text(
-                          'нет штрафов',
-                          style: TextStyle(
-                            color: Color(0xFFB6B6B6),
-                            fontSize: 16,
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${methane['expDay'] ?? "0"} дней',
+                              style: const TextStyle(
+                                color: Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: methane['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: danger,
+                            ),
+                          ),
+                          Text(
+                            '${methane['endDate'] ?? ''}',
+                            style: const TextStyle(
+                              color: Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10, right: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                        height: 170,
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              padding: const EdgeInsets.all(4),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.badge_outlined,
-                                size: 20,
-                                color: Color(0xFF939393),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: const Text(
-                                'Страховка',
-                                style: TextStyle(
-                                  color: Color(0xFF747474),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'OSAGO',
-                                    style: TextStyle(
-                                      color: black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    '78 дней',
-                                    style: TextStyle(
-                                      color: black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 170,
-                        margin: const EdgeInsets.only(top: 10, left: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              padding: const EdgeInsets.all(4),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.speed_rounded,
-                                size: 20,
-                                color: Color(0xFF939393),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: const Text(
-                                'Тех. осмотр',
-                                style: TextStyle(
-                                  color: Color(0xFF747474),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: const Text(
-                                'Технический осмотр не найден',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 212, 71, 118),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10, right: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                        height: 170,
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              padding: const EdgeInsets.all(4),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.badge_outlined,
-                                size: 20,
-                                color: Color(0xFF939393),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: const Text(
-                                'Доверенность',
-                                style: TextStyle(
-                                  color: Color(0xFF747474),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: const Text(
-                                '442 дней',
-                                style: TextStyle(
-                                  color: Color(0xFF222222),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.all(0),
-                                lineHeight: 7.0,
-                                percent: 0.5,
-                                barRadius: const Radius.circular(20),
-                                backgroundColor: const Color(0xFFE8E8E8),
-                                progressColor: green,
-                              ),
-                            ),
-                            const Text(
-                              '10 - дек. 2023',
-                              style: TextStyle(
-                                color: Color(0xFF7F7F7F),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 170,
-                        margin: const EdgeInsets.only(top: 10, left: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              padding: const EdgeInsets.all(4),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.tonality,
-                                size: 20,
-                                color: Color(0xFF939393),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: const Text(
-                                'Тонировка',
-                                style: TextStyle(
-                                  color: Color(0xFF747474),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: Text(
-                                'Истекло',
-                                style: TextStyle(
-                                  color: danger,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.all(0),
-                                lineHeight: 7.0,
-                                percent: 1,
-                                barRadius: const Radius.circular(20),
-                                backgroundColor: const Color(0xFFE8E8E8),
-                                progressColor: danger,
-                              ),
-                            ),
-                            const Text(
-                              '23 - сент. 2022',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 212, 71, 118),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.toNamed('/oil');
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 10, right: 5),
-                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                          height: 170,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 38,
-                                height: 38,
-                                padding: const EdgeInsets.all(4),
-                                margin: const EdgeInsets.only(bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFE8E8E8),
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: const Icon(
-                                  Icons.local_gas_station_rounded,
-                                  size: 20,
-                                  color: Color(0xFF939393),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 5),
-                                child: const Text(
-                                  'Масло',
-                                  style: TextStyle(
-                                    color: Color(0xFF747474),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 5),
-                                child: const Text(
-                                  '76 дней',
-                                  style: TextStyle(
-                                    color: Color(0xFF222222),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    overflow: TextOverflow.visible,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: LinearPercentIndicator(
-                                  padding: const EdgeInsets.all(0),
-                                  lineHeight: 7.0,
-                                  percent: 0.05,
-                                  barRadius: const Radius.circular(20),
-                                  backgroundColor: const Color(0xFFE8E8E8),
-                                  progressColor: green,
-                                ),
-                              ),
-                              const Text(
-                                '09 - дек. 2023',
-                                style: TextStyle(
-                                  color: Color(0xFF7F7F7F),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 170,
-                        margin: const EdgeInsets.only(top: 10, left: 5),
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 38,
-                              height: 38,
-                              padding: const EdgeInsets.all(4),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E8E8),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: const Icon(
-                                Icons.local_gas_station_rounded,
-                                size: 20,
-                                color: Color(0xFF939393),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: const Text(
-                                'Газ',
-                                style: TextStyle(
-                                  color: Color(0xFF747474),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: const Text(
-                                '361 дней',
-                                style: TextStyle(
-                                  color: Color(0xFF222222),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: LinearPercentIndicator(
-                                padding: const EdgeInsets.all(0),
-                                lineHeight: 7.0,
-                                percent: 0,
-                                barRadius: const Radius.circular(20),
-                                backgroundColor: const Color(0xFFE8E8E8),
-                                progressColor: danger,
-                              ),
-                            ),
-                            const Text(
-                              '20 - сент. 2023',
-                              style: TextStyle(
-                                color: Color(0xFF7F7F7F),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                )
               ],
             ),
-          ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (insurance['id'] == null) {
+                        result = await Get.toNamed('/insurance');
+                      } else {
+                        result = await Get.toNamed('/insurance', arguments: {
+                          'id': insurance['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getInsurance();
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, right: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      height: 170,
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.car_crash,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Страховка',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${insurance['expDay'] ?? "0"} дней',
+                              style: const TextStyle(
+                                color: Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: insurance['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: green,
+                            ),
+                          ),
+                          Text(
+                            '${insurance['endDate'] ?? ''}',
+                            style: const TextStyle(
+                              color: Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (license['id'] == null) {
+                        result = await Get.toNamed('/license');
+                      } else {
+                        result = await Get.toNamed('/license', arguments: {
+                          'id': license['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getLicense();
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      height: 170,
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.groups,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Доверенность',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${license['expDay'] ?? "0"} дней',
+                              style: const TextStyle(
+                                color: Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: license['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: green,
+                            ),
+                          ),
+                          Text(
+                            '${license['endDate'] ?? ''}',
+                            style: const TextStyle(
+                              color: Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (inspection['id'] == null) {
+                        result = await Get.toNamed('/inspection');
+                      } else {
+                        result = await Get.toNamed('/inspection', arguments: {
+                          'id': inspection['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getInspection();
+                      }
+                    },
+                    child: Container(
+                      height: 170,
+                      margin: const EdgeInsets.only(top: 10, right: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.engineering,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Тех. осмотр',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${inspection['expDay'] ?? "0"} дней',
+                              style: TextStyle(
+                                color: inspection['percent'] > 0.8 ? danger : const Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: inspection['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: inspection['percent'] > 0.8 ? danger : green,
+                            ),
+                          ),
+                          Text(
+                            '${inspection['endDate'] ?? ''}',
+                            style: TextStyle(
+                              color: inspection['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (toning['id'] == null) {
+                        result = await Get.toNamed('/toning');
+                      } else {
+                        result = await Get.toNamed('/toning', arguments: {
+                          'id': toning['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getToning();
+                      }
+                    },
+                    child: Container(
+                      height: 170,
+                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.brightness_6,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Тонировка',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${toning['expDay'] ?? "0"} дней',
+                              style: TextStyle(
+                                color: toning['percent'] > 0.8 ? danger : const Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: toning['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: toning['percent'] > 0.8 ? danger : green,
+                            ),
+                          ),
+                          Text(
+                            '${toning['endDate'] ?? ''}',
+                            style: TextStyle(
+                              color: toning['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            )
+          ],
         ),
       ),
     );

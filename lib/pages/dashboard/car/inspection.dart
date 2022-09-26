@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 import 'package:control_car_client/helpers/helper.dart';
 import 'package:control_car_client/helpers/api.dart';
 
-class Methane extends StatefulWidget {
-  const Methane({Key? key}) : super(key: key);
+class Inspection extends StatefulWidget {
+  const Inspection({Key? key}) : super(key: key);
 
   @override
-  State<Methane> createState() => MethaneState();
+  State<Inspection> createState() => InspectionState();
 }
 
-class MethaneState extends State<Methane> {
+class InspectionState extends State<Inspection> {
   final _formKey = GlobalKey<FormState>();
   dynamic sendData = {
     "beginDate": "",
@@ -25,17 +25,17 @@ class MethaneState extends State<Methane> {
     "endDate": TextEditingController(),
   };
 
-  getMethane() async {
-    final response = await get('/services/mobile/api/methane/${Get.arguments['id']}');
+  getInspection() async {
+    final response = await get('/services/mobile/api/inspection/${Get.arguments['id']}');
     setState(() {
       sendData = response;
-      data['beginDate'].text = response['beginDate'].toString();
+      data['beginDate'].text = response['beginDate'];
       data['endDate'].text = response['endDate'].toString();
     });
   }
 
   create() async {
-    final response = await post('/services/mobile/api/methane', sendData);
+    final response = await post('/services/mobile/api/inspection', sendData);
     if (response != null) {
       if (response['success']) {
         Get.back(result: 1);
@@ -44,7 +44,7 @@ class MethaneState extends State<Methane> {
   }
 
   update() async {
-    final response = await put('/services/mobile/api/methane', sendData);
+    final response = await put('/services/mobile/api/inspection', sendData);
     if (response != null) {
       if (response['success']) {
         Get.back(result: 1);
@@ -55,7 +55,7 @@ class MethaneState extends State<Methane> {
   @override
   void initState() {
     if (Get.arguments != null) {
-      getMethane();
+      getInspection();
     }
     setState(() {
       sendData['beginDate'] = DateFormat('yyyy-MM-dd').format(DateTime.now());
