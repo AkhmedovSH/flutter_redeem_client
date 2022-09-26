@@ -20,6 +20,7 @@ import 'pages/dashboard/home/points.dart';
 import 'pages/dashboard/home/notifications.dart';
 import 'pages/dashboard/home/notification_detail.dart';
 import 'pages/gas_detail.dart';
+import 'pages/dashboard/car/oil.dart';
 
 import 'pages/dashboard/profile/profile_settings.dart';
 import 'pages/dashboard/profile/support.dart';
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifications', page: () => const Notifications()),
         GetPage(name: '/notification-detail', page: () => const NotificationDetail()),
         GetPage(name: '/gas-detail', page: () => const GasDetail()),
+        GetPage(name: '/oil', page: () => const Oil()),
 
         // Profile
         GetPage(name: '/profile-setting', page: () => const ProfileSetting()),

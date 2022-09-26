@@ -253,7 +253,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 20),
                             child: const Text(
-                              '+998 55 500-00-89',
+                              '+998 55 500-40-44',
                               style: TextStyle(
                                 color: Color(0xFF2995A3),
                                 fontWeight: FontWeight.w600,
@@ -272,7 +272,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                               onTap: () async {
                                 final Uri launchUri = Uri(
                                   scheme: 'tel',
-                                  path: '+998555000089',
+                                  path: '+998555004044',
                                 );
                                 await launchUrl(launchUri);
                               },

@@ -548,6 +548,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.2"
   permission_handler:
     dependency: "direct main"
     description:
@@ -912,4 +919,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.17.0-0 <3.0.0"
-  flutter: ">=2.10.0"
+  flutter: ">=2.12.0"
