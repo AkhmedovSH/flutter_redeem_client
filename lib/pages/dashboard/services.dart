@@ -24,12 +24,12 @@ class _ServicesState extends State<Services> {
     {'name': 'Tonirovka', 'icon': 'images/icons/tanirovka.svg', 'active': false},
     {'name': 'Gaz balon', 'icon': 'images/icons/gas_balon.svg', 'active': false}
   ];
-  dynamic oil = {};
-  dynamic methane = {};
-  dynamic insurance = {};
-  dynamic license = {};
-  dynamic inspection = {};
-  dynamic toning = {};
+  dynamic oil = {'percent': 0.1};
+  dynamic methane = {'percent': 0.1};
+  dynamic insurance = {'percent': 0.1};
+  dynamic license = {'percent': 0.1};
+  dynamic inspection = {'percent': 0.1};
+  dynamic toning = {'percent': 0.1};
 
   getPercent(date) {
     dynamic currentDay = DateTime.now();
@@ -49,7 +49,8 @@ class _ServicesState extends State<Services> {
     if (currentDay.difference(beginDate).inDays > 0) {
       dynamic hundred = endDate.difference(beginDate).inDays;
       dynamic percent = currentDay.difference(beginDate).inDays;
-      return (double.parse(((percent * 100.0) / hundred).toStringAsFixed(1)) / 100.0);
+      print(double.parse(((percent) / hundred).toStringAsFixed(1)));
+      return (double.parse(((percent) / hundred).toStringAsFixed(1)));
     }
     // print(date);
     // print(endDate.difference(beginDate).inDays);
@@ -275,8 +276,8 @@ class _ServicesState extends State<Services> {
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${oil['expDay'] ?? "0"} дней',
-                              style: const TextStyle(
-                                color: Color(0xFF222222),
+                              style: TextStyle(
+                                color: oil['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 overflow: TextOverflow.visible,
@@ -291,13 +292,13 @@ class _ServicesState extends State<Services> {
                               percent: oil['percent'] ?? 0,
                               barRadius: const Radius.circular(20),
                               backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: green,
+                              progressColor: oil['percent'] > 0.8 ? danger : green,
                             ),
                           ),
                           Text(
                             '${oil['endDate'] ?? ''}',
-                            style: const TextStyle(
-                              color: Color(0xFF7F7F7F),
+                            style: TextStyle(
+                              color: oil['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -365,8 +366,8 @@ class _ServicesState extends State<Services> {
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${methane['expDay'] ?? "0"} дней',
-                              style: const TextStyle(
-                                color: Color(0xFF222222),
+                              style: TextStyle(
+                                color: methane['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 overflow: TextOverflow.visible,
@@ -381,13 +382,13 @@ class _ServicesState extends State<Services> {
                               percent: methane['percent'] ?? 0,
                               barRadius: const Radius.circular(20),
                               backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: danger,
+                              progressColor: methane['percent'] > 0.8 ? danger : green,
                             ),
                           ),
                           Text(
                             '${methane['endDate'] ?? ''}',
-                            style: const TextStyle(
-                              color: Color(0xFF7F7F7F),
+                            style: TextStyle(
+                              color: methane['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -458,8 +459,8 @@ class _ServicesState extends State<Services> {
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${insurance['expDay'] ?? "0"} дней',
-                              style: const TextStyle(
-                                color: Color(0xFF222222),
+                              style: TextStyle(
+                                color: insurance['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 overflow: TextOverflow.visible,
@@ -474,13 +475,13 @@ class _ServicesState extends State<Services> {
                               percent: insurance['percent'] ?? 0,
                               barRadius: const Radius.circular(20),
                               backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: green,
+                              progressColor: insurance['percent'] > 0.8 ? danger : green,
                             ),
                           ),
                           Text(
                             '${insurance['endDate'] ?? ''}',
-                            style: const TextStyle(
-                              color: Color(0xFF7F7F7F),
+                            style: TextStyle(
+                              color: insurance['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -547,8 +548,8 @@ class _ServicesState extends State<Services> {
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               '${license['expDay'] ?? "0"} дней',
-                              style: const TextStyle(
-                                color: Color(0xFF222222),
+                              style: TextStyle(
+                                color: license['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 overflow: TextOverflow.visible,
@@ -563,13 +564,13 @@ class _ServicesState extends State<Services> {
                               percent: license['percent'] ?? 0,
                               barRadius: const Radius.circular(20),
                               backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: green,
+                              progressColor: license['percent'] > 0.8 ? danger : green,
                             ),
                           ),
                           Text(
                             '${license['endDate'] ?? ''}',
-                            style: const TextStyle(
-                              color: Color(0xFF7F7F7F),
+                            style: TextStyle(
+                              color: license['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),

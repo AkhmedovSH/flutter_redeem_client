@@ -200,6 +200,80 @@ class _GasDetailState extends State<GasDetail> {
                                 ],
                               ),
                             ),
+                            pos['status'] != null
+                                ? Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    width: MediaQuery.of(context).size.width,
+                                    // decoration: BoxDecoration(
+                                    //   border: Border(bottom: BorderSide(color: borderColor, width: 1)),
+                                    // ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Текущий статус',
+                                            style: TextStyle(
+                                              color: black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              '${pos['status']}',
+                                              style: TextStyle(
+                                                color: black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                            pos['nextStatus'] != null
+                                ? Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    width: MediaQuery.of(context).size.width,
+                                    // decoration: BoxDecoration(
+                                    //   border: Border(bottom: BorderSide(color: borderColor, width: 1)),
+                                    // ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Следующий статус',
+                                            style: TextStyle(
+                                              color: black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              '${pos['nextStatus']}',
+                                              style: TextStyle(
+                                                color: black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
                             pos['workingDays'] != null
                                 ? Container(
                                     margin: const EdgeInsets.only(bottom: 30, top: 10),
