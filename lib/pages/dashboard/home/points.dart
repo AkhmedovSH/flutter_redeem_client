@@ -68,10 +68,11 @@ class _PointsState extends State<Points> {
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                     margin: const EdgeInsets.only(bottom: 8),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(255, 255, 255, 0.3),
-                      border: Border(
+                      color: white,
+                      border: const Border(
                         bottom: BorderSide(
-                          color: white,
+                          color: Color(0xFFCED4D8),
+                          width: 1,
                         ),
                       ),
                     ),

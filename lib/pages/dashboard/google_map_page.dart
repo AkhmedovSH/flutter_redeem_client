@@ -148,7 +148,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                 child: GoogleMap(
                   myLocationButtonEnabled: false,
                   zoomControlsEnabled: false,
-                  mapType: MapType.normal,
+                  mapType: MapType.terrain,
                   compassEnabled: false,
                   myLocationEnabled: true,
                   mapToolbarEnabled: false,

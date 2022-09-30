@@ -6,6 +6,6 @@ import '../locales/uz.dart';
 class Messages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
-        'uz_UZ': uz,
+        'uz-latn-UZ': uz,
       };
 }

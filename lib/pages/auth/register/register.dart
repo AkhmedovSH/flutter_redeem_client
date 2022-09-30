@@ -53,7 +53,6 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
     });
     final exist = await guestGet('/services/mobile/api/check-login?login=' + sendData['phone']);
     if (exist == null) {
-      showErrorToast('phone_exist'.tr);
       setState(() {
         loading = false;
       });

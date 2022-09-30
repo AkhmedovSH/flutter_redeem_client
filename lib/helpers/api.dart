@@ -17,13 +17,14 @@ BaseOptions options = BaseOptions(
 var dio = Dio(options);
 
 Future get(String url, {payload}) async {
+  print(getx.Get.locale);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('access_token') != null) {
     dio.options.headers["authorization"] = "Bearer ${prefs.getString('access_token')}";
   }
   dio.options.headers["Accept"] = "application/json";
-  dio.options.headers["Language"] = getx.Get.locale.toString().substring(0, 2);
-  dio.options.headers["Accept-Language"] = getx.Get.locale.toString().substring(0, 2);
+  dio.options.headers["Language"] = "uz-Latn-UZ";
+  dio.options.headers["Accept-Language"] = "uz-Latn-UZ";
 
   try {
     final response = await dio.get(
@@ -39,14 +40,17 @@ Future get(String url, {payload}) async {
 Future post(String url, dynamic payload) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   try {
+    print(getx.Get.locale);
     final response = await dio.post(
       hostUrl + url,
       data: payload,
-      options: Options(headers: {
-        "authorization": "Bearer ${prefs.getString('access_token')}",
-        "Language": getx.Get.locale.toString().substring(0, 2),
-        "Accept-Language": getx.Get.locale.toString().substring(0, 2)
-      }),
+      options: Options(
+        headers: {
+          "authorization": "Bearer ${prefs.getString('access_token')}",
+          "Language": "uz-Latn-UZ",
+          "Accept-Language": "uz-Latn-UZ",
+        },
+      ),
     );
     return response.data;
   } on DioError catch (e) {
@@ -56,12 +60,13 @@ Future post(String url, dynamic payload) async {
 
 Future guestGet(String url, {payload}) async {
   try {
+    print(getx.Get.locale);
     final response = await dio.get(
       hostUrl + url,
       queryParameters: payload,
       options: Options(headers: {
-        "Language": getx.Get.locale.toString().substring(0, 2),
-        "Accept-Language": getx.Get.locale.toString().substring(0, 2),
+        "Language": "uz-Latn-UZ",
+        "Accept-Language": "uz-Latn-UZ",
       }),
     );
     return response.data;
@@ -72,6 +77,7 @@ Future guestGet(String url, {payload}) async {
 
 Future guestPost(String url, dynamic payload) async {
   try {
+    print(getx.Get.locale);
     final response = await dio.post(hostUrl + url, data: payload);
     return response.data;
   } on DioError catch (e) {
@@ -85,11 +91,13 @@ Future put(String url, dynamic payload) async {
     final response = await dio.put(
       hostUrl + url,
       data: payload,
-      options: Options(headers: {
-        "authorization": "Bearer ${prefs.getString('access_token')}",
-        "Language": getx.Get.locale.toString().substring(0, 2),
-        "Accept-Language": getx.Get.locale.toString().substring(0, 2)
-      }),
+      options: Options(
+        headers: {
+          "authorization": "Bearer ${prefs.getString('access_token')}",
+          "Language": "uz-Latn-UZ",
+          "Accept-Language": "uz-Latn-UZ",
+        },
+      ),
     );
     return response.data;
   } on DioError catch (e) {
@@ -102,11 +110,13 @@ Future delete(String url) async {
   try {
     final response = await dio.delete(
       hostUrl + url,
-      options: Options(headers: {
-        "authorization": "Bearer ${prefs.getString('access_token')}",
-        "Language": getx.Get.locale.toString().substring(0, 2),
-        "Accept-Language": getx.Get.locale.toString().substring(0, 2)
-      }),
+      options: Options(
+        headers: {
+          "authorization": "Bearer ${prefs.getString('access_token')}",
+          "Language": "uz-Latn-UZ",
+          "Accept-Language": "uz-Latn-UZ",
+        },
+      ),
     );
     return response.data;
   } on DioError catch (e) {
@@ -127,11 +137,13 @@ uploadImage(url, File file) async {
     final response = await dio.post(
       hostUrl + url,
       data: data,
-      options: Options(headers: {
-        "authorization": "Bearer ${prefs.getString('access_token')}",
-        "Language": getx.Get.locale.toString().substring(0, 2),
-        "Accept-Language": getx.Get.locale.toString().substring(0, 2)
-      }),
+      options: Options(
+        headers: {
+          "authorization": "Bearer ${prefs.getString('access_token')}",
+          "Language": "uz-Latn-UZ",
+          "Accept-Language": "uz-Latn-UZ",
+        },
+      ),
     );
     return response.data;
   } on DioError catch (e) {

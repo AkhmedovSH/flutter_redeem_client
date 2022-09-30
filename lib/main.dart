@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: Messages(),
-      locale: const Locale('uz', 'UZ'),
+      locale: const Locale('uz-latn-UZ', ''),
       // fallbackLocale: const Locale('uz', 'UZ'),
       // supportedLocales: const [
       //   Locale('ru', 'RU'),
@@ -91,9 +91,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifications', page: () => const Notifications()),
         GetPage(name: '/notification-detail', page: () => const NotificationDetail()),
         GetPage(name: '/gas-detail', page: () => const GasDetail()),
-        
+
         // Car
-        
+
         GetPage(name: '/oil', page: () => const Oil()),
         GetPage(name: '/methane', page: () => const Methane()),
         GetPage(name: '/inspection', page: () => const Inspection()),
