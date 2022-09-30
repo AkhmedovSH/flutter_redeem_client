@@ -298,10 +298,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                     : Container(),
                               ),
                             ),
-                            const Text(
-                              'Eslab qolish',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  sendData['isRemember'] = !sendData['isRemember'];
+                                });
+                              },
+                              child: const Text(
+                                'Eslab qolish',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                            )
                           ],
                         ),
                         GestureDetector(
