@@ -103,7 +103,7 @@ class _ResetPasswordInitState extends State<ResetPasswordInit> with TickerProvid
                     Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Parolni tiklash uchun kerakli ma\'lumotlarni yozing',
+                        'Parolni tiklash uchun telefon raqamingizni kiriting',
                         style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                     ),

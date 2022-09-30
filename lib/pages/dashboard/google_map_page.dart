@@ -188,6 +188,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             child: TextFormField(
               textInputAction: TextInputAction.search,
               onChanged: (value) {
+                print(value);
                 if (value.isEmpty) {
                   setState(() {
                     filter['search'] = '';
@@ -317,10 +318,12 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     onTap: () {
                       for (var k = 0; k < distance.length; k++) {
                         if (distance[k]['select']) {
+                          print(distance[k]);
                           setState(() {
                             filter['distance'] = distance[k]['value'].toString();
                             animate = !animate;
                           });
+                          getPoses();
                         }
                       }
                     },

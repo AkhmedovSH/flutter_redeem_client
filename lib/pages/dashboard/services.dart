@@ -63,6 +63,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         oil = response;
@@ -75,6 +77,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         methane = response;
@@ -87,6 +91,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         insurance = response;
@@ -99,6 +105,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         license = response;
@@ -111,6 +119,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         inspection = response;
@@ -123,6 +133,8 @@ class _ServicesState extends State<Services> {
     if (response != null) {
       if (response['beginDate'] != null) {
         response['percent'] = getPercent(response);
+      } else {
+        response['percent'] = 0.0;
       }
       setState(() {
         toning = response;

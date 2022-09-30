@@ -90,14 +90,14 @@ class _ResetPasswordFinishState extends State<ResetPasswordFinish> with TickerPr
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        'Imtihon',
+                        '',
                         style: TextStyle(color: black, fontSize: 22, fontWeight: FontWeight.w700),
                       ),
                     ),
                     Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Raqamingizga yuborgan kodni yozing',
+                        'Raqamingizga yuborilgan kodni yozing',
                         style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                     ),
