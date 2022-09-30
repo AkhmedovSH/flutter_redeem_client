@@ -35,7 +35,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   setShowQr({change = true}) async {
     animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
     final response = await get('/services/mobile/api/get-uuid');
-    print(response);
     if (response['reason'] == 'error.user.not.found') {
       showErrorToast('Xato');
       return;

@@ -93,7 +93,7 @@ class OilState extends State<Oil> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 5),
+                      margin: const EdgeInsets.only(bottom: 5, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

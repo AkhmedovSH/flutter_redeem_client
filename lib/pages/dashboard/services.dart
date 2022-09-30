@@ -49,12 +49,8 @@ class _ServicesState extends State<Services> {
     if (currentDay.difference(beginDate).inDays > 0) {
       dynamic hundred = endDate.difference(beginDate).inDays;
       dynamic percent = currentDay.difference(beginDate).inDays;
-      print(double.parse(((percent) / hundred).toStringAsFixed(1)));
       return (double.parse(((percent) / hundred).toStringAsFixed(1)));
     }
-    // print(date);
-    // print(endDate.difference(beginDate).inDays);
-    // print(currentDay.difference(beginDate).inDays);
     return 0.0;
   }
 

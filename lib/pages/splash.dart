@@ -33,7 +33,6 @@ class _SplashState extends State<Splash> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String localVersion = packageInfo.version;
     var playMarketVersion = await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
-    print(playMarketVersion);
     if (playMarketVersion == null) {
       startTimer();
       return;

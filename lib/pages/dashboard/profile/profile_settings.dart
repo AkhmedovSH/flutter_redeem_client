@@ -48,7 +48,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
   ];
 
   updateAccount() async {
-    print(sendData);
     final response = await put('/services/mobile/api/account', sendData);
     if (response != null) {
       if (response['success']) {

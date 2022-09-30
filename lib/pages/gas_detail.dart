@@ -211,8 +211,9 @@ class _GasDetailState extends State<GasDetail> {
                                     child: Row(
                                       children: [
                                         Expanded(
+                                          flex: 1,
                                           child: Text(
-                                            'Текущий статус',
+                                            'Hozirgi',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,
@@ -221,13 +222,14 @@ class _GasDetailState extends State<GasDetail> {
                                           ),
                                         ),
                                         Expanded(
+                                          flex: 2,
                                           child: Container(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               '${pos['status']}',
                                               style: TextStyle(
                                                 color: black,
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -248,8 +250,9 @@ class _GasDetailState extends State<GasDetail> {
                                     child: Row(
                                       children: [
                                         Expanded(
+                                          flex: 1,
                                           child: Text(
-                                            'Следующий статус',
+                                            'Keyingi',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,
@@ -258,13 +261,14 @@ class _GasDetailState extends State<GasDetail> {
                                           ),
                                         ),
                                         Expanded(
+                                          flex: 2,
                                           child: Container(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               '${pos['nextStatus']}',
                                               style: TextStyle(
                                                 color: black,
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),

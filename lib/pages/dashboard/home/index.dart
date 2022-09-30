@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -143,7 +144,11 @@ class _IndexState extends State<Index> {
       primary: false,
       header: MaterialClassicHeader(color: green),
       onRefresh: refreshPage,
+      enablePullUp: true,
       enablePullDown: true,
+      cacheExtent: 200.0,
+
+      // headerTriggerDistance: 80.0,
       child: Stack(
         children: [
           Image.asset(
@@ -485,8 +490,9 @@ class _IndexState extends State<Index> {
             child: Stack(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Get.toNamed('/notifications');
+                  onTap: () async {
+                    await Get.toNamed('/notifications');
+                    getUnreadNotification();
                   },
                   child: Container(
                     height: 40,

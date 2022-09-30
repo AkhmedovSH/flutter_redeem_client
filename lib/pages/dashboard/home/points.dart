@@ -20,7 +20,6 @@ class _PointsState extends State<Points> {
 
   getPoses() async {
     final response = await get('/services/mobile/api/get-balance');
-    print(response);
     setState(() {
       poses = response;
     });
@@ -47,14 +46,15 @@ class _PointsState extends State<Points> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        gradient: gradient,
-      ),
+      // decoration: BoxDecoration(
+      //   gradient: gradient,
+      // ),
+      color: white,
       child: SimpleAppBar(
         appBar: AppBar(),
         title: 'Barcha ballar',
         leading: true,
-        bgcolor: Colors.transparent,
+        bgcolor: white,
         appBarColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Column(
