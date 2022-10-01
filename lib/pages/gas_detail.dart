@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../helpers/helper.dart';
 import '../../../helpers/api.dart';
@@ -22,6 +23,7 @@ class GasDetail extends StatefulWidget {
 }
 
 class _GasDetailState extends State<GasDetail> {
+  GoogleMapController? controller;
   final Completer<GoogleMapController> _controller = Completer();
   CameraPosition kGooglePlex = const CameraPosition(target: LatLng(41.311081, 69.240562), zoom: 13.0);
   List<Marker> markers = [];
@@ -52,12 +54,12 @@ class _GasDetailState extends State<GasDetail> {
       pos = response;
       loading = false;
     });
-    final GoogleMapController controller = await _controller.future;
+    controller = await _controller.future;
     dynamic newPosition = CameraPosition(
       target: LatLng(response['gpsPointX'], response['gpsPointY']),
       zoom: 14,
     );
-    controller.animateCamera(CameraUpdate.newCameraPosition(newPosition));
+    controller!.moveCamera(CameraUpdate.newCameraPosition(newPosition));
     setState(() {
       markers.add(
         Marker(
@@ -73,6 +75,12 @@ class _GasDetailState extends State<GasDetail> {
   void initState() {
     super.initState();
     getPos();
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
   }
 
   @override
@@ -209,11 +217,12 @@ class _GasDetailState extends State<GasDetail> {
                                     //   border: Border(bottom: BorderSide(color: borderColor, width: 1)),
                                     // ),
                                     child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                            'Hozirgi',
+                                            'Hozirgi statusi',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,
@@ -232,6 +241,7 @@ class _GasDetailState extends State<GasDetail> {
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
+                                              textAlign: TextAlign.end,
                                             ),
                                           ),
                                         )
@@ -248,11 +258,12 @@ class _GasDetailState extends State<GasDetail> {
                                     //   border: Border(bottom: BorderSide(color: borderColor, width: 1)),
                                     // ),
                                     child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                            'Keyingi',
+                                            'Keyingi statusi',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,
@@ -271,6 +282,7 @@ class _GasDetailState extends State<GasDetail> {
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
+                                              textAlign: TextAlign.end,
                                             ),
                                           ),
                                         )
@@ -352,7 +364,9 @@ class _GasDetailState extends State<GasDetail> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: GoogleMap(
+                                  minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
                                   myLocationButtonEnabled: true,
+                                  myLocationEnabled: true,
                                   zoomControlsEnabled: false,
                                   mapType: MapType.normal,
                                   initialCameraPosition: kGooglePlex,
@@ -615,7 +629,11 @@ class _GasDetailState extends State<GasDetail> {
                     ],
                   ),
                 )
-              : Container(),
+              : Center(
+                  child: SpinKitRing(
+                    color: green,
+                  ),
+                ),
         ),
         Positioned(
           top: MediaQuery.of(context).size.height * 0.095,

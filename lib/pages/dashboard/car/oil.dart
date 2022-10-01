@@ -98,7 +98,7 @@ class OilState extends State<Oil> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Дата след. замены',
+                            'Keyingi sana almashtirishlar',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -106,7 +106,7 @@ class OilState extends State<Oil> {
                             ),
                           ),
                           Text(
-                            '09 - дек. 2022',
+                            '${sendData['endDate']}',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: black,
@@ -121,7 +121,7 @@ class OilState extends State<Oil> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Пробег для замены',
+                            'O\'zgartirish kilometri',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -129,7 +129,7 @@ class OilState extends State<Oil> {
                             ),
                           ),
                           Text(
-                            '13000 км',
+                            '${sendData['nextKm']} km',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: black,
@@ -147,7 +147,7 @@ class OilState extends State<Oil> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                'Дата прошлой замены',
+                                'Oxirgi almashtirish sanasi',
                                 style: TextStyle(
                                   color: grey,
                                   fontWeight: FontWeight.w500,
@@ -200,7 +200,7 @@ class OilState extends State<Oil> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                'Пробег при замене',
+                                'O\'zgartirish paytida masofa',
                                 style: TextStyle(
                                   color: grey,
                                   fontWeight: FontWeight.w500,
@@ -243,7 +243,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Марка масла',
+                        'Yog\' brendi',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -280,7 +280,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'На сколько км пробега рассчитано масло',
+                        'Neft necha kilometrga baholangan',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -319,7 +319,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Ежедневный пробег',
+                        'Kundalik kilometr',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -401,7 +401,7 @@ class OilState extends State<Oil> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Масло',
+                  'Yog \'',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

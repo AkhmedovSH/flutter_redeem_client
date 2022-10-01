@@ -19,6 +19,7 @@ class GoogleMapPage extends StatefulWidget {
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? controller;
   BitmapDescriptor? icon;
   dynamic token = '';
 
@@ -112,13 +113,14 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
           });
         }
       }
+      controller = await _controller.future;
       if (markers.length == 1) {
         dynamic newPosition = CameraPosition(
           target: LatLng(response[0]['gpsPointX'], response[0]['gpsPointY']),
           zoom: 17,
         );
-        final GoogleMapController controller = await _controller.future;
-        controller.animateCamera(CameraUpdate.newCameraPosition(newPosition));
+        controller = await _controller.future;
+        controller!.animateCamera(CameraUpdate.newCameraPosition(newPosition));
       }
     }
   }
@@ -127,6 +129,12 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   void initState() {
     super.initState();
     getPoses();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller!.dispose();
   }
 
   @override
@@ -154,7 +162,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   mapToolbarEnabled: false,
                   initialCameraPosition: kGooglePlex,
                   // polygons: myPolygon(),
-                  onMapCreated: (GoogleMapController controller) {
+                  onMapCreated: (GoogleMapController controller) async {
                     _controller.complete(controller);
                   },
                   markers: Set<Marker>.of(markers),

@@ -81,10 +81,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
           Get.offAllNamed('/');
         } catch (e) {
-          print(1111111111123123123);
           print(e);
           Get.offAllNamed('/');
-          print(1111111111123123123);
         }
       } else {
         // у вас нету доступа

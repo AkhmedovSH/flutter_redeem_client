@@ -89,7 +89,7 @@ class InsuranceState extends State<Insurance> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        'Период действия',
+                        'Yaroqlilik',
                         style: TextStyle(
                           color: grey,
                           fontSize: 20,
@@ -234,7 +234,7 @@ class InsuranceState extends State<Insurance> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Газ',
+                  'Sug\'urta',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

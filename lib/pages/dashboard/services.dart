@@ -48,8 +48,9 @@ class _ServicesState extends State<Services> {
     }
     if (currentDay.difference(beginDate).inDays > 0) {
       dynamic hundred = endDate.difference(beginDate).inDays;
-      dynamic percent = currentDay.difference(beginDate).inDays;
-      return (double.parse(((percent) / hundred).toStringAsFixed(1)));
+      dynamic other = currentDay.difference(beginDate).inDays;
+      dynamic percent = (double.parse(((other) / hundred).toStringAsFixed(1)));
+      return percent < 1.0 ? percent : 1.0;
     }
     return 0.0;
   }
@@ -157,9 +158,10 @@ class _ServicesState extends State<Services> {
   Widget build(BuildContext context) {
     return SimpleAppBar(
       appBar: AppBar(),
-      title: 'My auto',
+      title: 'Menim auto',
       leading: false,
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             // const SizedBox(
@@ -272,7 +274,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Масло',
+                              'Yog\'',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 18,
@@ -283,7 +285,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${oil['expDay'] ?? "0"} дней',
+                              '${oil['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: oil['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
@@ -361,7 +363,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Газ',
+                              'Gaz',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 16,
@@ -373,7 +375,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${methane['expDay'] ?? "0"} дней',
+                              '${methane['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: methane['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
@@ -455,7 +457,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Страховка',
+                              'Sug\'urta',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 18,
@@ -466,7 +468,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${insurance['expDay'] ?? "0"} дней',
+                              '${insurance['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: insurance['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
@@ -544,7 +546,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Доверенность',
+                              'Vakolatnoma',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 18,
@@ -555,7 +557,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${license['expDay'] ?? "0"} дней',
+                              '${license['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: license['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
@@ -637,7 +639,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Тех. осмотр',
+                              'Texnik ko\'rik',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 16,
@@ -649,7 +651,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${inspection['expDay'] ?? "0"} дней',
+                              '${inspection['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: inspection['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,
@@ -727,7 +729,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Тонировка',
+                              'Tonlash',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 16,
@@ -739,7 +741,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: Text(
-                              '${toning['expDay'] ?? "0"} дней',
+                              '${toning['expDay'] ?? "0"} kun',
                               style: TextStyle(
                                 color: toning['percent'] > 0.8 ? danger : const Color(0xFF222222),
                                 fontSize: 18,

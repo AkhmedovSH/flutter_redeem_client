@@ -89,7 +89,7 @@ class MethaneState extends State<Methane> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        'Период действия',
+                        'Yaroqlilik',
                         style: TextStyle(
                           color: grey,
                           fontSize: 20,
@@ -234,7 +234,7 @@ class MethaneState extends State<Methane> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Газ',
+                  'Gaz',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
