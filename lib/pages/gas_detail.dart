@@ -41,6 +41,11 @@ class _GasDetailState extends State<GasDetail> {
     }
   }
 
+  void _onMapCreated(GoogleMapController _controller) {
+    if(controller == null )
+      controller = _controller;
+  }
+
   getPos({id}) async {
     setState(() {
       loading = true;

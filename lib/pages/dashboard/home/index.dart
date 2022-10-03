@@ -126,6 +126,7 @@ class _IndexState extends State<Index> {
     getUnreadNotification();
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        print(111);
         // if (currentPage != total) {
         //   setState(() {
         //     currentPage += 1;
@@ -133,6 +134,9 @@ class _IndexState extends State<Index> {
         //   });
         //   await getPoses();
         // }
+      }
+      if (scrollController.position.pixels == scrollController.position.minScrollExtent) {
+        print(111);
       }
     });
   }
@@ -153,12 +157,12 @@ class _IndexState extends State<Index> {
           Image.asset(
             'images/home_bg.png',
             width: MediaQuery.of(context).size.width,
-            height: 300,
+            height: 350,
             fit: BoxFit.fill,
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 300,
+            height: 350,
             decoration: BoxDecoration(
               gradient: gradient,
             ),
@@ -195,7 +199,7 @@ class _IndexState extends State<Index> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(bottom: 25),
+                      margin: const EdgeInsets.only(bottom: 25, top: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -456,7 +460,7 @@ class _IndexState extends State<Index> {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.095,
-            height: MediaQuery.of(context).size.height * 0.15,
+            height: MediaQuery.of(context).size.height * 0.12,
             right: 0,
             width: MediaQuery.of(context).size.width,
             child: Container(

@@ -41,7 +41,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         // ),
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 250,
+          height: 220,
           decoration: BoxDecoration(
             gradient: gradient,
           ),
