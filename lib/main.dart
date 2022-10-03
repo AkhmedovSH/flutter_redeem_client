@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFFFFFFF),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: red,
+            backgroundColor: red,
           ),
         ),
         textTheme: Theme.of(context).textTheme.apply(
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
             ),
         textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
-          primary: red,
+          backgroundColor: red,
         )),
       ),
       initialRoute: '/splash',

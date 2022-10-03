@@ -24,12 +24,12 @@ class _ServicesState extends State<Services> {
     {'name': 'Tonirovka', 'icon': 'images/icons/tanirovka.svg', 'active': false},
     {'name': 'Gaz balon', 'icon': 'images/icons/gas_balon.svg', 'active': false}
   ];
-  dynamic oil = {'percent': 0.1};
-  dynamic methane = {'percent': 0.1};
-  dynamic insurance = {'percent': 0.1};
-  dynamic license = {'percent': 0.1};
-  dynamic inspection = {'percent': 0.1};
-  dynamic toning = {'percent': 0.1};
+  dynamic oil = {'percent': 0.0};
+  dynamic methane = {'percent': 0.0};
+  dynamic insurance = {'percent': 0.0};
+  dynamic license = {'percent': 0.0};
+  dynamic inspection = {'percent': 0.0};
+  dynamic toning = {'percent': 0.0};
 
   getPercent(date) {
     dynamic currentDay = DateTime.now();
