@@ -89,7 +89,7 @@ class LicenseState extends State<License> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Text(
-                        'Yaroqlilik',
+                        'Amal qilish muddati',
                         style: TextStyle(
                           color: grey,
                           fontSize: 20,
@@ -234,7 +234,7 @@ class LicenseState extends State<License> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Vakolatnoma',
+                  'Ishonchnoma',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

@@ -158,7 +158,7 @@ class _ServicesState extends State<Services> {
   Widget build(BuildContext context) {
     return SimpleAppBar(
       appBar: AppBar(),
-      title: 'Menim auto',
+      title: 'Avtomobil',
       leading: false,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -234,95 +234,6 @@ class _ServicesState extends State<Services> {
                   child: GestureDetector(
                     onTap: () async {
                       dynamic result;
-                      if (oil['id'] == null) {
-                        result = await Get.toNamed('/oil');
-                      } else {
-                        result = await Get.toNamed('/oil', arguments: {
-                          'id': oil['id'],
-                        });
-                      }
-                      if (result != null && result == 1) {
-                        getOil();
-                      }
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 10, right: 5),
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      height: 170,
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 38,
-                            height: 38,
-                            padding: const EdgeInsets.all(4),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE8E8E8),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Icon(
-                              Icons.oil_barrel,
-                              size: 20,
-                              color: Color(0xFF939393),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: const Text(
-                              'Yog\'',
-                              style: TextStyle(
-                                color: Color(0xFF747474),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${oil['expDay'] ?? "0"} kun',
-                              style: TextStyle(
-                                color: oil['percent'] > 0.8 ? danger : const Color(0xFF222222),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: LinearPercentIndicator(
-                              padding: const EdgeInsets.all(0),
-                              lineHeight: 7.0,
-                              percent: oil['percent'] ?? 0,
-                              barRadius: const Radius.circular(20),
-                              backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: oil['percent'] > 0.8 ? danger : green,
-                            ),
-                          ),
-                          Text(
-                            '${oil['endDate'] ?? ''}',
-                            style: TextStyle(
-                              color: oil['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () async {
-                      dynamic result;
                       if (methane['id'] == null) {
                         result = await Get.toNamed('/methane');
                       } else {
@@ -336,7 +247,7 @@ class _ServicesState extends State<Services> {
                     },
                     child: Container(
                       height: 170,
-                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      margin: const EdgeInsets.only(top: 10, right: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                       decoration: BoxDecoration(
                         color: white,
@@ -399,6 +310,279 @@ class _ServicesState extends State<Services> {
                             '${methane['endDate'] ?? ''}',
                             style: TextStyle(
                               color: methane['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (inspection['id'] == null) {
+                        result = await Get.toNamed('/inspection');
+                      } else {
+                        result = await Get.toNamed('/inspection', arguments: {
+                          'id': inspection['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getInspection();
+                      }
+                    },
+                    child: Container(
+                      height: 170,
+                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.engineering,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Texnik ko\'rik',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${inspection['expDay'] ?? "0"} kun',
+                              style: TextStyle(
+                                color: inspection['percent'] > 0.8 ? danger : const Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: inspection['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: inspection['percent'] > 0.8 ? danger : green,
+                            ),
+                          ),
+                          Text(
+                            '${inspection['endDate'] ?? ''}',
+                            style: TextStyle(
+                              color: inspection['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (oil['id'] == null) {
+                        result = await Get.toNamed('/oil');
+                      } else {
+                        result = await Get.toNamed('/oil', arguments: {
+                          'id': oil['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getOil();
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, right: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      height: 170,
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.oil_barrel,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Moy',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${oil['expDay'] ?? "0"} kun',
+                              style: TextStyle(
+                                color: oil['percent'] > 0.8 ? danger : const Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: oil['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: oil['percent'] > 0.8 ? danger : green,
+                            ),
+                          ),
+                          Text(
+                            '${oil['endDate'] ?? ''}',
+                            style: TextStyle(
+                              color: oil['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      dynamic result;
+                      if (toning['id'] == null) {
+                        result = await Get.toNamed('/toning');
+                      } else {
+                        result = await Get.toNamed('/toning', arguments: {
+                          'id': toning['id'],
+                        });
+                      }
+                      if (result != null && result == 1) {
+                        getToning();
+                      }
+                    },
+                    child: Container(
+                      height: 170,
+                      margin: const EdgeInsets.only(top: 10, left: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE8E8E8),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.brightness_6,
+                              size: 20,
+                              color: Color(0xFF939393),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: const Text(
+                              'Tonirovka',
+                              style: TextStyle(
+                                color: Color(0xFF747474),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              '${toning['expDay'] ?? "0"} kun',
+                              style: TextStyle(
+                                color: toning['percent'] > 0.8 ? danger : const Color(0xFF222222),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: LinearPercentIndicator(
+                              padding: const EdgeInsets.all(0),
+                              lineHeight: 7.0,
+                              percent: toning['percent'] ?? 0,
+                              barRadius: const Radius.circular(20),
+                              backgroundColor: const Color(0xFFE8E8E8),
+                              progressColor: toning['percent'] > 0.8 ? danger : green,
+                            ),
+                          ),
+                          Text(
+                            '${toning['endDate'] ?? ''}',
+                            style: TextStyle(
+                              color: toning['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -546,7 +730,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Vakolatnoma',
+                              'Ishonchnoma',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 18,
@@ -581,190 +765,6 @@ class _ServicesState extends State<Services> {
                             '${license['endDate'] ?? ''}',
                             style: TextStyle(
                               color: license['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () async {
-                      dynamic result;
-                      if (inspection['id'] == null) {
-                        result = await Get.toNamed('/inspection');
-                      } else {
-                        result = await Get.toNamed('/inspection', arguments: {
-                          'id': inspection['id'],
-                        });
-                      }
-                      if (result != null && result == 1) {
-                        getInspection();
-                      }
-                    },
-                    child: Container(
-                      height: 170,
-                      margin: const EdgeInsets.only(top: 10, right: 5),
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 38,
-                            height: 38,
-                            padding: const EdgeInsets.all(4),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE8E8E8),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Icon(
-                              Icons.engineering,
-                              size: 20,
-                              color: Color(0xFF939393),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: const Text(
-                              'Texnik ko\'rik',
-                              style: TextStyle(
-                                color: Color(0xFF747474),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${inspection['expDay'] ?? "0"} kun',
-                              style: TextStyle(
-                                color: inspection['percent'] > 0.8 ? danger : const Color(0xFF222222),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: LinearPercentIndicator(
-                              padding: const EdgeInsets.all(0),
-                              lineHeight: 7.0,
-                              percent: inspection['percent'] ?? 0,
-                              barRadius: const Radius.circular(20),
-                              backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: inspection['percent'] > 0.8 ? danger : green,
-                            ),
-                          ),
-                          Text(
-                            '${inspection['endDate'] ?? ''}',
-                            style: TextStyle(
-                              color: inspection['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () async {
-                      dynamic result;
-                      if (toning['id'] == null) {
-                        result = await Get.toNamed('/toning');
-                      } else {
-                        result = await Get.toNamed('/toning', arguments: {
-                          'id': toning['id'],
-                        });
-                      }
-                      if (result != null && result == 1) {
-                        getToning();
-                      }
-                    },
-                    child: Container(
-                      height: 170,
-                      margin: const EdgeInsets.only(top: 10, left: 5),
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 38,
-                            height: 38,
-                            padding: const EdgeInsets.all(4),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE8E8E8),
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: const Icon(
-                              Icons.brightness_6,
-                              size: 20,
-                              color: Color(0xFF939393),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: const Text(
-                              'Tonlash',
-                              style: TextStyle(
-                                color: Color(0xFF747474),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: Text(
-                              '${toning['expDay'] ?? "0"} kun',
-                              style: TextStyle(
-                                color: toning['percent'] > 0.8 ? danger : const Color(0xFF222222),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: LinearPercentIndicator(
-                              padding: const EdgeInsets.all(0),
-                              lineHeight: 7.0,
-                              percent: toning['percent'] ?? 0,
-                              barRadius: const Radius.circular(20),
-                              backgroundColor: const Color(0xFFE8E8E8),
-                              progressColor: toning['percent'] > 0.8 ? danger : green,
-                            ),
-                          ),
-                          Text(
-                            '${toning['endDate'] ?? ''}',
-                            style: TextStyle(
-                              color: toning['percent'] > 0.8 ? danger : const Color(0xFF7F7F7F),
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),

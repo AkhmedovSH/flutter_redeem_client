@@ -147,7 +147,6 @@ class _IndexState extends State<Index> {
       enablePullUp: true,
       enablePullDown: true,
       cacheExtent: 200.0,
-
       // headerTriggerDistance: 80.0,
       child: Stack(
         children: [
@@ -178,7 +177,7 @@ class _IndexState extends State<Index> {
                 return false;
               },
               child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 controller: scrollController,
                 child: Column(
                   children: [
@@ -221,6 +220,7 @@ class _IndexState extends State<Index> {
                             ],
                           ),
                           GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               Get.toNamed('/points');
                             },
@@ -456,7 +456,7 @@ class _IndexState extends State<Index> {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.095,
-            height: 130,
+            height: MediaQuery.of(context).size.height * 0.15,
             right: 0,
             width: MediaQuery.of(context).size.width,
             child: Container(

@@ -98,7 +98,7 @@ class OilState extends State<Oil> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Keyingi sana almashtirishlar',
+                            'Keyingi almashtirish',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -106,7 +106,7 @@ class OilState extends State<Oil> {
                             ),
                           ),
                           Text(
-                            '${sendData['endDate']}',
+                            '${sendData['endDate'] ?? ''}',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: black,
@@ -121,20 +121,22 @@ class OilState extends State<Oil> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'O\'zgartirish kilometri',
+                            'Almashtirish masofasi',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: grey,
                             ),
                           ),
-                          Text(
-                            '${sendData['nextKm']} km',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
+                          sendData['nextKm'] != null
+                              ? Text(
+                                  '${sendData['nextKm'] ?? ''} km',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
@@ -147,7 +149,7 @@ class OilState extends State<Oil> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                'Oxirgi almashtirish sanasi',
+                                'Oxirgi almashtirish',
                                 style: TextStyle(
                                   color: grey,
                                   fontWeight: FontWeight.w500,
@@ -200,7 +202,7 @@ class OilState extends State<Oil> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 5),
                               child: Text(
-                                'O\'zgartirish paytida masofa',
+                                'Yurgan masofa',
                                 style: TextStyle(
                                   color: grey,
                                   fontWeight: FontWeight.w500,
@@ -243,7 +245,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Yog\' brendi',
+                        'Moy markasi',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -280,7 +282,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Neft necha kilometrga baholangan',
+                        'Tavsiya etilgan km',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -319,7 +321,7 @@ class OilState extends State<Oil> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Kundalik kilometr',
+                        '1 kunda necha km yurasiz',
                         style: TextStyle(
                           color: grey,
                           fontWeight: FontWeight.w500,
@@ -401,7 +403,7 @@ class OilState extends State<Oil> {
               child: DefaultTextStyle(
                 style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
-                  'Yog \'',
+                  'Moy',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,

@@ -222,7 +222,7 @@ class _GasDetailState extends State<GasDetail> {
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                            'Hozirgi statusi',
+                                            'Hozirgi status',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,
@@ -263,7 +263,7 @@ class _GasDetailState extends State<GasDetail> {
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                            'Keyingi statusi',
+                                            'Keyingi status',
                                             style: TextStyle(
                                               color: black,
                                               fontWeight: FontWeight.w500,

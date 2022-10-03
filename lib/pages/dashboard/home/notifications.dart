@@ -106,6 +106,7 @@ class _NotificationsState extends State<Notifications> {
                               style: TextStyle(
                                 color: black,
                                 fontSize: 16,
+                                fontWeight: item['readStatus'] ? FontWeight.w400 : FontWeight.w600,
                                 // overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -125,7 +126,7 @@ class _NotificationsState extends State<Notifications> {
           child: SizedBox(
             child: SvgPicture.asset(
               'images/icons/vertical_line.svg',
-              color: const Color(0XFF8DBAD5),
+              color: item['readStatus'] ? const Color(0XFF8DBAD5) : const Color(0xFFF28F1E),
             ),
           ),
         ),
@@ -229,14 +230,17 @@ class _NotificationsState extends State<Notifications> {
                             ],
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Get.toNamed('/notification-detail', arguments: notifications[i]['id']);
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () async {
+                              await Get.toNamed('/notification-detail', arguments: notifications[i]['id']);
+                              getNotifications();
                             },
                             child: Container(
                               child: buildCard(notifications[i]['imageUrl'], {
                                 'title': notifications[i]['title'],
                                 'text': notifications[i]['message'],
                                 'time': notifications[i]['createdDate'],
+                                'readStatus': notifications[i]['readStatus'],
                               }),
                             ),
                           )

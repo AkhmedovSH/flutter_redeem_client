@@ -39,7 +39,7 @@ void main() async {
       // statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
     ),
-  );
+  );  
   runApp(const MyApp());
 }
 
