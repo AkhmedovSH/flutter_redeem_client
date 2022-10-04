@@ -12,8 +12,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../../helpers/helper.dart';
-import '../../../helpers/api.dart';
+import '../../../../../helpers/helper.dart';
+import '../../../../../helpers/api.dart';
 
 class GasDetail extends StatefulWidget {
   const GasDetail({Key? key}) : super(key: key);
@@ -42,8 +42,7 @@ class _GasDetailState extends State<GasDetail> {
   }
 
   void _onMapCreated(GoogleMapController _controller) {
-    if(controller == null )
-      controller = _controller;
+    controller ??= _controller;
   }
 
   getPos({id}) async {
@@ -84,7 +83,7 @@ class _GasDetailState extends State<GasDetail> {
 
   @override
   void dispose() {
-    controller!.dispose();
+    controller != null ? controller!.dispose() : null;
     super.dispose();
   }
 
@@ -149,15 +148,13 @@ class _GasDetailState extends State<GasDetail> {
                                                 ),
                                               )
                                             : SizedBox(
-                                                width: 58,
-                                                height: 58,
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(50),
                                                   child: Image.asset(
                                                     'images/logo.png',
-                                                    fit: BoxFit.contain,
-                                                    width: 58,
-                                                    height: 58,
+                                                    fit: BoxFit.fill,
+                                                    width: 60,
+                                                    height: 60,
                                                   ),
                                                 ),
                                               ),
@@ -178,7 +175,7 @@ class _GasDetailState extends State<GasDetail> {
                                             ),
                                           ),
                                           Text(
-                                            'Ceshback: ${pos['maxReward'] ?? ''} %',
+                                            'Cashback: ${pos['maxReward'] ?? ''} %',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -687,6 +684,36 @@ class _GasDetailState extends State<GasDetail> {
                 child: Icon(
                   Icons.arrow_back_ios,
                   color: Color(0xFF3D708F),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.08,
+          right: 12,
+          child: GestureDetector(
+            onTap: () {
+              Get.toNamed('/receipt', arguments: {'id': Get.arguments});
+            },
+            child: const SizedBox(
+              // margin: const EdgeInsets.only(left: 12),
+              // padding: const EdgeInsets.only(left: 8),
+              width: 48,
+              height: 48,
+              // decoration: BoxDecoration(
+              //   color: white,
+              //   border: Border.all(
+              //     color: const Color(0xFF859EAD),
+              //     width: 1,
+              //   ),
+              //   borderRadius: BorderRadius.circular(35),
+              // ),
+              child: Center(
+                child: Icon(
+                  Icons.history,
+                  color: Color(0xFF3D708F),
+                  size: 32,
                 ),
               ),
             ),

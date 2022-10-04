@@ -108,9 +108,9 @@ formatDate(date) {
   return rawDate.format("dd-MM-yyyy HH:mm");
 }
 
-formatDateMonth(date) {
+formatDateMonth(date, {format="dd.MM.yyyy"}) {
   Moment rawDate = Moment.parse(date);
-  return rawDate.format("dd.MM.yyyy");
+  return rawDate.format(format);
 }
 
 formatDateHour(date) {

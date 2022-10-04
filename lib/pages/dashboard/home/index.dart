@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +24,10 @@ class Index extends StatefulWidget {
 class _IndexState extends State<Index> {
   RefreshController refreshController = RefreshController(initialRefresh: false);
   ScrollController scrollController = ScrollController();
+  dynamic style = const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  );
   dynamic poses = [];
   dynamic filter = {
     'search': '',
@@ -128,13 +131,13 @@ class _IndexState extends State<Index> {
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         print(111);
-        // if (currentPage != total) {
-        //   setState(() {
-        //     currentPage += 1;
-        //     filter['page'] = currentPage.toString();
-        //   });
-        //   await getPoses();
-        // }
+        if (currentPage != total) {
+          setState(() {
+            currentPage += 1;
+            filter['page'] = currentPage.toString();
+          });
+          await getPoses();
+        }
       }
       if (scrollController.position.pixels == scrollController.position.minScrollExtent) {
         print(111);
@@ -160,7 +163,7 @@ class _IndexState extends State<Index> {
       ),
       // headerTriggerDistance: 80.0,
       child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
+        // physics: const ClampingScrollPhysics(),
         controller: scrollController,
         child: Stack(
           children: [
@@ -177,14 +180,14 @@ class _IndexState extends State<Index> {
                 gradient: gradient,
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 100,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 125,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light),
+                  systemOverlayStyle: style,
                   leading: Container(),
                 ),
                 body: NotificationListener<OverscrollIndicatorNotification>(

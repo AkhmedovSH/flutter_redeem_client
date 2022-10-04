@@ -19,7 +19,9 @@ import 'pages/dashboard/dashboard.dart';
 import 'pages/dashboard/home/points.dart';
 import 'pages/dashboard/home/notifications.dart';
 import 'pages/dashboard/home/notification_detail.dart';
-import 'pages/gas_detail.dart';
+import 'pages/dashboard/gas/gas_detail.dart';
+import 'package:control_car_client/pages/dashboard/gas/receipt.dart';
+
 import 'pages/dashboard/car/oil.dart';
 import 'pages/dashboard/car/methane.dart';
 import 'pages/dashboard/car/inspection.dart';
@@ -91,6 +93,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/notifications', page: () => const Notifications()),
         GetPage(name: '/notification-detail', page: () => const NotificationDetail()),
         GetPage(name: '/gas-detail', page: () => const GasDetail()),
+        GetPage(name: '/receipt', page: () => const Receipt()),
 
         // Car
 

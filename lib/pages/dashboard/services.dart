@@ -274,7 +274,7 @@ class _ServicesState extends State<Services> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 5),
                             child: const Text(
-                              'Gaz',
+                              'Gaz balon',
                               style: TextStyle(
                                 color: Color(0xFF747474),
                                 fontSize: 16,
