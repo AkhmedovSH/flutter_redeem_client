@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
@@ -43,6 +42,8 @@ class _ServicesState extends State<Services> {
       int.parse(date['endDate'].substring(5, 7)),
       int.parse(date['endDate'].substring(8, 10)),
     );
+    print(currentDay.difference(beginDate).inDays);
+    print(currentDay.difference(endDate).inDays);
     if (currentDay.difference(beginDate).inDays < 0 || currentDay.difference(beginDate).inDays == 0) {
       return 0.0;
     }
@@ -50,6 +51,9 @@ class _ServicesState extends State<Services> {
       dynamic hundred = endDate.difference(beginDate).inDays;
       dynamic other = currentDay.difference(beginDate).inDays;
       dynamic percent = (double.parse(((other) / hundred).toStringAsFixed(1)));
+      if (percent < 0) {
+        return 1.0;
+      }
       return percent < 1.0 ? percent : 1.0;
     }
     return 0.0;

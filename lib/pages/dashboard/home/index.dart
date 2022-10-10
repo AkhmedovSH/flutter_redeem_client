@@ -181,7 +181,7 @@ class _IndexState extends State<Index> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 125,
+              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 150,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(

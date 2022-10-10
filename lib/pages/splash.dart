@@ -113,7 +113,7 @@ class _SplashState extends State<Splash> {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              insetPadding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
+              insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               title: const Text(
                 'Ilovani yangilash' ' "redeem"',
                 style: TextStyle(color: Colors.black),
@@ -157,10 +157,12 @@ class _SplashState extends State<Splash> {
                                     onPressed: () {
                                       Get.back();
                                     },
-                                    style: TextButton.styleFrom(primary: const Color(0xFF00865F)),
-                                    child: const Text(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    child: Text(
                                       'YO\'Q, RAHMAT',
-                                      style: TextStyle(fontWeight: FontWeight.w500),
+                                      style: TextStyle(fontWeight: FontWeight.w500, color: red),
                                     ),
                                   ),
                                 ),
@@ -172,7 +174,7 @@ class _SplashState extends State<Splash> {
                               // launchUrl(url);
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xFF00865F),
+                              backgroundColor: const Color(0xFF00865F),
                               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4),
