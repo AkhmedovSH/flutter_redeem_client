@@ -30,6 +30,24 @@ class _HomeDrawerState extends State<HomeDrawer> {
     Get.offAllNamed('/login');
   }
 
+  deleteAccount() async {
+    final response = await post('/services/mobile/api/delete', {});
+    if (response != null && response['success']) {
+      Get.toNamed(
+        '/check-code',
+        arguments: {
+          'phone': '',
+          "name": "",
+          "carNumber": "",
+          "carTypeId": '1',
+          "password": "",
+          "activationCode": '',
+          "value": 1,
+        },
+      );
+    }
+  }
+
   getUser() async {
     final response = await get('/services/mobile/api/account');
     if (mounted) {
@@ -206,6 +224,37 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             Center(
                               child: Text(
                                 'Chiqish',
+                                style: TextStyle(
+                                  color: Color(0xFFDE1D1D),
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.logout_sharp,
+                              color: Color(0xFFDE1D1D),
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        deleteAccount();
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(222, 29, 29, 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Stack(
+                          children: const [
+                            Center(
+                              child: Text(
+                                'Profilni o\'chirish',
                                 style: TextStyle(
                                   color: Color(0xFFDE1D1D),
                                   fontSize: 16,

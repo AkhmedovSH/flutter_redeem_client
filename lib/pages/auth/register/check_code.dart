@@ -23,7 +23,11 @@ class CheckCode extends StatefulWidget {
 
 class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  var maskFormatter = MaskTextInputFormatter(mask: '# # # # # #', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '# # # # # #',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
   AnimationController? animationController;
 
   dynamic sendData = {
@@ -94,6 +98,25 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
     setState(() {
       loading = false;
     });
+  }
+
+  checkDeleteActivationCode() async {
+    setState(() {
+      sendData['activationCode'] = maskFormatter.getUnmaskedText();
+      loading = true;
+    });
+    final response = await post('/services/mobile/api/accept-delete', {
+      'activationCode': sendData['activationCode'],
+    });
+    setState(() {
+      loading = false;
+    });
+    if (response != null && response['success']) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('access_token');
+      prefs.remove('user');
+      Get.offAllNamed('/login');
+    }
   }
 
   @override
@@ -276,7 +299,11 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
           floatingActionButton: GestureDetector(
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                checkActivationCode();
+                if (Get.arguments['value'] != null && Get.arguments['value'] == 1) {
+                  checkDeleteActivationCode();
+                } else {
+                  checkActivationCode();
+                }
               }
             },
             child: Container(
@@ -288,7 +315,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
               padding: const EdgeInsets.symmetric(vertical: 16),
               width: MediaQuery.of(context).size.width,
               child: Text(
-                'Ro\'yxatdan o\'tish',
+                Get.arguments != null && Get.arguments['value'] != 1 ? 'Ro\'yxatdan o\'tish' : 'Profilni o\'chirish',
                 style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),

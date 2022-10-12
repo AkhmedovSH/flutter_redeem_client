@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
     "carTypeId": '1',
     "password": "",
     "activationCode": '',
+    "value": 0,
   };
   bool showPassword = true;
   dynamic data = {

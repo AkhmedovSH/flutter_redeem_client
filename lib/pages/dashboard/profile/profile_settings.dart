@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:app_settings/app_settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:control_car_client/helpers/api.dart';
 import 'package:control_car_client/helpers/helper.dart';
@@ -21,6 +25,8 @@ class ProfileSetting extends StatefulWidget {
 
 class _ProfileSettingState extends State<ProfileSetting> {
   final _formKey = GlobalKey<FormState>();
+  static dynamic auth = LocalAuthentication();
+
   dynamic sendData = {
     "name": "",
     "carNumber": "",
@@ -47,6 +53,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
     {'name': '', 'id': '0'}
   ];
 
+  bool signWithFingerPrint = false;
+
   updateAccount() async {
     final response = await put('/services/mobile/api/account', sendData);
     if (response != null) {
@@ -57,8 +65,29 @@ class _ProfileSettingState extends State<ProfileSetting> {
     Get.back();
   }
 
+  changeRemember(value) async {
+    final isDeviceSupported = await auth.isDeviceSupported();
+    if (!isDeviceSupported) {
+      AppSettings.openSecuritySettings();
+      return;
+    }
+    setState(() {
+      signWithFingerPrint = value;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      final user = jsonDecode(prefs.getString('user')!);
+      setState(() {
+        user['signWithFingerPrint'] = signWithFingerPrint;
+      });
+      print(user);
+      prefs.setString('user', jsonEncode(user));
+    }
+  }
+
   getUser() async {
     final response = await get('/services/mobile/api/account');
+    final prefs = await SharedPreferences.getInstance();
     if (response['regionId'] != null && response['regionId'] != '0' && response['regionId'] != 0) {
       getRegions(id: response['regionId']);
     } else {
@@ -84,7 +113,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
       sendData['carTypeId'] = response['carTypeId'];
       sendData['gender'] = response['gender'];
       sendData['birthDate'] = response['birthDate'].toString() != 'null' ? response['birthDate'].toString() : '';
-
+      if (prefs.getString('user') != null) {
+        final user = jsonDecode(prefs.getString('user')!);
+        signWithFingerPrint = user['signWithFingerPrint'];
+      }
       // sendData.removeWhere((key, value) => key == "regionId");
       // sendData.removeWhere((key, value) => key == "cityId");
       // sendData = response;
@@ -516,6 +548,50 @@ class _ProfileSettingState extends State<ProfileSetting> {
                             ),
                           )
                         : Container(),
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  changeRemember(!signWithFingerPrint);
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  width: 20,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: black, width: 2),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: signWithFingerPrint
+                                      ? Icon(
+                                          Icons.check,
+                                          color: black,
+                                          size: 16,
+                                        )
+                                      : Container(),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  changeRemember(!signWithFingerPrint);
+                                },
+                                child: const Text(
+                                  'Barmoq izi bilan kirish',
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       height: 70,
                     )

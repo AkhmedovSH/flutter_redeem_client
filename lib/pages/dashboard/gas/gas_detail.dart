@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../../../../../helpers/helper.dart';
 import '../../../../../helpers/api.dart';
@@ -343,15 +344,39 @@ class _GasDetailState extends State<GasDetail> {
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         for (var i = 0; i < pos['galleryList'].length; i++)
-                                          Container(
-                                            margin: const EdgeInsets.only(right: 20),
-                                            width: 100,
-                                            height: 100,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
-                                              child: Image.network(
-                                                mainUrl + pos['galleryList'][i],
-                                                fit: BoxFit.fill,
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                                                return DetailScreen(
+                                                  imageUrl: mainUrl + pos['galleryList'][i],
+                                                );
+                                              }));
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.only(right: 20),
+                                              width: 100,
+                                              height: 100,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(5),
+                                                child: Hero(
+                                                  tag: mainUrl + pos['galleryList'][i],
+                                                  child: Image.network(
+                                                    mainUrl + pos['galleryList'][i],
+                                                  ),
+                                                ),
+                                                // child: PhotoView(
+                                                //   imageProvider: NetworkImage(
+                                                //     mainUrl + pos['galleryList'][i],
+                                                //     // fit: BoxFit.fill,
+                                                //   ),
+                                                //   // loadingBuilder: (context, event) => Container(
+                                                //   //   child: CircularProgressIndicator(color: green),
+                                                //   // ),
+                                                //   heroAttributes: const PhotoViewHeroAttributes(
+                                                //     tag: "someTag",
+                                                //     transitionOnUserGestures: true,
+                                                //   ),
+                                                // ),
                                               ),
                                             ),
                                           ),
@@ -581,9 +606,15 @@ class _GasDetailState extends State<GasDetail> {
                                                                   ),
                                                                 ),
                                                         ),
-                                                        Text(
-                                                          pos['reviewList'][i]['userFullName'] ?? '',
-                                                          style: TextStyle(color: black, fontWeight: FontWeight.w500),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(context).size.width * 0.44,
+                                                          child: Text(
+                                                            pos['reviewList'][i]['userFullName'] ?? '',
+                                                            style: TextStyle(
+                                                              color: black,
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
                                                         )
                                                       ],
                                                     ),
@@ -865,6 +896,41 @@ class _GasDetailState extends State<GasDetail> {
           );
         });
       },
+    );
+  }
+}
+
+class DetailScreen extends StatefulWidget {
+  String? imageUrl;
+  DetailScreen({Key? key, this.imageUrl = ''}) : super(key: key);
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: widget.imageUrl!,
+            child: PhotoView(
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 4,
+              backgroundDecoration: BoxDecoration(
+                color: white,
+              ),
+              imageProvider: NetworkImage(
+                widget.imageUrl!,
+              ),
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }

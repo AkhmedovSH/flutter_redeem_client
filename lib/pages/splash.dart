@@ -1,7 +1,9 @@
+import 'dart:io' show Platform;
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'dart:async';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_redirect/store_redirect.dart';
@@ -21,11 +23,18 @@ class _SplashState extends State<Splash> {
   dynamic vesrion = '';
   dynamic url = 'https://play.google.com/store/apps/details?id=uz.redeem.client';
   bool isRequired = false;
+  bool ios = false;
 
   @override
   void initState() {
     super.initState();
     checkVersion();
+    if (Platform.isAndroid) {
+    } else if (Platform.isIOS) {
+      setState(() {
+        ios = true;
+      });
+    }
     // startTimer();
   }
 
@@ -108,97 +117,102 @@ class _SplashState extends State<Splash> {
 
   showUpdateDialog() async {
     await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
-              title: const Text(
-                'Ilovani yangilash' ' "redeem"',
-                style: TextStyle(color: Colors.black),
-                // textAlign: TextAlign.center,
-              ),
-              scrollable: true,
-              content: SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      isRequired
-                          ? 'Ilovadan foydalanishni davom ettirish uchun eng so\'nggi versiyani o\'rnatishingiz kerak' '"redeem".'
-                          : 'Ilovaning so\'nggi versiyasini o\'rnatishni tavsiya qilamiz'
-                              '"redeem".'
-                              'Yangilanishlarni yuklab olayotganda siz undan foydalanishingiz mumkin'
-                              '.',
-                      style: const TextStyle(color: Colors.black, height: 1.2),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Color(0xFFE0E0E0), width: 1),
-                        ),
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+            title: const Text(
+              'Ilovani yangilash' ' "redeem"',
+              style: TextStyle(color: Colors.black),
+              // textAlign: TextAlign.center,
+            ),
+            scrollable: true,
+            content: SizedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    isRequired
+                        ? 'Ilovadan foydalanishni davom ettirish uchun eng so\'nggi versiyani o\'rnatishingiz kerak' '"redeem".'
+                        : 'Ilovaning so\'nggi versiyasini o\'rnatishni tavsiya qilamiz'
+                            '"redeem".'
+                            'Yangilanishlarni yuklab olayotganda siz undan foydalanishingiz mumkin'
+                            '.',
+                    style: const TextStyle(color: Colors.black, height: 1.2),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Color(0xFFE0E0E0), width: 1),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          isRequired
-                              ? Container()
-                              : Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                    child: Text(
-                                      'YO\'Q, RAHMAT',
-                                      style: TextStyle(fontWeight: FontWeight.w500, color: red),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        isRequired
+                            ? Container()
+                            : Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: red,
+                                  ),
+                                  child: Text(
+                                    'YO\'Q, RAHMAT',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: white,
                                     ),
                                   ),
                                 ),
-                          ElevatedButton(
-                            onPressed: () {
-                              StoreRedirect.redirect(androidAppId: "uz.redeem.client", iOSAppId: "585027354");
-                              // final uri = Uri.parse('https://play.google.com/store/apps/details?id=uz.redeem.client');
-                              // launchUrl(uri);
-                              // launchUrl(url);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF00865F),
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
                               ),
-                              elevation: 0,
+                        ElevatedButton(
+                          onPressed: () {
+                            StoreRedirect.redirect(androidAppId: "uz.redeem.client", iOSAppId: "585027354");
+                            // final uri = Uri.parse('https://play.google.com/store/apps/details?id=uz.redeem.client');
+                            // launchUrl(uri);
+                            // launchUrl(url);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF00865F),
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            child: const Text('YANGILANISH'),
-                          )
-                        ],
-                      ),
+                            elevation: 0,
+                          ),
+                          child: const Text('YANGILANISH'),
+                        )
+                      ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Image.asset(
-                        'images/google_play.png',
-                        height: 25,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Image.asset(
+                      ios ? 'images/appstore_logo_3.png' : 'images/google_play.png',
+                      height: ios ? 40 : 25,
+                      width: 100,
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                ],
               ),
-            );
-          });
+            ),
+          );
         });
+      },
+    );
   }
 }

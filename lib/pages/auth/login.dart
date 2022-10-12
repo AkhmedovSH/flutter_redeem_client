@@ -9,6 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
+import 'package:app_settings/app_settings.dart';
 
 import '../location_notification_service.dart';
 
@@ -25,16 +29,19 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   var maskFormatter = MaskTextInputFormatter(mask: '## ### ## ##', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
   AnimationController? animationController;
+  static dynamic auth = LocalAuthentication();
 
   dynamic sendData = {
     'username': '',
     'password': '',
     'isRemember': false,
+    'signWithFingerPrint': false,
   };
   dynamic data = {
     'username': TextEditingController(text: ''),
     'password': TextEditingController(),
     'isRemember': false,
+    'signWithFingerPrint': false,
   };
   bool showPassword = true;
   bool loading = false;
@@ -103,6 +110,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             sendData['isRemember'] = user['isRemember'];
             sendData['username'] = user['username'];
             sendData['password'] = user['password'];
+            sendData['signWithFingerPrint'] = user['signWithFingerPrint'];
             data['username'].text = maskFormatter.maskText(user['username'].substring(3, user['username'].length));
             data['password'].text = user['password'];
           });
@@ -111,10 +119,91 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     }
   }
 
+  static Future<bool> hasBiometrics() async {
+    try {
+      return await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  getFingerprint() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      final user = jsonDecode(prefs.getString('user')!);
+      print(user);
+      if (user['signWithFingerPrint'] != null) {
+        data['signWithFingerPrint'] = user['signWithFingerPrint'];
+      }
+    }
+    if (prefs.getString('access_token') != null && data['signWithFingerPrint'] == true) {
+      final isAvailable = await hasBiometrics();
+      if (!isAvailable) return false;
+      try {
+        final isDeviceSupported = await auth.isDeviceSupported();
+        if (!isDeviceSupported) {
+          AppSettings.openSecuritySettings();
+          return;
+        }
+        final result = await auth.authenticate(
+          localizedReason: 'Ro\'yxatdan o\'tish uchun barmoq izingizni skanerlang',
+          options: const AuthenticationOptions(
+            useErrorDialogs: true,
+            stickyAuth: true,
+            biometricOnly: true,
+          ),
+          authMessages: <AuthMessages>[
+            const AndroidAuthMessages(
+              signInTitle: 'Barmoq izi bilan kirish',
+              cancelButton: 'Boshqa usuldan foydalaning...',
+              goToSettingsButton: '',
+              biometricHint: '',
+            ),
+            const IOSAuthMessages(
+              lockOut: 'test',
+              cancelButton: 'Boshqa usuldan foydalaning...',
+              goToSettingsButton: '',
+              goToSettingsDescription: '',
+              localizedFallbackTitle: '',
+            ),
+          ],
+        );
+        if (result) {
+          final user = jsonDecode(prefs.getString('user')!);
+          setState(() {
+            loading = true;
+          });
+          final response = await guestPost('/auth/login', user);
+          prefs.setString('access_token', response['access_token'].toString());
+          var account = await get('/services/uaa/api/account');
+          var checkAccess = false;
+          for (var i = 0; i < account['authorities'].length; i++) {
+            if (account['authorities'][i] == 'ROLE_LOYALTY_USER') {
+              checkAccess = true;
+            }
+          }
+          if (checkAccess) {
+            Get.offAllNamed('/');
+          } else {
+            // у вас нету доступа
+          }
+          setState(() {
+            loading = false;
+          });
+        }
+      } on PlatformException catch (e) {
+        print(e);
+        return false;
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     checkIsRemember();
+    getFingerprint();
     setState(() {
       animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
     });

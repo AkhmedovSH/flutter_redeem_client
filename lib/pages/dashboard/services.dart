@@ -42,8 +42,8 @@ class _ServicesState extends State<Services> {
       int.parse(date['endDate'].substring(5, 7)),
       int.parse(date['endDate'].substring(8, 10)),
     );
+    print(endDate.difference(beginDate).inDays);
     print(currentDay.difference(beginDate).inDays);
-    print(currentDay.difference(endDate).inDays);
     if (currentDay.difference(beginDate).inDays < 0 || currentDay.difference(beginDate).inDays == 0) {
       return 0.0;
     }
