@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:store_redirect/store_redirect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../helpers/api.dart';
 import 'package:control_car_client/helpers/helper.dart';
@@ -19,9 +20,12 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  dynamic systemOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light);
+  dynamic systemOverlayStyle = const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light);
   dynamic vesrion = '';
-  dynamic url = 'https://play.google.com/store/apps/details?id=uz.redeem.client';
+  dynamic url =
+      'https://play.google.com/store/apps/details?id=uz.redeem.client';
   bool isRequired = false;
   bool ios = false;
 
@@ -41,7 +45,8 @@ class _SplashState extends State<Splash> {
   void checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String localVersion = packageInfo.version;
-    var playMarketVersion = await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
+    var playMarketVersion =
+        await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
     if (playMarketVersion == null) {
       startTimer();
       return;
@@ -121,15 +126,20 @@ class _SplashState extends State<Splash> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            insetPadding:
+                const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             title: const Text(
               'Ilovani yangilash' ' "redeem"',
               style: TextStyle(color: Colors.black),
               // textAlign: TextAlign.center,
             ),
             scrollable: true,
-            content: SizedBox(
+            content: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -138,7 +148,8 @@ class _SplashState extends State<Splash> {
                   ),
                   Text(
                     isRequired
-                        ? 'Ilovadan foydalanishni davom ettirish uchun eng so\'nggi versiyani o\'rnatishingiz kerak' '"redeem".'
+                        ? 'Ilovadan foydalanishni davom ettirish uchun eng so\'nggi versiyani o\'rnatishingiz kerak'
+                            '"redeem".'
                         : 'Ilovaning so\'nggi versiyasini o\'rnatishni tavsiya qilamiz'
                             '"redeem".'
                             'Yangilanishlarni yuklab olayotganda siz undan foydalanishingiz mumkin'
@@ -167,7 +178,7 @@ class _SplashState extends State<Splash> {
                                     Get.back();
                                   },
                                   style: TextButton.styleFrom(
-                                    backgroundColor: red,
+                                    backgroundColor: danger,
                                   ),
                                   child: Text(
                                     'YO\'Q, RAHMAT',
@@ -180,20 +191,37 @@ class _SplashState extends State<Splash> {
                               ),
                         ElevatedButton(
                           onPressed: () {
-                            StoreRedirect.redirect(androidAppId: "uz.redeem.client", iOSAppId: "585027354");
-                            // final uri = Uri.parse('https://play.google.com/store/apps/details?id=uz.redeem.client');
-                            // launchUrl(uri);
+                            if (ios) {
+                              final uri = Uri.parse(
+                                  'https://apps.apple.com/app/id6443604263');
+                              launchUrl(uri);
+                            } else {
+                              StoreRedirect.redirect(
+                                androidAppId: "uz.redeem.client",
+                                iOSAppId: "6443604263",
+                              );
+                            }
                             // launchUrl(url);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00865F),
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                            backgroundColor: ios
+                                ? Colors.transparent
+                                : const Color(0xFF00865F),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
                             elevation: 0,
                           ),
-                          child: const Text('YANGILANISH'),
+                          child: Text(
+                            'YANGILANISH',
+                            style: TextStyle(
+                              color: ios ? Color(0xFF4889EE) : white,
+                              fontWeight:
+                                  ios ? FontWeight.w600 : FontWeight.w400,
+                            ),
+                          ),
                         )
                       ],
                     ),
@@ -201,8 +229,10 @@ class _SplashState extends State<Splash> {
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Image.asset(
-                      ios ? 'images/appstore_logo_3.png' : 'images/google_play.png',
-                      height: ios ? 40 : 25,
+                      ios
+                          ? 'images/appstore_logo_3.png'
+                          : 'images/google_play.png',
+                      height: ios ? 45 : 25,
                       width: 100,
                       fit: BoxFit.fill,
                     ),

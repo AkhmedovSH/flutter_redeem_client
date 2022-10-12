@@ -88,18 +88,30 @@ class _ProfileSettingState extends State<ProfileSetting> {
   getUser() async {
     final response = await get('/services/mobile/api/account');
     final prefs = await SharedPreferences.getInstance();
-    if (response['regionId'] != null && response['regionId'] != '0' && response['regionId'] != 0) {
+    if (response['regionId'] != null &&
+        response['regionId'] != '0' &&
+        response['regionId'] != 0) {
       getRegions(id: response['regionId']);
     } else {
       getRegions();
     }
-    if (response['cityId'] != null && response['cityId'] != '0' && response['cityId'] != 0) {
+    if (response['cityId'] != null &&
+        response['cityId'] != '0' &&
+        response['cityId'] != 0) {
       getCities(response['regionId'], cityid: response['cityId']);
     }
     setState(() {
-      data['nameController'].text = response['name'].toString() != 'null' ? response['name'].toString() : '';
-      data['carNumberController'].text = response['carNumber'].toString() != 'null' ? response['carNumber'].toString() : '';
-      data['birthDateController'].text = response['birthDate'].toString() != 'null' ? response['birthDate'].toString() : '';
+      data['nameController'].text = response['name'].toString() != 'null'
+          ? response['name'].toString()
+          : '';
+      data['carNumberController'].text =
+          response['carNumber'].toString() != 'null'
+              ? response['carNumber'].toString()
+              : '';
+      data['birthDateController'].text =
+          response['birthDate'].toString() != 'null'
+              ? response['birthDate'].toString()
+              : '';
       data['genderController'].text = response['gender'].toString() != 'null'
           ? response['gender'].toString() == '0'
               ? 'Erkak'
@@ -108,11 +120,17 @@ class _ProfileSettingState extends State<ProfileSetting> {
       selectedButton = response['gender'].toString();
       sendData['imageUrl'] = response['imageUrl'] ?? '';
       sendData['phone'] = response['phone'];
-      sendData['name'] = response['name'].toString() != 'null' ? response['name'].toString() : '';
-      sendData['carNumber'] = response['carNumber'].toString() != 'null' ? response['carNumber'].toString() : '';
+      sendData['name'] = response['name'].toString() != 'null'
+          ? response['name'].toString()
+          : '';
+      sendData['carNumber'] = response['carNumber'].toString() != 'null'
+          ? response['carNumber'].toString()
+          : '';
       sendData['carTypeId'] = response['carTypeId'];
       sendData['gender'] = response['gender'];
-      sendData['birthDate'] = response['birthDate'].toString() != 'null' ? response['birthDate'].toString() : '';
+      sendData['birthDate'] = response['birthDate'].toString() != 'null'
+          ? response['birthDate'].toString()
+          : '';
       if (prefs.getString('user') != null) {
         final user = jsonDecode(prefs.getString('user')!);
         signWithFingerPrint = user['signWithFingerPrint'];
@@ -129,7 +147,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
     try {
       XFile? img = await ImagePicker().pickImage(source: source);
       if (img == null) return;
-      final response = await uploadImage('/services/mobile/api/upload/image', File(img.path));
+      final response = await uploadImage(
+          '/services/mobile/api/upload/image', File(img.path));
       if (response != null) {
         setState(() {
           sendData['imageUrl'] = response['url'];
@@ -189,13 +208,16 @@ class _ProfileSettingState extends State<ProfileSetting> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+            systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.dark),
             leading: Container(),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.only(bottom: 24, right: 24, left: 24, top: 50),
+              margin: const EdgeInsets.only(
+                  bottom: 24, right: 24, left: 24, top: 50),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -208,9 +230,11 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         children: [
                           Stack(
                             children: [
-                              sendData['imageUrl'] != null && sendData['imageUrl'] != ''
+                              sendData['imageUrl'] != null &&
+                                      sendData['imageUrl'] != ''
                                   ? Container(
-                                      margin: const EdgeInsets.only(right: 5, bottom: 5),
+                                      margin: const EdgeInsets.only(
+                                          right: 5, bottom: 5),
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                           color: const Color(0xFF83B6D5),
@@ -231,7 +255,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                       width: 72,
                                       height: 72,
                                       decoration: BoxDecoration(
-                                        color: const Color.fromARGB(255, 167, 167, 167),
+                                        color: const Color.fromARGB(
+                                            255, 167, 167, 167),
                                         borderRadius: BorderRadius.circular(50),
                                       ),
                                       child: Icon(
@@ -278,14 +303,20 @@ class _ProfileSettingState extends State<ProfileSetting> {
                               children: [
                                 Text(
                                   sendData['name'] ?? '',
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Color(0xFF0E1A23)),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF0E1A23)),
                                 ),
                                 Text(
-                                  sendData['phone'] != null ? formatPhone(sendData['phone']) : '',
+                                  sendData['phone'] != null
+                                      ? formatPhone(sendData['phone'])
+                                      : '',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
-                                    color: const Color(0xFF0E1A23).withOpacity(0.5),
+                                    color: const Color(0xFF0E1A23)
+                                        .withOpacity(0.5),
                                   ),
                                 ),
                               ],
@@ -352,9 +383,13 @@ class _ProfileSettingState extends State<ProfileSetting> {
                         controller: data['carNumberController'],
                         onChanged: (value) {
                           setState(() {
-                            data['carNumberController'].text = value.toUpperCase();
-                            data['carNumberController'].selection = TextSelection.fromPosition(
-                              TextPosition(offset: data['carNumberController'].text.length),
+                            data['carNumberController'].text =
+                                value.toUpperCase();
+                            data['carNumberController'].selection =
+                                TextSelection.fromPosition(
+                              TextPosition(
+                                  offset:
+                                      data['carNumberController'].text.length),
                             );
                             sendData['carNumber'] = value.toUpperCase();
                           });
@@ -403,7 +438,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
                               return null;
                             },
                             decoration: InputDecoration(
-                              suffixIcon: const Icon(Icons.calendar_month_outlined),
+                              suffixIcon:
+                                  const Icon(Icons.calendar_month_outlined),
                               enabled: false,
                               enabledBorder: inputBorder,
                               disabledBorder: inputBorder,
@@ -488,7 +524,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   iconSize: 24,
                                   iconEnabledColor: grey,
                                   elevation: 16,
-                                  style: const TextStyle(color: Color(0xFF313131)),
+                                  style:
+                                      const TextStyle(color: Color(0xFF313131)),
                                   underline: Container(),
                                   onChanged: (newValue) {
                                     setState(() {
@@ -530,7 +567,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                   iconSize: 24,
                                   iconEnabledColor: grey,
                                   elevation: 16,
-                                  style: const TextStyle(color: Color(0xFF313131)),
+                                  style:
+                                      const TextStyle(color: Color(0xFF313131)),
                                   underline: Container(),
                                   onChanged: (newValue) {
                                     setState(() {
@@ -593,7 +631,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                       ),
                     ),
                     const SizedBox(
-                      height: 70,
+                      height: 90,
                     )
                   ],
                 ),
@@ -616,7 +654,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
               width: MediaQuery.of(context).size.width,
               child: Text(
                 'Saqlash',
-                style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
+                style: TextStyle(
+                    color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -632,7 +671,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
             child: Align(
               alignment: Alignment.topCenter,
               child: DefaultTextStyle(
-                style: TextStyle(color: white, fontWeight: FontWeight.w600, fontSize: 20),
+                style: TextStyle(
+                    color: white, fontWeight: FontWeight.w600, fontSize: 20),
                 child: Text(
                   'Mening profilim',
                   style: TextStyle(
@@ -764,7 +804,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
           data: ThemeData.light().copyWith(
             primaryColor: green,
             colorScheme: ColorScheme.light(primary: green),
-            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            buttonTheme:
+                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
@@ -773,7 +814,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        data['birthDateController'].text = DateFormat('yyyy-MM-dd').format(picked);
+        data['birthDateController'].text =
+            DateFormat('yyyy-MM-dd').format(picked);
         sendData['birthDate'] = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
@@ -785,8 +827,12 @@ class _ProfileSettingState extends State<ProfileSetting> {
         context: context,
         builder: (context) => CupertinoActionSheet(
           actions: [
-            CupertinoActionSheetAction(onPressed: () => Navigator.of(context).pop(ImageSource.camera), child: Text('kamera'.tr)),
-            CupertinoActionSheetAction(onPressed: () => Navigator.of(context).pop(ImageSource.gallery), child: Text('galereya'.tr))
+            CupertinoActionSheetAction(
+                onPressed: () => Navigator.of(context).pop(ImageSource.camera),
+                child: Text('kamera'.tr)),
+            CupertinoActionSheetAction(
+                onPressed: () => Navigator.of(context).pop(ImageSource.gallery),
+                child: Text('galereya'.tr))
           ],
         ),
       );

@@ -27,7 +27,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  var maskFormatter = MaskTextInputFormatter(mask: '## ### ## ##', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+  var maskFormatter = MaskTextInputFormatter(
+      mask: '## ### ## ##',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
   AnimationController? animationController;
   static dynamic auth = LocalAuthentication();
 
@@ -85,7 +88,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             Get.offAllNamed('/notifications');
           });
           var firebaseToken = await FirebaseMessaging.instance.getToken();
-          await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
+          await put(
+              '/services/mobile/api/firebase-token', {'token': firebaseToken});
           Get.offAllNamed('/');
         } catch (e) {
           print(e);
@@ -111,7 +115,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             sendData['username'] = user['username'];
             sendData['password'] = user['password'];
             sendData['signWithFingerPrint'] = user['signWithFingerPrint'];
-            data['username'].text = maskFormatter.maskText(user['username'].substring(3, user['username'].length));
+            data['username'].text = maskFormatter.maskText(
+                user['username'].substring(3, user['username'].length));
             data['password'].text = user['password'];
           });
         }
@@ -137,7 +142,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         data['signWithFingerPrint'] = user['signWithFingerPrint'];
       }
     }
-    if (prefs.getString('access_token') != null && data['signWithFingerPrint'] == true) {
+    if (prefs.getString('access_token') != null &&
+        data['signWithFingerPrint'] == true) {
       final isAvailable = await hasBiometrics();
       if (!isAvailable) return false;
       try {
@@ -147,7 +153,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           return;
         }
         final result = await auth.authenticate(
-          localizedReason: 'Ro\'yxatdan o\'tish uchun barmoq izingizni skanerlang',
+          localizedReason:
+              'Ro\'yxatdan o\'tish uchun barmoq izingizni skanerlang',
           options: const AuthenticationOptions(
             useErrorDialogs: true,
             stickyAuth: true,
@@ -163,8 +170,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             const IOSAuthMessages(
               lockOut: 'test',
               cancelButton: 'Boshqa usuldan foydalaning...',
-              goToSettingsButton: '',
-              goToSettingsDescription: '',
+              goToSettingsButton: 'Sozlamalar',
+              goToSettingsDescription: 'Barmoq izi bilan kirish',
               localizedFallbackTitle: '',
             ),
           ],
@@ -205,7 +212,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     checkIsRemember();
     getFingerprint();
     setState(() {
-      animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200));
+      animationController = AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 1200));
     });
   }
 
@@ -285,7 +293,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                           filled: true,
                           fillColor: white,
                           prefixIcon: Container(
-                            margin: const EdgeInsets.only(left: 16, right: 8, top: 16, bottom: 16),
+                            margin: const EdgeInsets.only(
+                                left: 16, right: 8, top: 16, bottom: 16),
                             padding: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                               border: Border(
@@ -297,7 +306,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             ),
                             child: Text(
                               '+998',
-                              style: TextStyle(color: black, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: black, fontWeight: FontWeight.w500),
                             ),
                           ),
                           contentPadding: const EdgeInsets.only(
@@ -372,7 +382,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  sendData['isRemember'] = !sendData['isRemember'];
+                                  sendData['isRemember'] =
+                                      !sendData['isRemember'];
                                 });
                               },
                               child: Container(
@@ -395,7 +406,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  sendData['isRemember'] = !sendData['isRemember'];
+                                  sendData['isRemember'] =
+                                      !sendData['isRemember'];
                                 });
                               },
                               child: const Text(
@@ -468,7 +480,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
               width: MediaQuery.of(context).size.width,
               child: Text(
                 'Tizimga kirish',
-                style: TextStyle(color: white, fontWeight: FontWeight.w500, fontSize: 16),
+                style: TextStyle(
+                    color: white, fontWeight: FontWeight.w500, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),
