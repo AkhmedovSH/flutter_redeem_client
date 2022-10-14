@@ -93,7 +93,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   }
 
   getPoses({search = false}) async {
-    final response = await get('/services/mobile/api/pos-search', payload: filter);
+    final response = await get('/services/mobile/api/pos-search', payload: filter, guest: true);
     if (response != null && response.length > 0) {
       setState(() {
         markers = [];

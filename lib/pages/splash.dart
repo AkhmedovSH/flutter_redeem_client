@@ -20,12 +20,9 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  dynamic systemOverlayStyle = const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light);
+  dynamic systemOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light);
   dynamic vesrion = '';
-  dynamic url =
-      'https://play.google.com/store/apps/details?id=uz.redeem.client';
+  dynamic url = 'https://play.google.com/store/apps/details?id=uz.redeem.client';
   bool isRequired = false;
   bool ios = false;
 
@@ -45,8 +42,7 @@ class _SplashState extends State<Splash> {
   void checkVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String localVersion = packageInfo.version;
-    var playMarketVersion =
-        await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
+    var playMarketVersion = await guestGet('/services/admin/api/get-version?name=uz.redeem.client');
     if (playMarketVersion == null) {
       startTimer();
       return;
@@ -75,7 +71,12 @@ class _SplashState extends State<Splash> {
   }
 
   void navigate() async {
-    Get.offAllNamed('/login');
+    Get.offAllNamed('/');
+    // if (ios) {
+    //   Get.offAllNamed('/');
+    // } else {
+    //   Get.offAllNamed('/login');
+    // }
   }
 
   @override
@@ -126,10 +127,8 @@ class _SplashState extends State<Splash> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            insetPadding:
-                const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             title: const Text(
               'Ilovani yangilash' ' "redeem"',
               style: TextStyle(color: Colors.black),
@@ -192,8 +191,7 @@ class _SplashState extends State<Splash> {
                         ElevatedButton(
                           onPressed: () {
                             if (ios) {
-                              final uri = Uri.parse(
-                                  'https://apps.apple.com/app/id6443604263');
+                              final uri = Uri.parse('https://apps.apple.com/app/id6443604263');
                               launchUrl(uri);
                             } else {
                               StoreRedirect.redirect(
@@ -204,11 +202,8 @@ class _SplashState extends State<Splash> {
                             // launchUrl(url);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: ios
-                                ? Colors.transparent
-                                : const Color(0xFF00865F),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 16),
+                            backgroundColor: ios ? Colors.transparent : const Color(0xFF00865F),
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
@@ -218,8 +213,7 @@ class _SplashState extends State<Splash> {
                             'YANGILANISH',
                             style: TextStyle(
                               color: ios ? Color(0xFF4889EE) : white,
-                              fontWeight:
-                                  ios ? FontWeight.w600 : FontWeight.w400,
+                              fontWeight: ios ? FontWeight.w600 : FontWeight.w400,
                             ),
                           ),
                         )
@@ -229,9 +223,7 @@ class _SplashState extends State<Splash> {
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: Image.asset(
-                      ios
-                          ? 'images/appstore_logo_3.png'
-                          : 'images/google_play.png',
+                      ios ? 'images/appstore_logo_3.png' : 'images/google_play.png',
                       height: ios ? 45 : 25,
                       width: 100,
                       fit: BoxFit.fill,

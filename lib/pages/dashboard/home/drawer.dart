@@ -57,10 +57,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
     }
   }
 
+  getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      getUser();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    getUser();
+    getData();
   }
 
   buildCard(icon, text) {
@@ -75,6 +82,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
         if (text == 'Sozlamalar') {
           await Get.toNamed('/profile-setting');
           getUser();
+        }
+        if (text == 'Tizimga kirish') {
+          Get.offAllNamed('/login');
         }
       },
       child: Container(
@@ -208,68 +218,73 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     buildCard(Icons.share_outlined, 'Ulashish'),
                     // buildCard(Icons.error_outline, 'Yordam'),
                     buildCard(Icons.settings_outlined, 'Sozlamalar'),
-                    GestureDetector(
-                      onTap: () {
-                        logout();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(222, 29, 29, 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Stack(
-                          children: const [
-                            Center(
-                              child: Text(
-                                'Chiqish',
-                                style: TextStyle(
-                                  color: Color(0xFFDE1D1D),
-                                  fontSize: 16,
-                                ),
+                    user['phone'] == null ? buildCard(Icons.login_rounded, 'Tizimga kirish') : Container(),
+                    user['phone'] != null
+                        ? GestureDetector(
+                            onTap: () {
+                              logout();
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(222, 29, 29, 0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Stack(
+                                children: const [
+                                  Center(
+                                    child: Text(
+                                      'Chiqish',
+                                      style: TextStyle(
+                                        color: Color(0xFFDE1D1D),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.logout_sharp,
+                                    color: Color(0xFFDE1D1D),
+                                    size: 20,
+                                  ),
+                                ],
                               ),
                             ),
-                            Icon(
-                              Icons.logout_sharp,
-                              color: Color(0xFFDE1D1D),
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        deleteAccount();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(222, 29, 29, 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Stack(
-                          children: const [
-                            Center(
-                              child: Text(
-                                'Profilni o\'chirish',
-                                style: TextStyle(
-                                  color: Color(0xFFDE1D1D),
-                                  fontSize: 16,
-                                ),
+                          )
+                        : Container(),
+                    user['phone'] != null
+                        ? GestureDetector(
+                            onTap: () {
+                              deleteAccount();
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(222, 29, 29, 0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Stack(
+                                children: const [
+                                  Center(
+                                    child: Text(
+                                      'Profilni o\'chirish',
+                                      style: TextStyle(
+                                        color: Color(0xFFDE1D1D),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.logout_sharp,
+                                    color: Color(0xFFDE1D1D),
+                                    size: 20,
+                                  ),
+                                ],
                               ),
                             ),
-                            Icon(
-                              Icons.logout_sharp,
-                              color: Color(0xFFDE1D1D),
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          )
+                        : Container(),
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                       width: MediaQuery.of(context).size.width,

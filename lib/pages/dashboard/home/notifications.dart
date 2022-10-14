@@ -23,8 +23,12 @@ class _NotificationsState extends State<Notifications> {
       loading = true;
     });
     final response = await get('/services/mobile/api/get-notification');
+    if (response != null) {
+      setState(() {
+        notifications = response;
+      });
+    }
     setState(() {
-      notifications = response;
       loading = false;
     });
   }

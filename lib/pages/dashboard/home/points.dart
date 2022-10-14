@@ -20,9 +20,11 @@ class _PointsState extends State<Points> {
 
   getPoses() async {
     final response = await get('/services/mobile/api/get-balance');
-    setState(() {
-      poses = response;
-    });
+    if (response != null) {
+      setState(() {
+        poses = response;
+      });
+    }
   }
 
   inFavorite(id, status) async {

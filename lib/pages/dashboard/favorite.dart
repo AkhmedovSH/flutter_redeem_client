@@ -38,8 +38,12 @@ class _FavoriteState extends State<Favorite> {
       'pointX': '',
       'pointY': '',
     });
+    if (response != null) {
+      setState(() {
+        poses = response;
+      });
+    }
     setState(() {
-      poses = response;
       loading = false;
     });
   }

@@ -42,18 +42,18 @@ class _GasDetailState extends State<GasDetail> {
     }
   }
 
-  void _onMapCreated(GoogleMapController _controller) {
-    controller ??= _controller;
-  }
-
   getPos({id}) async {
     setState(() {
       loading = true;
     });
-    final response = await get('/services/mobile/api/pos/${id ?? Get.arguments}', payload: {
-      'pointX': '',
-      'pointY': '',
-    });
+    final response = await get(
+      '/services/mobile/api/pos/${id ?? Get.arguments}',
+      payload: {
+        'pointX': '',
+        'pointY': '',
+      },
+      guest: true,
+    );
     response['workingDays'] = getCurrentDay(response['workingDays']);
     setState(() {
       pos = response;

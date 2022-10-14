@@ -16,8 +16,14 @@ BaseOptions options = BaseOptions(
 );
 var dio = Dio(options);
 
-Future get(String url, {payload}) async {
+Future get(String url, {payload, guest = false}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (!guest) {
+    if (prefs.getString('user') == null) {
+      getx.Get.toNamed('/login');
+      return;
+    }
+  }
   if (prefs.getString('access_token') != null) {
     dio.options.headers["authorization"] = "Bearer ${prefs.getString('access_token')}";
   }
@@ -38,6 +44,10 @@ Future get(String url, {payload}) async {
 
 Future post(String url, dynamic payload) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString('user') == null) {
+    getx.Get.toNamed('/login');
+    return;
+  }
   try {
     final response = await dio.post(
       hostUrl + url,

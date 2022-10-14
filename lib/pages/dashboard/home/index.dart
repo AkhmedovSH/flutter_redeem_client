@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helpers/helper.dart';
 import 'package:control_car_client/helpers/api.dart';
@@ -75,8 +78,14 @@ class _IndexState extends State<Index> {
     }
   }
 
-  getPoses() async {
-    final response = await get('/services/mobile/api/pos-search', payload: filter);
+  getPoses({guest = false}) async {
+    dynamic response;
+    if (guest) {
+      response = await guestGet('/services/mobile/api/pos-search', payload: filter);
+    } else {
+      response = await get('/services/mobile/api/pos-search', payload: filter);
+    }
+
     if (mounted) {
       // if (currentPage > 1) {
       //   if (poses.length == 0) {
@@ -121,28 +130,37 @@ class _IndexState extends State<Index> {
     refreshController.loadComplete();
   }
 
+  getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') != null) {
+      getPoses();
+      getPermission();
+      getUser();
+      getUnreadNotification();
+      scrollController.addListener(() async {
+        if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+          print(111);
+          if (currentPage != total) {
+            setState(() {
+              currentPage += 1;
+              filter['page'] = currentPage.toString();
+            });
+            await getPoses();
+          }
+        }
+        if (scrollController.position.pixels == scrollController.position.minScrollExtent) {
+          print(111);
+        }
+      });
+    } else {
+      getPoses(guest: true);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    getPoses();
-    getPermission();
-    getUser();
-    getUnreadNotification();
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        print(111);
-        if (currentPage != total) {
-          setState(() {
-            currentPage += 1;
-            filter['page'] = currentPage.toString();
-          });
-          await getPoses();
-        }
-      }
-      if (scrollController.position.pixels == scrollController.position.minScrollExtent) {
-        print(111);
-      }
-    });
+    getData();
   }
 
   @override
@@ -201,7 +219,7 @@ class _IndexState extends State<Index> {
                         margin: const EdgeInsets.only(bottom: 20, top: 50),
                         child: Center(
                           child: Text(
-                            '${user['totalRewards'] != null ? user['totalRewards'].round() : ''}',
+                            '${user['totalRewards'] != null ? user['totalRewards'].round() : '0'}',
                             style: TextStyle(
                               color: lightGrey,
                               fontSize: 24,
@@ -226,7 +244,7 @@ class _IndexState extends State<Index> {
                                   ),
                                 ),
                                 Text(
-                                  '${user['monthlyRewards'] != null ? user['monthlyRewards'].round() : ''}',
+                                  '${user['monthlyRewards'] != null ? user['monthlyRewards'].round() : '0'}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
