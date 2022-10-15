@@ -63,7 +63,7 @@ class _SupportState extends State<Support> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     child: Container(
                       height: 45,
                       width: MediaQuery.of(context).size.width * 0.8,

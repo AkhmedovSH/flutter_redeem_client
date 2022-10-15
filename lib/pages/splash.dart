@@ -71,12 +71,11 @@ class _SplashState extends State<Splash> {
   }
 
   void navigate() async {
-    Get.offAllNamed('/');
-    // if (ios) {
-    //   Get.offAllNamed('/');
-    // } else {
-    //   Get.offAllNamed('/login');
-    // }
+    if (ios) {
+      Get.offAllNamed('/');
+    } else {
+      Get.offAllNamed('/login');
+    }
   }
 
   @override
@@ -212,7 +211,7 @@ class _SplashState extends State<Splash> {
                           child: Text(
                             'YANGILANISH',
                             style: TextStyle(
-                              color: ios ? Color(0xFF4889EE) : white,
+                              color: ios ? const Color(0xFF4889EE) : white,
                               fontWeight: ios ? FontWeight.w600 : FontWeight.w400,
                             ),
                           ),

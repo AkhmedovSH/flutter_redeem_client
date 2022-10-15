@@ -58,7 +58,7 @@ class _NotificationDetailState extends State<NotificationDetail> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     child: Text(
                       '${notification['message'] ?? ''}',
                       style: TextStyle(

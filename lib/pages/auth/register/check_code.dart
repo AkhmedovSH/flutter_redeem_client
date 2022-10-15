@@ -91,7 +91,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
           Get.offAllNamed('/notifications');
         });
         var firebaseToken = await FirebaseMessaging.instance.getToken();
-        // await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
+        await put('/services/mobile/api/firebase-token', {'token': firebaseToken});
         Get.offAllNamed('/');
       }
     }

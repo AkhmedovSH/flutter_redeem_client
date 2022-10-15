@@ -901,8 +901,8 @@ class _GasDetailState extends State<GasDetail> {
 }
 
 class DetailScreen extends StatefulWidget {
-  String? imageUrl;
-  DetailScreen({Key? key, this.imageUrl = ''}) : super(key: key);
+  final String? imageUrl;
+  const DetailScreen({Key? key, this.imageUrl = ''}) : super(key: key);
   @override
   State<DetailScreen> createState() => _DetailScreenState();
 }
