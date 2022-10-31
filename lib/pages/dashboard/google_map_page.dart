@@ -133,8 +133,10 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
 
   @override
   void dispose() {
+    if (controller != null) {
+      controller!.dispose();
+    }
     super.dispose();
-    controller!.dispose();
   }
 
   @override

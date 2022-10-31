@@ -20,7 +20,7 @@ Future get(String url, {payload, guest = false}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (!guest) {
     if (prefs.getString('user') == null) {
-      getx.Get.toNamed('/login');
+      getx.Get.toNamed('/login', arguments: 1);
       return;
     }
   }
@@ -38,15 +38,18 @@ Future get(String url, {payload, guest = false}) async {
     );
     return response.data;
   } on DioError catch (e) {
-    statuscheker(e);
+    statuscheker(e, prefs: prefs);
   }
 }
 
 Future post(String url, dynamic payload) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('user') == null) {
-    getx.Get.toNamed('/login');
+    getx.Get.toNamed('/login', arguments: 1);
     return;
+  }
+  if (prefs.getString('access_token') != null) {
+    dio.options.headers["authorization"] = "Bearer ${prefs.getString('access_token')}";
   }
   try {
     final response = await dio.post(
@@ -62,12 +65,13 @@ Future post(String url, dynamic payload) async {
     );
     return response.data;
   } on DioError catch (e) {
-    statuscheker(e);
+    statuscheker(e, prefs: prefs);
   }
 }
 
 Future guestGet(String url, {payload}) async {
   try {
+    dio.options.headers["authorization"] = "";
     final response = await dio.get(
       hostUrl + url,
       queryParameters: payload,
@@ -84,6 +88,7 @@ Future guestGet(String url, {payload}) async {
 
 Future guestPost(String url, dynamic payload) async {
   try {
+    dio.options.headers["authorization"] = "";
     final response = await dio.post(hostUrl + url, data: payload);
     return response.data;
   } on DioError catch (e) {
@@ -157,13 +162,21 @@ uploadImage(url, File file) async {
   }
 }
 
-statuscheker(e) async {
+statuscheker(e, {prefs}) async {
   String jsonsDataString = e.response.toString();
   final jsonData = jsonDecode(jsonsDataString);
   if (e.response?.statusCode == 400) {
     showErrorToast(jsonData['message']);
   }
   if (e.response?.statusCode == 401) {
+    if (prefs != null) {
+      if (prefs.getString('user') != null) {
+        if (getx.Get.currentRoute != '/login') {
+          getx.Get.offAllNamed('/login');
+        }
+        return;
+      }
+    }
     showErrorToast('incorrect_login_or_password'.tr);
   }
   if (e.response?.statusCode == 403) {}

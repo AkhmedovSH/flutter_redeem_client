@@ -234,15 +234,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            leading: IconButton(
-              onPressed: () {
-                Get.offAllNamed('/');
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: black,
-              ),
-            ),
+            leading: Get.arguments != null
+                ? IconButton(
+                    onPressed: () {
+                      Get.offAllNamed('/');
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: black,
+                    ),
+                  )
+                : Container(),
             centerTitle: true,
           ),
           body: SingleChildScrollView(

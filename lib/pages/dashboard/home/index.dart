@@ -87,41 +87,47 @@ class _IndexState extends State<Index> {
       response = await get('/services/mobile/api/pos-search', payload: filter);
     }
 
-    if (mounted) {
-      // if (currentPage > 1) {
-      //   if (poses.length == 0) {
-      //     return;
-      //   }
-      // }
-      setState(() {
-        poses = response;
-        // if (currentPage == 1) {
-        //   poses = response;
-        // }
+    if (response != null) {
+      if (mounted) {
         // if (currentPage > 1) {
-        //   if (response.length > 0) {
-        //     poses.add(response);
+        //   if (poses.length == 0) {
+        //     return;
         //   }
         // }
-      });
+        setState(() {
+          poses = response;
+          // if (currentPage == 1) {
+          //   poses = response;
+          // }
+          // if (currentPage > 1) {
+          //   if (response.length > 0) {
+          //     poses.add(response);
+          //   }
+          // }
+        });
+      }
     }
   }
 
   getUser() async {
     final response = await get('/services/mobile/api/account');
-    if (mounted) {
-      setState(() {
-        user = response;
-      });
+    if (response != null) {
+      if (mounted) {
+        setState(() {
+          user = response;
+        });
+      }
     }
   }
 
   getUnreadNotification() async {
     final response = await get('/services/mobile/api/unread-notification');
-    if (mounted) {
-      setState(() {
-        unreadNotifications = response['newNotification'];
-      });
+    if (response != null) {
+      if (mounted) {
+        setState(() {
+          unreadNotifications = response['newNotification'];
+        });
+      }
     }
   }
 
