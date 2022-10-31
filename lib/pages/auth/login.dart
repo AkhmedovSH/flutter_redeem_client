@@ -110,7 +110,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             sendData['isRemember'] = user['isRemember'];
             sendData['username'] = user['username'];
             sendData['password'] = user['password'];
-            sendData['signWithFingerPrint'] = user['signWithFingerPrint'];
+            sendData['signWithFingerPrint'] = user['signWithFingerPrint'] ?? false;
             data['username'].text = maskFormatter.maskText(user['username'].substring(3, user['username'].length));
             data['password'].text = user['password'];
           });

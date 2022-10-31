@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -45,6 +47,7 @@ class _IndexState extends State<Index> {
   dynamic total = 0;
   dynamic currentPage = 1;
   bool loading = false;
+  bool ios = false;
 
   inFavorite(id, status) async {
     final response = await post('/services/mobile/api/pos-favorite', {
@@ -123,7 +126,9 @@ class _IndexState extends State<Index> {
   }
 
   Future refreshPage() async {
-    await getUser();
+    if (ios) {
+      await getUser();
+    }
     refreshController.refreshCompleted();
     refreshController.loadComplete();
   }
@@ -159,6 +164,13 @@ class _IndexState extends State<Index> {
   void initState() {
     super.initState();
     getData();
+    setState(() {
+      if (Platform.isIOS) {
+        setState(() {
+          ios = true;
+        });
+      }
+    });
   }
 
   @override
@@ -197,7 +209,7 @@ class _IndexState extends State<Index> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 150,
+              height: MediaQuery.of(context).size.height * .5 + 95 * poses.length + 170,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(

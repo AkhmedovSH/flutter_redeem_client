@@ -35,24 +35,26 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   setShowQr({change = true}) async {
     animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
     final response = await get('/services/mobile/api/get-uuid');
-    if (response['reason'] == 'error.user.not.found') {
-      showErrorToast('Xato');
-      return;
+    if (response != null) {
+      if (response['reason'] == 'error.user.not.found') {
+        showErrorToast('Xato');
+        return;
+      }
+      if (change) {
+        setState(() {
+          uuid = response['reason'];
+          levelClock = response['seconds'];
+          showQr = !showQr;
+        });
+      } else {
+        setState(() {
+          uuid = response['reason'];
+          levelClock = response['seconds'];
+        });
+      }
+      animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
+      animationController!.forward();
     }
-    if (change) {
-      setState(() {
-        uuid = response['reason'];
-        levelClock = response['seconds'];
-        showQr = !showQr;
-      });
-    } else {
-      setState(() {
-        uuid = response['reason'];
-        levelClock = response['seconds'];
-      });
-    }
-    animationController = AnimationController(vsync: this, duration: Duration(seconds: levelClock));
-    animationController!.forward();
   }
 
   changeIndex(int index) {
@@ -191,6 +193,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           ),
           bottomNavigationBar: SizedBox(
             child: BottomAppBar(
+              elevation: 0,
               shape: const CircularNotchedRectangle(),
               clipBehavior: Clip.antiAlias,
               child: BottomNavigationBar(
@@ -201,6 +204,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 onTap: changeIndex,
                 showSelectedLabels: false,
                 showUnselectedLabels: false,
+                elevation: 0,
                 items: [
                   BottomNavigationBarItem(
                     icon: buildBottomBarItem('images/icons/home.svg', 'Asosiy', 0),

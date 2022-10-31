@@ -35,7 +35,7 @@ class _ServicesState extends State<Services> {
     final beginDate = DateTime(
       int.parse(date['beginDate'].substring(0, 4)),
       int.parse(date['beginDate'].substring(5, 7)),
-      int.parse(date['beginDate'].substring(8, 10)),
+      int.parse(date['beginDate'].substring(8, 10)),  
     );
     final endDate = DateTime(
       int.parse(date['endDate'].substring(0, 4)),
