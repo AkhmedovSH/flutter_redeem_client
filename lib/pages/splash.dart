@@ -71,12 +71,11 @@ class _SplashState extends State<Splash> {
   }
 
   void navigate() async {
-    Get.offAllNamed('/');
-    // if (ios) {
-    //   Get.offAllNamed('/');
-    // } else {
-    //   Get.offAllNamed('/login');
-    // }
+    if (ios) {
+      Get.offAllNamed('/');
+    } else {
+      Get.offAllNamed('/login');
+    }
   }
 
   @override
