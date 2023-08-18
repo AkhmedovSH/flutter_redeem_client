@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
@@ -8,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:photo_view/photo_view.dart';
@@ -24,10 +22,9 @@ class GasDetail extends StatefulWidget {
 }
 
 class _GasDetailState extends State<GasDetail> {
-  GoogleMapController? controller;
-  final Completer<GoogleMapController> _controller = Completer();
-  CameraPosition kGooglePlex = const CameraPosition(target: LatLng(41.311081, 69.240562), zoom: 13.0);
-  List<Marker> markers = [];
+  late YandexMapController controller;
+  final List<MapObject> mapObjects = [];
+  final List results = [];
   bool loading = false;
 
   dynamic pos = {};
@@ -48,44 +45,19 @@ class _GasDetailState extends State<GasDetail> {
     });
     final response = await get(
       '/services/mobile/api/pos/${id ?? Get.arguments}',
-      payload: {
-        'pointX': '',
-        'pointY': '',
-      },
+      payload: {'pointX': '', 'pointY': ''},
       guest: true,
     );
     response['workingDays'] = getCurrentDay(response['workingDays']);
-    setState(() {
-      pos = response;
-      loading = false;
-    });
-    controller = await _controller.future;
-    dynamic newPosition = CameraPosition(
-      target: LatLng(response['gpsPointX'], response['gpsPointY']),
-      zoom: 14,
-    );
-    controller!.moveCamera(CameraUpdate.newCameraPosition(newPosition));
-    setState(() {
-      markers.add(
-        Marker(
-          markerId: MarkerId(LatLng(response['gpsPointX'], response['gpsPointY']).toString()),
-          position: LatLng(response['gpsPointX'], response['gpsPointY']),
-        ),
-      );
-      kGooglePlex = CameraPosition(target: LatLng(response['gpsPointX'], response['gpsPointY']), zoom: 13.0);
-    });
+    pos = response;
+    loading = false;
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     getPos();
-  }
-
-  @override
-  void dispose() {
-    controller != null ? controller!.dispose() : null;
-    super.dispose();
   }
 
   @override
@@ -390,55 +362,47 @@ class _GasDetailState extends State<GasDetail> {
                               height: 250,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: GoogleMap(
-                                  minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
-                                  myLocationButtonEnabled: true,
-                                  myLocationEnabled: true,
-                                  zoomControlsEnabled: false,
-                                  mapType: MapType.normal,
-                                  initialCameraPosition: kGooglePlex,
-                                  onMapCreated: (GoogleMapController controller) {
-                                    _controller.complete(controller);
-                                  },
-                                  scrollGesturesEnabled: true,
-                                  markers: Set<Marker>.of(markers),
+                                child: YandexMap(
+                                  mapObjects: mapObjects,
                                   gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                                     Factory<OneSequenceGestureRecognizer>(
                                       () => EagerGestureRecognizer(),
                                     ),
                                   },
+                                  onMapCreated: (YandexMapController yandexMapController) async {
+                                    controller = yandexMapController;
+                                    final placemark = PlacemarkMapObject(
+                                      mapId: const MapObjectId('Pos'),
+                                      point: Point(
+                                        latitude: double.parse(pos['gpsPointX'].toString()),
+                                        longitude: double.parse(pos['gpsPointY'].toString()),
+                                      ),
+                                      opacity: 0.9,
+                                      icon: PlacemarkIcon.single(
+                                        PlacemarkIconStyle(
+                                          image: BitmapDescriptor.fromAssetImage('images/placemark.png'),
+                                        ),
+                                      ),
+                                    );
+                                    // mapObjects.removeWhere((el) => el.mapId == targetMapObjectId);
+                                    mapObjects.add(placemark);
+                                    await controller.moveCamera(
+                                      CameraUpdate.newCameraPosition(
+                                        CameraPosition(
+                                          target: Point(
+                                            latitude: pos['gpsPointX'],
+                                            longitude: pos['gpsPointY'],
+                                          ),
+                                          zoom: 11,
+                                        ),
+                                      ),
+                                      animation: const MapAnimation(type: MapAnimationType.linear, duration: 0),
+                                    );
+                                    setState(() {});
+                                  },
                                 ),
                               ),
                             ),
-                            // Container(
-                            //   margin: const EdgeInsets.only(top: 25, bottom: 25),
-                            //   child: Row(
-                            //     children: [
-                            //       Container(
-                            //         margin: const EdgeInsets.only(right: 8),
-                            //         child: Icon(
-                            //           Icons.location_on_outlined,
-                            //           color: linkColor,
-                            //           size: 32,
-                            //         ),
-                            //       ),
-                            //       Container(
-                            //         decoration: BoxDecoration(
-                            //           border: Border(
-                            //             bottom: BorderSide(
-                            //               color: linkColor,
-                            //               width: 1,
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         child: Text(
-                            //           pos['address'] ?? '',
-                            //           style: TextStyle(color: linkColor, fontSize: 18, fontWeight: FontWeight.w500),
-                            //         ),
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
                             GestureDetector(
                               onTap: () async {
                                 final Uri launchUri = Uri(
@@ -769,7 +733,7 @@ class _GasDetailState extends State<GasDetail> {
     final response = await post('/services/mobile/api/pos-reviews', commentData);
     if (response != null) {
       getPos(id: pos['id']);
-      Navigator.pop(context);
+      Get.back();
     }
   }
 
@@ -822,12 +786,12 @@ class _GasDetailState extends State<GasDetail> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 25),
                       child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Majburiy maydon';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'Majburiy maydon';
+                        //   }
+                        //   return null;
+                        // },
                         maxLines: 5, //or null
                         onChanged: (value) {
                           setState(() {

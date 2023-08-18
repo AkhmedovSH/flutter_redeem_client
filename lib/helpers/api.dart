@@ -11,8 +11,8 @@ const hostUrl = "https://cabinet.redeem.uz";
 BaseOptions options = BaseOptions(
   baseUrl: hostUrl,
   receiveDataWhenStatusError: true,
-  connectTimeout: 20 * 1000, // 10 seconds
-  receiveTimeout: 20 * 1000, // 10 seconds
+  connectTimeout: const Duration(seconds: 15),
+  receiveTimeout: const Duration(seconds: 15),
 );
 var dio = Dio(options);
 
@@ -37,7 +37,7 @@ Future get(String url, {payload, guest = false}) async {
       queryParameters: payload,
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e, prefs: prefs);
   }
 }
@@ -64,7 +64,7 @@ Future post(String url, dynamic payload) async {
       ),
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e, prefs: prefs);
   }
 }
@@ -81,7 +81,7 @@ Future guestGet(String url, {payload}) async {
       }),
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e);
   }
 }
@@ -91,7 +91,7 @@ Future guestPost(String url, dynamic payload) async {
     dio.options.headers["authorization"] = "";
     final response = await dio.post(hostUrl + url, data: payload);
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e);
   }
 }
@@ -111,7 +111,7 @@ Future put(String url, dynamic payload) async {
       ),
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e);
   }
 }
@@ -130,7 +130,7 @@ Future delete(String url) async {
       ),
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e);
   }
 }
@@ -157,15 +157,17 @@ uploadImage(url, File file) async {
       ),
     );
     return response.data;
-  } on DioError catch (e) {
+  } catch (e) {
     statuscheker(e);
   }
 }
 
 statuscheker(e, {prefs}) async {
-  String jsonsDataString = e.response.toString();
-  final jsonData = jsonDecode(jsonsDataString);
+  print(e);
+  print(e.response);
   if (e.response?.statusCode == 400) {
+    String jsonsDataString = e.response.toString();
+    final jsonData = jsonDecode(jsonsDataString);
     showErrorToast(jsonData['message']);
   }
   if (e.response?.statusCode == 401) {
@@ -187,6 +189,8 @@ statuscheker(e, {prefs}) async {
     showErrorToast('error'.tr);
   }
   if (e.response?.statusCode == 500) {
+    String jsonsDataString = e.response.toString();
+    final jsonData = jsonDecode(jsonsDataString);
     showErrorToast(jsonData['message']);
   }
 }

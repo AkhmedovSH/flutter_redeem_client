@@ -69,7 +69,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       }
       if (checkAccess) {
         try {
-          LocalNotificationService.initialize(context);
+          LocalNotificationService.initialize();
           FirebaseMessaging.instance.getInitialMessage().then((message) {
             if (message != null) {
               Get.offAllNamed('/notifications');
@@ -143,7 +143,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       try {
         final isDeviceSupported = await auth.isDeviceSupported();
         if (!isDeviceSupported) {
-          AppSettings.openSecuritySettings();
+          AppSettings.openAppSettings(type: AppSettingsType.security);
           return;
         }
         final result = await auth.authenticate(
@@ -153,7 +153,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             stickyAuth: true,
             biometricOnly: true,
           ),
-          authMessages: <AuthMessages>[
+          authMessages: [
             const AndroidAuthMessages(
               signInTitle: 'Barmoq izi bilan kirish',
               cancelButton: 'Boshqa usuldan foydalaning...',
@@ -161,7 +161,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
               biometricHint: '',
             ),
             const IOSAuthMessages(
-              lockOut: 'test',
               cancelButton: 'Boshqa usuldan foydalaning...',
               goToSettingsButton: 'Sozlamalar',
               goToSettingsDescription: 'Barmoq izi bilan kirish',

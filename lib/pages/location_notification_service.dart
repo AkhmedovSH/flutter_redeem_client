@@ -1,19 +1,16 @@
-import 'package:flutter/material.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  static void initialize(BuildContext context) {
-    InitializationSettings initializationSettings = const InitializationSettings(android: AndroidInitializationSettings("@mipmap/ic_launcher"), iOS: IOSInitializationSettings());
+  static void initialize() {
+    InitializationSettings initializationSettings = const InitializationSettings(
+      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+      iOS: DarwinInitializationSettings(),
+    );
 
-    _notificationsPlugin.initialize(initializationSettings, onSelectNotification: (String? route) async {
-      if (route != null) {
-        // Navigator.of(context).pushNamed(route);
-      }
-    });
+    _notificationsPlugin.initialize(initializationSettings);
   }
 
   static void display(RemoteMessage message) async {

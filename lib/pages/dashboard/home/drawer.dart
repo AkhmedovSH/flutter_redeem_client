@@ -231,8 +231,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                 color: const Color.fromRGBO(222, 29, 29, 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Stack(
-                                children: const [
+                              child: const Stack(
+                                children: [
                                   Center(
                                     child: Text(
                                       'Chiqish',
@@ -264,8 +264,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                 color: const Color.fromRGBO(222, 29, 29, 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Stack(
-                                children: const [
+                              child: const Stack(
+                                children: [
                                   Center(
                                     child: Text(
                                       'Profilni o\'chirish',

@@ -75,7 +75,7 @@ class _CheckCodeState extends State<CheckCode> with TickerProviderStateMixin {
         }
       }
       if (checkAccess) {
-        LocalNotificationService.initialize(context);
+        LocalNotificationService.initialize();
         FirebaseMessaging.instance.getInitialMessage().then((message) {
           if (message != null) {
             Get.offAllNamed('/notifications');

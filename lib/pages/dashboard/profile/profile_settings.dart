@@ -68,7 +68,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
   changeRemember(value) async {
     final isDeviceSupported = await auth.isDeviceSupported();
     if (!isDeviceSupported) {
-      AppSettings.openSecuritySettings();
+      AppSettings.openAppSettings(type: AppSettingsType.security);
       return;
     }
     setState(() {

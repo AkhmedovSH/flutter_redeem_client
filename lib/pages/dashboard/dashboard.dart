@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../helpers/helper.dart';
@@ -13,6 +14,7 @@ import 'home/drawer.dart';
 import 'google_map_page.dart';
 import 'favorite.dart';
 import 'services.dart';
+import 'yandex_map.dart';
 // import './qr_bonuse.dart';
 
 class Dashboard extends StatefulWidget {
@@ -23,6 +25,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  PageController? pageController;
   final GlobalKey<ScaffoldState> key = GlobalKey();
   AnimationController? animationController;
 
@@ -61,6 +64,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     setState(() {
       showQr = false;
       currentIndex = index;
+      pageController!.jumpToPage(index);
     });
   }
 
@@ -92,6 +96,23 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (Get.arguments != null) {
+      currentIndex = Get.arguments;
+      pageController = PageController(initialPage: Get.arguments);
+    } else {
+      pageController = PageController();
+    }
+  }
+
+  @override
+  void dispose() {
+    pageController!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Stack(
@@ -106,13 +127,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           ),
           body: Stack(
             children: [
-              IndexedStack(
-                index: currentIndex,
+              PageView(
+                controller: pageController,
                 children: [
-                  currentIndex == 0 ? Index(openDrawer: () => key.currentState!.openDrawer()) : Container(),
-                  currentIndex == 1 ? const GoogleMapPage() : Container(),
-                  currentIndex == 2 ? const Favorite() : Container(),
-                  currentIndex == 3 ? const Services() : Container(),
+                  Index(openDrawer: () => key.currentState!.openDrawer()),
+                  const YandexMapPage(),
+                  const Favorite(),
+                  const Services(),
                 ],
               ),
               if (showQr)
@@ -144,7 +165,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                           ),
                           child: Column(
                             children: [
-                              QrImage(
+                              QrImageView(
                                 data: uuid.toString(),
                                 version: QrVersions.auto,
                               ),

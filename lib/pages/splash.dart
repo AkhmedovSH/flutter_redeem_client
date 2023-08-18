@@ -47,20 +47,25 @@ class _SplashState extends State<Splash> {
       startTimer();
       return;
     }
-
-    if (playMarketVersion['version'] != localVersion) {
-      if (playMarketVersion['required']) {
+    try {
+      if (int.parse(playMarketVersion['version'].split('.')[2]) > int.parse(localVersion.split('.')[2])) {
         setState(() {
-          isRequired = true;
+          if (playMarketVersion['required'] != null || playMarketVersion['required']) {
+            isRequired = true;
+          } else {
+            isRequired = false;
+          }
         });
-      }
-      await showUpdateDialog();
-      if (isRequired) {
-        SystemNavigator.pop();
+        await showUpdateDialog();
+        if (isRequired) {
+          SystemNavigator.pop();
+        } else {
+          startTimer();
+        }
       } else {
         startTimer();
       }
-    } else {
+    } catch (e) {
       startTimer();
     }
   }
@@ -129,7 +134,8 @@ class _SplashState extends State<Splash> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             title: const Text(
-              'Ilovani yangilash' ' "redeem"',
+              'Ilovani yangilash'
+              ' "redeem"',
               style: TextStyle(color: Colors.black),
               // textAlign: TextAlign.center,
             ),

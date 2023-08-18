@@ -41,7 +41,7 @@ void main() async {
       // statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
     ),
-  );  
+  );
   runApp(const MyApp());
 }
 
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
       popGesture: true,
       defaultTransition: Transition.fade,
       theme: ThemeData(
-        backgroundColor: const Color(0xFFFFFFFF),
+        primaryColor: const Color(0xFFFFFFFF),
         scaffoldBackgroundColor: const Color(0xFFFFFFFF),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -113,3 +113,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+//   }
+// }

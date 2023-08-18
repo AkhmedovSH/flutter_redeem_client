@@ -38,7 +38,7 @@ class _IndexState extends State<Index> {
     'pointY': '',
     'distance': '',
     'page': '0',
-    // 'size': '20',
+    'size': '20',
   };
   dynamic user = {};
   dynamic unreadNotifications = 0;
@@ -364,7 +364,7 @@ class _IndexState extends State<Index> {
                               ),
                               Column(
                                 children: [
-                                  for (var i = 0; i < poses.length; i++)
+                                  for (var i = 0; i < poses.length - 1; i++)
                                     GestureDetector(
                                       onTap: () {
                                         Get.toNamed('/gas-detail', arguments: poses[i]['id']);
@@ -379,7 +379,7 @@ class _IndexState extends State<Index> {
                                               color: Color(0xFFCED4D8),
                                             ),
                                           ),
-                                        ),
+                                        ),  
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -495,7 +495,7 @@ class _IndexState extends State<Index> {
                                   //       )
                                   //     : Container(),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
