@@ -116,25 +116,6 @@ Future put(String url, dynamic payload) async {
   }
 }
 
-Future delete(String url) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  try {
-    final response = await dio.delete(
-      hostUrl + url,
-      options: Options(
-        headers: {
-          "authorization": "Bearer ${prefs.getString('access_token')}",
-          "Language": "uz-Latn-UZ",
-          "Accept-Language": "uz-Latn-UZ",
-        },
-      ),
-    );
-    return response.data;
-  } catch (e) {
-    statuscheker(e);
-  }
-}
-
 uploadImage(url, File file) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   try {

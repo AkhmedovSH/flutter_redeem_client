@@ -11,18 +11,12 @@ import 'dart:ui' as ui;
 
 Color black = const Color(0xFF171A1C);
 Color grey = const Color(0xFF666666);
-Color purple = const Color(0xFF78379B);
-Color pink = const Color(0xFFF03291);
 Color white = const Color(0xFFFFFFFF);
 Color red = const Color(0xFFdc3545);
-Color blue = const Color(0xFF17a2b8);
 Color green = const Color(0xFF22AE54);
 Color lightGrey = const Color(0xFFFDFDFD);
-Color borderColor = const Color(0xFFF8F8F8);
 Color linkColor = const Color(0xFF2995A3);
 
-Color success = const Color(0xFF34c38f);
-Color warning = const Color(0xFFf1b44c);
 Color danger = const Color(0xFFf46a6a);
 
 Gradient gradient = const LinearGradient(
@@ -65,11 +59,6 @@ BoxDecoration iconBorder = BoxDecoration(
 
 const mainUrl = 'https://cabinet.redeem.uz';
 
-final loadingsystemOverlayStyle = SystemUiOverlayStyle(
-  statusBarIconBrightness: Brightness.light,
-  statusBarColor: Colors.black.withOpacity(0.4),
-);
-
 // Functions
 
 getGragientWidget(child) {
@@ -94,20 +83,6 @@ getGragientWidget(child) {
   );
 }
 
-formatMoney(amount) {
-  if (amount != null && amount != "") {
-    amount = double.parse(amount.toString());
-    return NumberFormat.currency(symbol: '', decimalDigits: 0, locale: 'UZ').format(amount);
-  } else {
-    return NumberFormat.currency(symbol: '', decimalDigits: 0, locale: 'UZ').format(0);
-  }
-}
-
-formatDate(date) {
-  Moment rawDate = Moment.parse(date);
-  return rawDate.format("dd-MM-yyyy HH:mm");
-}
-
 formatDateMonth(date, {format="dd.MM.yyyy"}) {
   Moment rawDate = Moment.parse(date);
   return rawDate.format(format);
@@ -128,38 +103,6 @@ formatPhone(phone) {
     return '+' + x + ' ' + y + ' ' + z + ' ' + d + ' ' + q;
   } else {
     return phone;
-  }
-}
-
-getCurrentMonth() {
-  DateTime date = DateTime.now();
-  final month = DateFormat('MM').format(date);
-  switch (month.toString()) {
-    case '01':
-      return 'january'.tr;
-    case '02':
-      return 'february'.tr;
-    case '03':
-      return 'march'.tr;
-    case '04':
-      return 'april'.tr;
-    case '05':
-      return 'may'.tr;
-    case '06':
-      return 'june'.tr;
-    case '07':
-      return 'july'.tr;
-    case '08':
-      return 'august'.tr;
-    case '09':
-      return 'september'.tr;
-    case '10':
-      return 'october'.tr;
-    case '11':
-      return 'november'.tr;
-    case '12':
-      return 'december'.tr;
-    default:
   }
 }
 

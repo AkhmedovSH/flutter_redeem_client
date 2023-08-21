@@ -11,7 +11,6 @@ import '../../helpers/helper.dart';
 
 import 'home/index.dart';
 import 'home/drawer.dart';
-import 'google_map_page.dart';
 import 'favorite.dart';
 import 'services.dart';
 import 'yandex_map.dart';
