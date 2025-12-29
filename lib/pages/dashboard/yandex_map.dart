@@ -86,6 +86,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
   getPoses({search = false}) async {
     final response = await get('/services/mobile/api/pos-search', payload: filter, guest: true);
     if (response != null && response.length > 0) {
+      mapObjects.clear();
       for (var i = 0; i < response.length; i++) {
         final placemark = PlacemarkMapObject(
           mapId: MapObjectId('target_placemark$i'),
@@ -104,7 +105,6 @@ class _YandexMapPageState extends State<YandexMapPage> {
         mapObjects.add(placemark);
       }
       setState(() {});
-      print(mapObjects);
     }
   }
 
@@ -175,6 +175,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
+            heroTag: 'map_location_button',
             onPressed: () {
               getCurrentLocation();
             },

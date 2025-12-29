@@ -109,6 +109,7 @@ class _GasDetailState extends State<GasDetail> {
                                   Row(
                                     children: [
                                       Container(
+                                        width: 58,
                                         margin: const EdgeInsets.only(right: 8),
                                         child: pos['logoUrl'] != null && pos['logoUrl'] != ''
                                             ? ClipRRect(
@@ -118,6 +119,14 @@ class _GasDetailState extends State<GasDetail> {
                                                   fit: BoxFit.fill,
                                                   width: 58,
                                                   height: 58,
+                                                  errorBuilder: (context, error, stackTrace) {
+                                                    return Image.asset(
+                                                      'images/logo.png',
+                                                      width: 58,
+                                                      height: 58,
+                                                      fit: BoxFit.contain,
+                                                    );
+                                                  },
                                                 ),
                                               )
                                             : SizedBox(
@@ -722,7 +731,7 @@ class _GasDetailState extends State<GasDetail> {
   dynamic commentData = {
     'title': '',
     'message': '',
-    'rating': 3,
+    'rating': 5,
     'posId': '',
   };
 

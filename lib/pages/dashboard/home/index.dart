@@ -320,6 +320,9 @@ class _IndexState extends State<Index> {
                                 height: 45,
                                 margin: const EdgeInsets.only(bottom: 24),
                                 child: TextFormField(
+                                  onTapOutside: (PointerDownEvent event) {
+                                    FocusManager.instance.primaryFocus?.unfocus();
+                                  },
                                   textInputAction: TextInputAction.search,
                                   onChanged: (value) {
                                     if (value.isEmpty) {
@@ -364,7 +367,7 @@ class _IndexState extends State<Index> {
                               ),
                               Column(
                                 children: [
-                                  for (var i = 0; i < poses.length - 1; i++)
+                                  for (var i = 0; i < poses.length; i++)
                                     GestureDetector(
                                       onTap: () {
                                         Get.toNamed('/gas-detail', arguments: poses[i]['id']);
@@ -379,7 +382,7 @@ class _IndexState extends State<Index> {
                                               color: Color(0xFFCED4D8),
                                             ),
                                           ),
-                                        ),  
+                                        ),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -387,6 +390,7 @@ class _IndexState extends State<Index> {
                                               children: [
                                                 Container(
                                                   margin: const EdgeInsets.only(right: 8),
+                                                  width: 58,
                                                   child: poses[i]['logoUrl'] != null && poses[i]['logoUrl'] != ''
                                                       ? ClipRRect(
                                                           borderRadius: BorderRadius.circular(50),
@@ -395,6 +399,14 @@ class _IndexState extends State<Index> {
                                                             fit: BoxFit.contain,
                                                             width: 58,
                                                             height: 58,
+                                                            errorBuilder: (context, error, stackTrace) {
+                                                              return Image.asset(
+                                                                'images/logo.png',
+                                                                width: 58,
+                                                                height: 58,
+                                                                fit: BoxFit.contain,
+                                                              );
+                                                            },
                                                           ),
                                                         )
                                                       : SizedBox(

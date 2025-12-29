@@ -129,7 +129,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   getFingerprint() async {
-    for
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') != null) {
       final user = jsonDecode(prefs.getString('user')!);
@@ -151,7 +150,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           localizedReason: 'Ro\'yxatdan o\'tish uchun barmoq izingizni skanerlang',
           biometricOnly: true,
           persistAcrossBackgrounding: true,
-          
+
           // options: const AuthOptions(
           //   useErrorDialogs: true,
           //   stickyAuth: true,

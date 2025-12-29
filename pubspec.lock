@@ -1201,10 +1201,10 @@ packages:
     dependency: "direct main"
     description:
       name: yandex_mapkit
-      sha256: "30a6f7e1d99871338071425a389c53491018602ee24be16e9cf63e640d57dda1"
+      sha256: "6beaa9a208b26a2421c7147935988777c2ef61ee187df392d54c8932f22308ed"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.1"
+    version: "4.1.0"
 sdks:
   dart: ">=3.9.0 <4.0.0"
   flutter: ">=3.35.0"

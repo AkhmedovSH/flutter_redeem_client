@@ -41,21 +41,20 @@ android {
         // coreLibraryDesugaringEnabled true
     // }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+		compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "17"
     }
-
 
     defaultConfig {
         applicationId = "uz.redeem.client"
         minSdkVersion = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
@@ -74,6 +73,12 @@ android {
             signingConfig = signingConfigs.release
         }
     }
+
+		packaging {
+        jniLibs {
+            useLegacyPackaging = true 
+        }
+    }
 }
 
 flutter {
@@ -86,7 +91,7 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation 'com.yandex.android:maps.mobile:4.6.1-lite'
+    implementation 'com.yandex.android:maps.mobile:4.8.1-lite'
 }
 
 apply plugin: 'com.google.gms.google-services'

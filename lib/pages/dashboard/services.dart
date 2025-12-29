@@ -35,7 +35,7 @@ class _ServicesState extends State<Services> {
     final beginDate = DateTime(
       int.parse(date['beginDate'].substring(0, 4)),
       int.parse(date['beginDate'].substring(5, 7)),
-      int.parse(date['beginDate'].substring(8, 10)),  
+      int.parse(date['beginDate'].substring(8, 10)),
     );
     final endDate = DateTime(
       int.parse(date['endDate'].substring(0, 4)),
@@ -250,7 +250,6 @@ class _ServicesState extends State<Services> {
                       }
                     },
                     child: Container(
-                      height: 170,
                       margin: const EdgeInsets.only(top: 10, right: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                       decoration: BoxDecoration(
@@ -340,7 +339,6 @@ class _ServicesState extends State<Services> {
                       }
                     },
                     child: Container(
-                      height: 170,
                       margin: const EdgeInsets.only(top: 10, left: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                       decoration: BoxDecoration(
@@ -436,7 +434,6 @@ class _ServicesState extends State<Services> {
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, right: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      height: 170,
                       decoration: BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.circular(16),
@@ -523,7 +520,6 @@ class _ServicesState extends State<Services> {
                       }
                     },
                     child: Container(
-                      height: 170,
                       margin: const EdgeInsets.only(top: 10, left: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                       decoration: BoxDecoration(
@@ -619,7 +615,6 @@ class _ServicesState extends State<Services> {
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, right: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      height: 170,
                       decoration: BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.circular(16),
@@ -708,7 +703,6 @@ class _ServicesState extends State<Services> {
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, left: 5),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      height: 170,
                       decoration: BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.circular(16),

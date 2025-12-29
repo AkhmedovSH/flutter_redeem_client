@@ -24,7 +24,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
-  PageController? pageController;
   final GlobalKey<ScaffoldState> key = GlobalKey();
   AnimationController? animationController;
 
@@ -59,15 +58,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     }
   }
 
-  changeIndex(int index) {
-    setState(() {
-      showQr = false;
-      currentIndex = index;
-      pageController!.jumpToPage(index);
-    });
+  void changeIndex(int index) {
+    showQr = false;
+    currentIndex = index;
+    setState(() {});
   }
 
-  buildBottomBarItem(icon, text, index) {
+  Widget buildBottomBarItem(String icon, String text, int index) {
     return SizedBox(
       child: Column(
         children: [
@@ -99,16 +96,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     super.initState();
     if (Get.arguments != null) {
       currentIndex = Get.arguments;
-      pageController = PageController(initialPage: Get.arguments);
-    } else {
-      pageController = PageController();
     }
-  }
-
-  @override
-  void dispose() {
-    pageController!.dispose();
-    super.dispose();
   }
 
   @override
@@ -126,8 +114,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           ),
           body: Stack(
             children: [
-              PageView(
-                controller: pageController,
+              IndexedStack(
+                index: currentIndex,
                 children: [
                   Index(openDrawer: () => key.currentState!.openDrawer()),
                   const YandexMapPage(),
@@ -156,13 +144,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       child: Center(
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.7,
-                          height: 390,
+                          // height: 400,
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             color: white,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               QrImageView(
                                 data: uuid.toString(),
@@ -188,16 +177,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                   ).animate(animationController!),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
+                              // SizedBox(height: 10),
+                              IconButton(
+                                onPressed: () {
                                   setShowQr(change: false);
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: Icon(
-                                    Icons.refresh,
-                                    color: green,
-                                  ),
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: green,
                                 ),
                               ),
                             ],
@@ -213,7 +200,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           ),
           bottomNavigationBar: SizedBox(
             child: BottomAppBar(
+              padding: EdgeInsets.zero,
               elevation: 0,
+              color: Colors.white,
+              surfaceTintColor: Colors.transparent,
               shape: const CircularNotchedRectangle(),
               clipBehavior: Clip.antiAlias,
               child: BottomNavigationBar(

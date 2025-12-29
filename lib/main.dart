@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
       popGesture: true,
       defaultTransition: Transition.fade,
       theme: ThemeData(
+        useMaterial3: false,
         primaryColor: const Color(0xFFFFFFFF),
         scaffoldBackgroundColor: const Color(0xFFFFFFFF),
         elevatedButtonTheme: ElevatedButtonThemeData(
