@@ -10,9 +10,9 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_ios/local_auth_ios.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_darwin/local_auth_darwin.dart';
 
 import '../location_notification_service.dart';
 
@@ -29,7 +29,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   var maskFormatter = MaskTextInputFormatter(mask: '## ### ## ##', filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
   AnimationController? animationController;
-  static dynamic auth = LocalAuthentication();
+  static LocalAuthentication auth = LocalAuthentication();
 
   dynamic sendData = {
     'username': '',
@@ -129,6 +129,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   }
 
   getFingerprint() async {
+    for
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') != null) {
       final user = jsonDecode(prefs.getString('user')!);
@@ -148,26 +149,28 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         }
         final result = await auth.authenticate(
           localizedReason: 'Ro\'yxatdan o\'tish uchun barmoq izingizni skanerlang',
-          options: const AuthenticationOptions(
-            useErrorDialogs: true,
-            stickyAuth: true,
-            biometricOnly: true,
-          ),
+          biometricOnly: true,
+          persistAcrossBackgrounding: true,
+          
+          // options: const AuthOptions(
+          //   useErrorDialogs: true,
+          //   stickyAuth: true,
+          //   biometricOnly: true,
+          // ),
           authMessages: [
             const AndroidAuthMessages(
               signInTitle: 'Barmoq izi bilan kirish',
               cancelButton: 'Boshqa usuldan foydalaning...',
-              goToSettingsButton: '',
-              biometricHint: '',
             ),
             const IOSAuthMessages(
               cancelButton: 'Boshqa usuldan foydalaning...',
-              goToSettingsButton: 'Sozlamalar',
-              goToSettingsDescription: 'Barmoq izi bilan kirish',
+              // goToSettingsButton: 'Sozlamalar',
+              // goToSettingsDescription: 'Barmoq izi bilan kirish',
               localizedFallbackTitle: '',
             ),
           ],
         );
+
         if (result) {
           final user = jsonDecode(prefs.getString('user')!);
           setState(() {

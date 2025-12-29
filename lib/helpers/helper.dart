@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:simple_moment/simple_moment.dart';
+import 'package:toastification/toastification.dart';
+import 'package:unicons/unicons.dart';
 import 'dart:ui' as ui;
 
 // Colors
@@ -83,14 +81,14 @@ getGragientWidget(child) {
   );
 }
 
-formatDateMonth(date, {format="dd.MM.yyyy"}) {
-  Moment rawDate = Moment.parse(date);
-  return rawDate.format(format);
+formatDateMonth(date, {format = "dd.MM.yyyy"}) {
+  DateTime rawDate = DateTime.parse(date);
+  return DateFormat(format).format(rawDate);
 }
 
 formatDateHour(date) {
-  Moment rawDate = Moment.parse(date);
-  return rawDate.format("HH:mm");
+  DateTime rawDate = DateTime.parse(date);
+  return DateFormat("HH:mm").format(rawDate);
 }
 
 formatPhone(phone) {
@@ -146,24 +144,59 @@ getCurrentDay(list) {
   return list;
 }
 
-showSuccessToast(message) {
-  return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 1,
-      backgroundColor: const Color(0xFF28a745),
-      textColor: Colors.white,
-      fontSize: 16.0);
+showSuccessToast(message, {String description = ""}) {
+  toastification.show(
+    title: Text(
+      '$message',
+      style: TextStyle(color: black),
+    ),
+    description: description.isNotEmpty
+        ? Text(
+            description,
+            style: TextStyle(color: black),
+          )
+        : null,
+    icon: Icon(
+      UniconsLine.check_circle,
+      color: successColor,
+    ),
+    animationDuration: const Duration(milliseconds: 200),
+    autoCloseDuration: const Duration(seconds: 20),
+    type: ToastificationType.success,
+    style: ToastificationStyle.flatColored,
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    alignment: Alignment.bottomCenter,
+    borderRadius: BorderRadius.circular(12),
+    closeOnClick: true,
+    showProgressBar: false,
+  );
 }
 
-showErrorToast(message) {
-  return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 1,
-      backgroundColor: const Color(0xFFE32F45),
-      textColor: Colors.white,
-      fontSize: 16.0);
+showErrorToast(message, {String description = ""}) {
+  toastification.show(
+    title: Text(
+      '$message',
+      style: TextStyle(color: black),
+    ),
+    description: description.isNotEmpty
+        ? Text(
+            description,
+            style: TextStyle(color: black),
+          )
+        : null,
+    icon: Icon(
+      UniconsLine.exclamation_triangle,
+      color: danger,
+    ),
+    animationDuration: const Duration(milliseconds: 200),
+    autoCloseDuration: const Duration(seconds: 20),
+    type: ToastificationType.error,
+    style: ToastificationStyle.flatColored,
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    alignment: Alignment.bottomCenter,
+    borderRadius: BorderRadius.circular(21),
+    closeOnClick: true,
+    showProgressBar: false,
+  );
 }
+
